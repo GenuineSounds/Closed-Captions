@@ -1,0 +1,16 @@
+[
+{
+  "modid": "ClosedCaptions",
+  "name": "[Genuine] ClosedCaptions",
+  "description": "[Genuine] ClosedCaptions is a client mod that adds in-world closed captions. Tons of beautiful features.",
+  "version": "1.5",
+  "mcversion": "1.7.10",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["GenuineSounds"],
+  "credits": "",
+  "logoFile": "assets/closedcaptions/logo.png",
+  "screenshots": [],
+  "dependencies": []
+}
+]
