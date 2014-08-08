@@ -8,7 +8,6 @@ import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
 
 import com.genuineminecraft.closedcaptions.captions.CaptionsContainer;
 
-import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class SoundEvents {

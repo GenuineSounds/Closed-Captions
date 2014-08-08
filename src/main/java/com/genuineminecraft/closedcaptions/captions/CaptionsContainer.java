@@ -2,7 +2,6 @@ package com.genuineminecraft.closedcaptions.captions;
 
 import static org.lwjgl.opengl.GL11.GL_ALPHA_TEST;
 import static org.lwjgl.opengl.GL11.GL_BLEND;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.GL_FLAT;
 import static org.lwjgl.opengl.GL11.GL_LIGHTING;
 import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
@@ -38,7 +37,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 
 import com.genuineminecraft.closedcaptions.ClosedCaptions;
-import com.google.common.collect.ImmutableList;
 import com.mojang.realmsclient.gui.ChatFormatting;
 
 import cpw.mods.fml.common.event.FMLInterModComms;
@@ -144,14 +142,15 @@ public class CaptionsContainer {
 	}
 
 	public void render2D(ScaledResolution resolution, float deltaTime) {
-		if (Minecraft.getMinecraft().thePlayer == null || Minecraft.getMinecraft().thePlayer.worldObj == null)
+		if (RenderManager.instance == null || RenderManager.instance.worldObj == null)
 			return;
 		synchronized (messages2D) {
 			for (IMCMessage imc : FMLInterModComms.fetchRuntimeMessages(ClosedCaptions.instance))
 				messages2D.add(new Caption2D(imc.getStringValue()));
-			long tick = Minecraft.getMinecraft().thePlayer.worldObj.getWorldTime();
+			long tick = RenderManager.instance.worldObj.getTotalWorldTime();
 			List<Caption> removalQueue = new ArrayList<Caption>();
 			if (this.tick2D != tick) {
+				System.out.println(tick);
 				for (Caption caption : messages2D)
 					if (!caption.tick())
 						removalQueue.add(caption);
@@ -225,10 +224,10 @@ public class CaptionsContainer {
 	}
 
 	public void render3D(float deltaTime) {
-		if (Minecraft.getMinecraft().thePlayer == null || Minecraft.getMinecraft().thePlayer.worldObj == null)
+		if (RenderManager.instance == null || RenderManager.instance.worldObj == null)
 			return;
 		synchronized (messages3D) {
-			long tick = Minecraft.getMinecraft().thePlayer.worldObj.getWorldTime();
+			long tick = RenderManager.instance.worldObj.getTotalWorldTime();
 			List<Caption> removalQueue = new ArrayList<Caption>();
 			if (this.tick3D != tick) {
 				for (Caption caption : messages3D)
