@@ -150,7 +150,6 @@ public class CaptionsContainer {
 			long tick = RenderManager.instance.worldObj.getTotalWorldTime();
 			List<Caption> removalQueue = new ArrayList<Caption>();
 			if (this.tick2D != tick) {
-				System.out.println(tick);
 				for (Caption caption : messages2D)
 					if (!caption.tick())
 						removalQueue.add(caption);
