@@ -144,10 +144,12 @@ public class CaptionsContainer {
 	}
 
 	public void render2D(ScaledResolution resolution, float deltaTime) {
+		if (Minecraft.getMinecraft().thePlayer == null || Minecraft.getMinecraft().thePlayer.worldObj == null)
+			return;
 		synchronized (messages2D) {
 			for (IMCMessage imc : FMLInterModComms.fetchRuntimeMessages(ClosedCaptions.instance))
 				messages2D.add(new Caption2D(imc.getStringValue()));
-			long tick = Minecraft.getMinecraft().theWorld.getWorldTime();
+			long tick = Minecraft.getMinecraft().thePlayer.worldObj.getWorldTime();
 			List<Caption> removalQueue = new ArrayList<Caption>();
 			if (this.tick2D != tick) {
 				for (Caption caption : messages2D)
@@ -223,8 +225,10 @@ public class CaptionsContainer {
 	}
 
 	public void render3D(float deltaTime) {
+		if (Minecraft.getMinecraft().thePlayer == null || Minecraft.getMinecraft().thePlayer.worldObj == null)
+			return;
 		synchronized (messages3D) {
-			long tick = Minecraft.getMinecraft().theWorld.getWorldTime();
+			long tick = Minecraft.getMinecraft().thePlayer.worldObj.getWorldTime();
 			List<Caption> removalQueue = new ArrayList<Caption>();
 			if (this.tick3D != tick) {
 				for (Caption caption : messages3D)
