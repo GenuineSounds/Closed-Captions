@@ -3,6 +3,10 @@ ClosedCaptions
 
 [Genuine] Closed Captions is a mod for Minecraft that adds closed captions to Minecraft.
 
+License
+=======
+This computer software code ("the code") is ©2014 GenuineSounds ("the author") all rights reserved, and is licensed for use and redistribution under the “Don’t Be a Jerk” non-commercial care-free license.
+
 Don't Be a Jerk
 ===============
 
