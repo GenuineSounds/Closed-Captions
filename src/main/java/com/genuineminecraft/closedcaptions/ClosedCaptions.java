@@ -78,8 +78,8 @@ public class ClosedCaptions {
 					CaptionsContainer.getInstance().addTranslation(values[0], "");
 			}
 			br.close();
-		} catch (Exception e) {
 		}
+		catch (Exception e) {}
 	}
 
 	public void saveNames() {
@@ -98,7 +98,7 @@ public class ClosedCaptions {
 				bw.newLine();
 			}
 			bw.close();
-		} catch (Exception e) {
 		}
+		catch (Exception e) {}
 	}
 }

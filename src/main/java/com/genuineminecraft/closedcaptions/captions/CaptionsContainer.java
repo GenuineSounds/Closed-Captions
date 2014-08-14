@@ -51,7 +51,7 @@ public class CaptionsContainer {
 			instance = new CaptionsContainer();
 		return instance;
 	}
-	
+
 	public static void createDirectMessage(String message) {
 		synchronized (getInstance().messages2D) {
 			getInstance().messages2D.add(new Caption2D(message));

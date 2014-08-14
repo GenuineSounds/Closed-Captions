@@ -9,7 +9,7 @@ public class Caption implements Comparable<Caption> {
 	protected int lifespan;
 	protected int currentTick;
 	protected int previousTick;
-	
+
 	public Caption(String message) {
 		this.name = message;
 		this.volume = 1;
