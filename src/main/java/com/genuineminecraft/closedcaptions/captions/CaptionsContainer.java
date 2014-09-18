@@ -1,22 +1,6 @@
 package com.genuineminecraft.closedcaptions.captions;
 
-import static org.lwjgl.opengl.GL11.GL_ALPHA_TEST;
-import static org.lwjgl.opengl.GL11.GL_BLEND;
-import static org.lwjgl.opengl.GL11.GL_FLAT;
-import static org.lwjgl.opengl.GL11.GL_LIGHTING;
-import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_SMOOTH;
-import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.glBlendFunc;
-import static org.lwjgl.opengl.GL11.glDisable;
-import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL11.glPopMatrix;
-import static org.lwjgl.opengl.GL11.glPushMatrix;
-import static org.lwjgl.opengl.GL11.glRotatef;
-import static org.lwjgl.opengl.GL11.glScalef;
-import static org.lwjgl.opengl.GL11.glShadeModel;
-import static org.lwjgl.opengl.GL11.glTranslated;
+import static org.lwjgl.opengl.GL11.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -282,53 +266,59 @@ public class CaptionsContainer {
 			int alpha = (int) (((1 - Math.pow(1 - caption.getPercentGuess(deltaTime), 8)) * 0xD0));
 			if (alpha < 28)
 				alpha = 28;
-			glEnable(GL_BLEND);
 			drawTooltip(x, y, w, h, alpha << 24 | (mainColor & 0xFFFFFF), alpha << 24 | (outlineColor & 0xFFFFFF), alpha << 24 | (secondaryColor & 0xFFFFFF));
 			glTranslated(0, 0, 1);
-			glEnable(GL_BLEND);
 			fr.drawStringWithShadow(getTranslation(caption), x, y, alpha << 24 | 0xFFFFFF);
 			glTranslated(0, 0, -1);
 		}
 	}
 
 	private void drawTooltip(int x, int y, int w, int h, int color1, int color2, int color3) {
-		drawGradientRect(x - 3, y - 4, w + 6, 1, color1, color1);
-		drawGradientRect(x - 3, y + h + 3, w + 6, 1, color1, color1);
+		// Main
 		drawGradientRect(x - 3, y - 3, w + 6, h + 6, color1, color1);
-		drawGradientRect(x - 4, y - 3, 1, h + 6, color1, color1);
+		// Top bar
+		drawGradientRect(x - 3, y - 4, w + 6, 1, color1, color1);
+		// Right Bar
 		drawGradientRect(x + w + 3, y - 3, 1, h + 6, color1, color1);
-		drawGradientRect(x - 3, y - 2, 1, h + 4, color2, color3);
-		drawGradientRect(x + w + 2, y - 2, 1, h + 4, color2, color3);
+		// Bottom Bar
+		drawGradientRect(x - 3, y + h + 3, w + 6, 1, color1, color1);
+		// Left Bar
+		drawGradientRect(x - 4, y - 3, 1, h + 6, color1, color1);
+		// Top Line
 		drawGradientRect(x - 3, y - 3, w + 6, 1, color2, color2);
+		// Right Line
+		drawGradientRect(x + w + 2, y - 2, 1, h + 4, color2, color3);
+		// Bottom Line
 		drawGradientRect(x - 3, y + h + 2, w + 6, 1, color3, color3);
+		// Left Line
+		drawGradientRect(x - 3, y - 2, 1, h + 4, color2, color3);
 	}
 
 	private void drawGradientRect(int x, int y, int w, int h, int color1, int color2) {
 		w += x;
 		h += y;
-		float alpha1 = (float) ((color1 >> 24) & 0xff) / 255F;
-		float red1 = (float) ((color1 >> 16) & 0xff) / 255F;
-		float green1 = (float) ((color1 >> 8) & 0xff) / 255F;
-		float blue1 = (float) (color1 & 0xff) / 255F;
-		float alpha2 = (float) ((color2 >> 24) & 0xff) / 255F;
-		float red2 = (float) ((color2 >> 16) & 0xff) / 255F;
-		float green2 = (float) ((color2 >> 8) & 0xff) / 255F;
-		float blue2 = (float) (color2 & 0xff) / 255F;
+		float alpha1 = (float) ((color1 >> 24) & 0xFF) / 255F;
+		float red1 = (float) ((color1 >> 16) & 0xFF) / 255F;
+		float green1 = (float) ((color1 >> 8) & 0xFF) / 255F;
+		float blue1 = (float) ((color1 >> 0) & 0xFF) / 255F;
+		float alpha2 = (float) ((color2 >> 24) & 0xFF) / 255F;
+		float red2 = (float) ((color2 >> 16) & 0xFF) / 255F;
+		float green2 = (float) ((color2 >> 8) & 0xFF) / 255F;
+		float blue2 = (float) ((color2 >> 0) & 0xFF) / 255F;
 		glDisable(GL_TEXTURE_2D);
+		glDisable(GL_ALPHA_TEST);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glDisable(GL_ALPHA_TEST);
 		glShadeModel(GL_SMOOTH);
-		Tessellator tessellator = Tessellator.instance;
-		tessellator.startDrawingQuads();
-		tessellator.setColorRGBA_F(red1, green1, blue1, alpha1);
-		tessellator.addVertex(w, y, 0);
-		tessellator.addVertex(x, y, 0);
-		tessellator.setColorRGBA_F(red2, green2, blue2, alpha2);
-		tessellator.addVertex(x, h, 0);
-		tessellator.addVertex(w, h, 0);
-		tessellator.draw();
-		tessellator.setColorRGBA(255, 255, 255, 255);
+		glBegin(GL_QUADS);
+		glColor4f(red1, green1, blue1, alpha1);
+		glVertex2i(w, y);
+		glVertex2i(x, y);
+		glColor4f(red2, green2, blue2, alpha2);
+		glVertex2i(x, h);
+		glVertex2i(w, h);
+		glColor4f(1, 1, 1, 1);
+		glEnd();
 		glShadeModel(GL_FLAT);
 		glDisable(GL_BLEND);
 		glEnable(GL_ALPHA_TEST);
