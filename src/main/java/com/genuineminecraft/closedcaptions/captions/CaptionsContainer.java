@@ -23,6 +23,7 @@ import net.minecraft.entity.item.EntityXPOrb;
 import com.genuineminecraft.closedcaptions.ClosedCaptions;
 import com.mojang.realmsclient.gui.ChatFormatting;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
 
@@ -59,6 +60,10 @@ public class CaptionsContainer {
 	}
 
 	public void createCaption(String name, float volume, float pitch) {
+		if (Loader.isModLoaded("BattleText")) {
+			if (name.contains("game.player"))
+				return;
+		}
 		initTranslation(name);
 		synchronized (messages2D) {
 			for (Caption2D caption : messages2D) {
