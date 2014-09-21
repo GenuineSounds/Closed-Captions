@@ -24,6 +24,7 @@ import com.genuineminecraft.closedcaptions.ClosedCaptions;
 import com.mojang.realmsclient.gui.ChatFormatting;
 
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
 
@@ -60,7 +61,7 @@ public class CaptionsContainer {
 	}
 
 	public void createCaption(String name, float volume, float pitch) {
-		if (Loader.isModLoaded("BattleText")) {
+		if (Loader.isModLoaded("GenuineBattleText")) {
 			if (name.contains("game.player"))
 				return;
 		}
