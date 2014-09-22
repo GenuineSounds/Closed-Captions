@@ -30,7 +30,7 @@ public class ClosedCaptions {
 
 	@Instance(ClosedCaptions.MODID)
 	public static ClosedCaptions instance;
-	public static final String MODID = "GenuineClosedCaptions";
+	public static final String MODID = "ClosedCaptions";
 	public static final String NAME = "Closed Captions";
 	public static final String VERSION = "1.7.10-r2";
 	private File folder;
