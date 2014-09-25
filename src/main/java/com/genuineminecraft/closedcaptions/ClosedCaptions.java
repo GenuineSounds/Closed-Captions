@@ -1,18 +1,11 @@
 package com.genuineminecraft.closedcaptions;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
@@ -20,9 +13,9 @@ import net.minecraftforge.event.world.WorldEvent;
 import com.genuineminecraft.closedcaptions.captions.CaptionsContainer;
 import com.genuineminecraft.closedcaptions.events.RenderEvents;
 import com.genuineminecraft.closedcaptions.events.SoundEvents;
-import com.genuineminecraft.closedcaptions.translations.TranslationContainer;
-import com.google.common.reflect.*;
-import com.google.gson.*;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;

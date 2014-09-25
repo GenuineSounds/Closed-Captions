@@ -1,10 +1,5 @@
 package com.genuineminecraft.closedcaptions.captions;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.item.EntityXPOrb;
-
 public class Caption implements Comparable<Caption> {
 
 	public static final int DEFAULT_TIMER = 60;
