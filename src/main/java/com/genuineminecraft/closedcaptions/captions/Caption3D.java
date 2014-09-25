@@ -4,7 +4,10 @@ import java.util.Comparator;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityXPOrb;
 
 public class Caption3D extends Caption {
 
@@ -102,10 +105,10 @@ public class Caption3D extends Caption {
 
 	public boolean equalTo(Caption3D caption) {
 		if (this.isEntity() && caption.isEntity())
-			return this.nameEquals(caption.name) && this.entity.equals(caption.entity);
+			return this.nameEquals(caption.key) && this.entity.equals(caption.entity);
 		if (isSound() && caption.isSound())
-			return this.nameEquals(caption.name) && this.sound.equals(caption.sound);
-		return this.nameEquals(caption.name) && this.getDistanceToCaption(caption) <= 0.01;
+			return this.nameEquals(caption.key) && this.sound.equals(caption.sound);
+		return this.nameEquals(caption.key) && this.getDistanceToCaption(caption) <= 0.01;
 	}
 
 	public boolean isWithin(Caption3D caption, double distance) {
@@ -116,11 +119,15 @@ public class Caption3D extends Caption {
 		return this.getDistanceToEntity(entity) <= distance;
 	}
 
+	public boolean is2D() {
+		return ((entity instanceof EntityItem || entity instanceof EntityXPOrb) || sound instanceof PositionedSoundRecord) && isWithin(Minecraft.getMinecraft().thePlayer, 8);
+	}
+
 	@Override
 	public int compareTo(Caption o) {
 		if (o instanceof Caption3D)
 			return (int) (getDistanceToCaption((Caption3D) o) * 10000f);
-		return name.compareTo(o.name);
+		return key.compareTo(o.key);
 	}
 
 	@Override

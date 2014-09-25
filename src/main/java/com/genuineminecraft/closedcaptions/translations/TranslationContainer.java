@@ -1,0 +1,63 @@
+package com.genuineminecraft.closedcaptions.translations;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
+import net.minecraft.client.resources.I18n;
+
+import com.genuineminecraft.closedcaptions.captions.Caption;
+import com.mojang.realmsclient.gui.ChatFormatting;
+
+public class TranslationContainer {
+
+	public static String formatTranslation(String translation) {
+		String out = translation;
+		out = out.replace("(", ChatFormatting.BOLD.toString());
+		out = out.replace("[", ChatFormatting.ITALIC.toString());
+		out = out.replace("{", ChatFormatting.STRIKETHROUGH.toString());
+		out = out.replace("<", ChatFormatting.OBFUSCATED.toString());
+		out = out.replace(")", ChatFormatting.RESET.toString());
+		out = out.replace("]", ChatFormatting.RESET.toString());
+		out = out.replace("}", ChatFormatting.RESET.toString());
+		out = out.replace(">", ChatFormatting.RESET.toString());
+		return out;
+	}
+
+	public Map<String, ArrayList<String>> translations;
+
+	public TranslationContainer() {
+		translations = Collections.synchronizedMap(new HashMap<String, ArrayList<String>>());
+	}
+
+	public void addTranslation(String key, String translation) {
+		initTranslation(key);
+		translations.get(key).add(translation);
+	}
+
+	public boolean hasTranslation(Caption caption) {
+		initTranslation(caption.key);
+		return !translations.get(caption.key).isEmpty();
+	}
+
+	public void assignTranslation(Caption caption) {
+		initTranslation(caption.key);
+		List<String> trans = translations.get(caption.key);
+		if (!(caption.disabled = trans.isEmpty()))
+			caption.message = formatTranslation(trans.get(new Random().nextInt(trans.size())));
+	}
+
+	private void initTranslation(String key) {
+		synchronized (translations) {
+			if (!translations.containsKey(key)) {
+				translations.put(key, new ArrayList<String>());
+				String first = I18n.format(key);
+				if (!first.equals(key) && !first.isEmpty())
+					translations.get(key).add(first);
+			}
+		}
+	}
+}

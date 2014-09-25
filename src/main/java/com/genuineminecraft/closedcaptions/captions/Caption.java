@@ -1,38 +1,51 @@
 package com.genuineminecraft.closedcaptions.captions;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityXPOrb;
+
 public class Caption implements Comparable<Caption> {
 
 	public static final int DEFAULT_TIMER = 60;
-	public final String name;
+	public static final String DIRECT_MESSAGE = "direct-message";
+	public final String key;
 	public final float volume;
 	public final float pitch;
+	public String message;
+	public boolean disabled = false;
 	protected int lifespan;
 	protected int currentTick;
 	protected int previousTick;
 
 	public Caption(String message) {
-		this.name = message;
+		this.key = Caption.DIRECT_MESSAGE;
+		this.message = message;
 		this.volume = 1;
 		this.pitch = 1;
 		this.lifespan = this.currentTick = this.previousTick = Caption.DEFAULT_TIMER;
 	}
 
-	public Caption(String name, float volume, float pitch) {
-		this.name = name;
+	public Caption(String key, float volume, float pitch) {
+		this.key = key;
 		this.volume = volume;
 		this.pitch = pitch;
 		this.lifespan = this.currentTick = this.previousTick = Caption.DEFAULT_TIMER;
 	}
 
-	public Caption(String name, float volume, float pitch, int ticksToRun) {
-		this(name, volume, pitch);
+	public Caption(String key, float volume, float pitch, int ticksToRun) {
+		this(key, volume, pitch);
 		this.lifespan = ticksToRun;
 		this.currentTick = ticksToRun;
 		this.previousTick = ticksToRun;
 	}
 
-	public String getName() {
-		return this.name;
+	public String getKey() {
+		return this.key;
+	}
+
+	public String getMessage() {
+		return this.message;
 	}
 
 	public float getPercent() {
@@ -55,8 +68,12 @@ public class Caption implements Comparable<Caption> {
 		return this.getPreviousPercent() + ((this.getPercent() - this.getPreviousPercent()) * partialTick);
 	}
 
-	public boolean nameEquals(String name) {
-		return this.name.equalsIgnoreCase(name);
+	public boolean isDisabled() {
+		return this.disabled;
+	}
+
+	public boolean nameEquals(String key) {
+		return this.key.equalsIgnoreCase(key);
 	}
 
 	public void resetTime() {
@@ -69,6 +86,6 @@ public class Caption implements Comparable<Caption> {
 
 	@Override
 	public int compareTo(Caption o) {
-		return name.compareTo(o.name);
+		return key.compareTo(o.key);
 	}
 }

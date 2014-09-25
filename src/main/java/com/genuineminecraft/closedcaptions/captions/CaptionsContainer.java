@@ -41,6 +41,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 
 import com.genuineminecraft.closedcaptions.ClosedCaptions;
+import com.genuineminecraft.closedcaptions.translations.TranslationContainer;
 import com.mojang.realmsclient.gui.ChatFormatting;
 
 import cpw.mods.fml.common.Loader;
@@ -63,10 +64,9 @@ public class CaptionsContainer {
 		}
 	}
 
-	private Map<String, String> translations = Collections.synchronizedMap(new HashMap<String, String>());
 	private List<Caption2D> messages2D = Collections.synchronizedList(new ArrayList<Caption2D>());
 	private List<Caption3D> messages3D = Collections.synchronizedList(new ArrayList<Caption3D>());
-	private List<String> filters = new ArrayList<String>();
+	public TranslationContainer translationSystem = new TranslationContainer();
 	private long tick2D = 0L;
 	private long tick3D = 0L;
 	private boolean enabled2D;
@@ -84,7 +84,6 @@ public class CaptionsContainer {
 			if (name.contains("game.player"))
 				return;
 		}
-		initTranslation(name);
 		synchronized (messages2D) {
 			for (Caption2D caption : messages2D) {
 				if (caption.nameEquals(name)) {
@@ -92,61 +91,54 @@ public class CaptionsContainer {
 					return;
 				}
 			}
-			messages2D.add(new Caption2D(name, volume, pitch));
+			Caption2D caption = new Caption2D(name, volume, pitch);
+			translationSystem.assignTranslation(caption);
+			if (!caption.isDisabled())
+				messages2D.add(caption);
 		}
 	}
 
 	public void createCaption(String name, Entity entity, float volume, float pitch) {
-		initTranslation(name);
 		if (entity == null || entity.equals(Minecraft.getMinecraft().thePlayer)) {
 			createCaption(name, volume, pitch);
 			return;
 		}
-		process(new Caption3D(name, entity, volume, pitch));
+		Caption3D caption = new Caption3D(name, entity, volume, pitch);
+		translationSystem.assignTranslation(caption);
+		process(caption);
 	}
 
 	public void createCaption(String name, ISound sound) {
-		initTranslation(name);
 		if (sound.getXPosF() == 0 && sound.getYPosF() == 0 && sound.getZPosF() == 0) {
 			createCaption(name, sound.getVolume(), sound.getPitch());
 			return;
 		}
-		process(new Caption3D(name, sound, sound.getVolume(), sound.getPitch()));
+		Caption3D caption = new Caption3D(name, sound, sound.getVolume(), sound.getPitch());
+		translationSystem.assignTranslation(caption);
+		process(caption);
 	}
 
 	private void process(Caption3D caption) {
-		if (((caption.entity instanceof EntityItem || caption.entity instanceof EntityXPOrb) || caption.sound instanceof PositionedSoundRecord) && caption.isWithin(Minecraft.getMinecraft().thePlayer, 8)) {
-			createCaption(caption.name, caption.volume, caption.pitch);
+		if (caption.is2D()) {
+			createCaption(caption.key, caption.volume, caption.pitch);
 			return;
 		}
 		List<Caption> removal = new ArrayList<Caption>();
 		synchronized (messages3D) {
 			for (Caption3D cap : messages3D) {
-				if (hasTranslation(caption)) {
-					if (caption.isEntity()) {
-						if (cap.isEntity() && caption.entity.equals(cap.entity))
-							removal.add(cap);
-					} else if (caption.isSound()) {
-						if (caption.isWithin(cap, 0.1))
-							removal.add(cap);
-					} else if (caption.isWithin(cap, 0.1))
+				if (caption.isEntity()) {
+					if (cap.isEntity() && caption.entity.equals(cap.entity))
 						removal.add(cap);
-				}
+				} else if (caption.isSound()) {
+					if (caption.isWithin(cap, 0.1))
+						removal.add(cap);
+				} else if (caption.isWithin(cap, 0.1))
+					removal.add(cap);
 			}
 			messages3D.removeAll(removal);
-			messages3D.add(caption);
+			if (!caption.isDisabled())
+				messages3D.add(caption);
 			Collections.sort(messages3D, Caption3D.DISTANCE);
-		}
-	}
-
-	private void initTranslation(String name) {
-		synchronized (translations) {
-			if (!translations.containsKey(name) || translations.get(name).isEmpty()) {
-				if (name.equals(I18n.format(name, new Object[0])))
-					translations.put(name, "");
-				else
-					translations.put(name, I18n.format(name, new Object[0]));
-			}
 		}
 	}
 
@@ -165,17 +157,16 @@ public class CaptionsContainer {
 				this.tick2D = tick;
 			}
 			messages2D.removeAll(removalQueue);
-			removalQueue.clear();
-			glDisable(GL_LIGHTING);
-			glEnable(GL_ALPHA_TEST);
-			glEnable(GL_BLEND);
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			glPushMatrix();
-			glTranslated(resolution.getScaledWidth(), resolution.getScaledHeight() - 32, 100);
-			drawCaptions2D(resolution, deltaTime);
-			glTranslated(-(resolution.getScaledWidth()), -resolution.getScaledHeight() - 32, -100);
-			glPopMatrix();
 		}
+		glDisable(GL_LIGHTING);
+		glEnable(GL_ALPHA_TEST);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glPushMatrix();
+		glTranslated(resolution.getScaledWidth(), resolution.getScaledHeight() - 32, 100);
+		drawCaptions2D(resolution, deltaTime);
+		glTranslated(-(resolution.getScaledWidth()), -resolution.getScaledHeight() - 32, -100);
+		glPopMatrix();
 	}
 
 	private void drawCaptions2D(ScaledResolution resolution, float deltaTime) {
@@ -188,18 +179,20 @@ public class CaptionsContainer {
 		int w = 0;
 		int size = 0;
 		double mostPercent = 0;
-		for (Caption2D caption : messages2D) {
-			if (!hasTranslation(caption))
-				continue;
-			int swidth = fr.getStringWidth(getTranslation(caption)) + 2;
-			if (swidth < template)
-				swidth = (int) template;
-			if (w < swidth)
-				w = swidth;
-			size++;
-			double percent = caption.getPercentGuess(deltaTime);
-			if (mostPercent < percent)
-				mostPercent = percent;
+		synchronized (messages2D) {
+			for (Caption2D caption : messages2D) {
+				if (!translationSystem.hasTranslation(caption))
+					continue;
+				int swidth = fr.getStringWidth(caption.message) + 2;
+				if (swidth < template)
+					swidth = (int) template;
+				if (w < swidth)
+					w = swidth;
+				size++;
+				double percent = caption.getPercentGuess(deltaTime);
+				if (mostPercent < percent)
+					mostPercent = percent;
+			}
 		}
 		if (size < 1) {
 			size = 1;
@@ -215,18 +208,20 @@ public class CaptionsContainer {
 			glTranslated(-moveInTips, 0, 0);
 		glTranslated(0, 0, 1);
 		glEnable(GL_BLEND);
-		for (Caption2D caption : messages2D) {
-			if (!hasTranslation(caption))
-				continue;
-			double action = Math.pow(1 - caption.getPercentGuess(deltaTime), 8);
-			int alpha = (int) ((1 - action) * 0xFF);
-			if (alpha < 28)
-				alpha = 28;
-			double fadeMove = action * w;
-			glTranslated(fadeMove, 0, 0);
-			fr.drawStringWithShadow(getTranslation(caption), x + 1, y, alpha << 24 | 0xFFFFFF);
-			glTranslated(-fadeMove, 0, 0);
-			y += 10;
+		synchronized (messages2D) {
+			for (Caption2D caption : messages2D) {
+				if (!translationSystem.hasTranslation(caption))
+					continue;
+				double action = Math.pow(1 - caption.getPercentGuess(deltaTime), 8);
+				int alpha = (int) ((1 - action) * 0xFF);
+				if (alpha < 28)
+					alpha = 28;
+				double fadeMove = action * w;
+				glTranslated(fadeMove, 0, 0);
+				fr.drawStringWithShadow(caption.message, x + 1, y, alpha << 24 | 0xFFFFFF);
+				glTranslated(-fadeMove, 0, 0);
+				y += 10;
+			}
 		}
 		glTranslated(0, 0, -1);
 	}
@@ -244,13 +239,14 @@ public class CaptionsContainer {
 				this.tick3D = tick;
 			}
 			messages3D.removeAll(removalQueue);
-			removalQueue.clear();
-			glPushMatrix();
-			glDisable(GL_LIGHTING);
-			glEnable(GL_BLEND);
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		}
+		glPushMatrix();
+		glDisable(GL_LIGHTING);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		synchronized (messages3D) {
 			for (Caption3D caption : messages3D) {
-				if (!hasTranslation(caption))
+				if (!translationSystem.hasTranslation(caption))
 					continue;
 				int distance = (int) (16 * caption.getScale());
 				if (distance < 16)
@@ -275,16 +271,16 @@ public class CaptionsContainer {
 				glRotatef(RenderManager.instance.playerViewY - 180, 0.0F, 1.0F, 0.0F);
 				glTranslated(x, y, z);
 			}
-			glDisable(GL_BLEND);
-			glEnable(GL_LIGHTING);
-			glPopMatrix();
 		}
+		glDisable(GL_BLEND);
+		glEnable(GL_LIGHTING);
+		glPopMatrix();
 	}
 
 	private void drawCaptions3D(Caption caption, float deltaTime) {
 		FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 		if (messages3D.size() > 0) {
-			int w = fr.getStringWidth(getTranslation(caption));
+			int w = fr.getStringWidth(caption.message);
 			int h = 8;
 			int x = -w / 2;
 			int y = -h;
@@ -293,7 +289,7 @@ public class CaptionsContainer {
 				alpha = 28;
 			drawTooltip(x, y, w, h, alpha << 24 | (mainColor & 0xFFFFFF), alpha << 24 | (outlineColor & 0xFFFFFF), alpha << 24 | (secondaryColor & 0xFFFFFF));
 			glTranslated(0, 0, 1);
-			fr.drawStringWithShadow(getTranslation(caption), x, y, alpha << 24 | 0xFFFFFF);
+			fr.drawStringWithShadow(caption.message, x, y, alpha << 24 | 0xFFFFFF);
 			glTranslated(0, 0, -1);
 		}
 	}
@@ -348,57 +344,5 @@ public class CaptionsContainer {
 		glDisable(GL_BLEND);
 		glEnable(GL_ALPHA_TEST);
 		glEnable(GL_TEXTURE_2D);
-	}
-
-	public String getTranslation(Caption caption) {
-		return getTranslation(caption.name);
-	}
-
-	public String getTranslation(Caption2D caption) {
-		if (caption.directMessage)
-			return caption.name;
-		return getTranslation(caption.name);
-	}
-
-	public String getTranslation(String name) {
-		initTranslation(name);
-		if (translations.get(name).isEmpty())
-			return name;
-		String out = translations.get(name);
-		out = out.replace("(", ChatFormatting.BOLD.toString());
-		out = out.replace("[", ChatFormatting.ITALIC.toString());
-		out = out.replace("{", ChatFormatting.STRIKETHROUGH.toString());
-		out = out.replace("<", ChatFormatting.OBFUSCATED.toString());
-		out = out.replace(")", ChatFormatting.RESET.toString());
-		out = out.replace("]", ChatFormatting.RESET.toString());
-		out = out.replace("}", ChatFormatting.RESET.toString());
-		out = out.replace(">", ChatFormatting.RESET.toString());
-		return out;
-	}
-
-	public void addTranslation(String name, String translation) {
-		translations.put(name, translation);
-	}
-
-	public boolean hasTranslation(Caption caption) {
-		return hasTranslation(caption.name);
-	}
-
-	public boolean hasTranslation(Caption2D caption) {
-		if (caption.directMessage)
-			return true;
-		return hasTranslation(caption.name);
-	}
-
-	public boolean hasTranslation(String name) {
-		return translations.containsKey(name) && !translations.get(name).isEmpty() && !translations.get(name).equals(name);
-	}
-
-	public void addFilter(String sound) {
-		filters.add(sound);
-	}
-
-	public Map<String, String> getTranslationMap() {
-		return translations;
 	}
 }

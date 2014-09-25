@@ -5,9 +5,13 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import net.minecraftforge.common.MinecraftForge;
@@ -16,6 +20,9 @@ import net.minecraftforge.event.world.WorldEvent;
 import com.genuineminecraft.closedcaptions.captions.CaptionsContainer;
 import com.genuineminecraft.closedcaptions.events.RenderEvents;
 import com.genuineminecraft.closedcaptions.events.SoundEvents;
+import com.genuineminecraft.closedcaptions.translations.TranslationContainer;
+import com.google.common.reflect.*;
+import com.google.gson.*;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -33,13 +40,15 @@ public class ClosedCaptions {
 	public static final String MODID = "ClosedCaptions";
 	public static final String NAME = "Closed Captions";
 	public static final String VERSION = "1.7.10-r2";
+	public static final Type TYPE = new TypeToken<Map<String, ArrayList<String>>>() {}.getType();
 	private File folder;
 
 	@EventHandler
 	public void preload(FMLPreInitializationEvent event) {
 		folder = new File(event.getModConfigurationDirectory(), "ClosedCaptions");
 		folder.mkdirs();
-		loadNames();
+		loadTranslations();
+		saveTranslations();
 	}
 
 	@EventHandler
@@ -56,47 +65,45 @@ public class ClosedCaptions {
 
 	@SubscribeEvent
 	public void saveLoad(WorldEvent.Save event) {
-		loadNames();
-		saveNames();
-		loadNames();
+		// loadTranslations();
+		saveTranslations();
 	}
 
-	public void loadNames() {
+	public void loadTranslations() {
+		File file = new File(folder, "captions.json");
+		if (!file.exists())
+			return;
+		Gson gson = new GsonBuilder().create();
+		FileReader fr = null;
 		try {
-			File file = new File(folder, "captions.cfg");
-			if (!file.exists())
-				file.createNewFile();
-			BufferedReader br = new BufferedReader(new FileReader(file));
-			String line;
-			while ((line = br.readLine()) != null) {
-				if (line.isEmpty() || line.startsWith("#"))
-					continue;
-				String[] values = line.split("=");
-				if (values.length > 1)
-					CaptionsContainer.getInstance().addTranslation(values[0], values[1]);
-				else if (values.length > 0)
-					CaptionsContainer.getInstance().addTranslation(values[0], "");
-			}
-			br.close();
-		} catch (Exception e) {}
+			fr = new FileReader(file);
+			Map<String, ArrayList<String>> tc = gson.fromJson(fr, TYPE);
+			if (tc != null)
+				CaptionsContainer.getInstance().translationSystem.translations = tc;
+		} catch (Exception e) {} finally {
+			try {
+				if (fr != null)
+					fr.close();
+			} catch (Exception e) {}
+		}
 	}
 
-	public void saveNames() {
+	public void saveTranslations() {
+		File file = new File(folder, "captions.json");
+		GsonBuilder builder = new GsonBuilder();
+		builder.setPrettyPrinting();
+		Gson gson = builder.create();
+		FileWriter rw = null;
 		try {
-			File file = new File(folder, "captions.cfg");
 			if (!file.exists())
 				file.createNewFile();
-			BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-			List<String> newList = new ArrayList<String>();
-			for (Entry<String, String> entry : CaptionsContainer.getInstance().getTranslationMap().entrySet()) {
-				newList.add(entry.getKey() + "=" + entry.getValue());
-			}
-			Collections.sort(newList);
-			for (String line : newList) {
-				bw.append(line);
-				bw.newLine();
-			}
-			bw.close();
-		} catch (Exception e) {}
+			rw = new FileWriter(file);
+			gson.toJson(CaptionsContainer.getInstance().translationSystem.translations, TYPE, rw);
+		} catch (Exception e) {} finally {
+			try {
+				if (rw != null)
+					rw.close();
+			} catch (Exception e) {}
+		}
 	}
 }
