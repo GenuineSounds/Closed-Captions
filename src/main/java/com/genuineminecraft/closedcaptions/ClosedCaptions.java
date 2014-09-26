@@ -1,8 +1,10 @@
 package com.genuineminecraft.closedcaptions;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Map;
@@ -11,6 +13,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
 
 import com.genuineminecraft.closedcaptions.system.ClosedCaptionSystem;
+import com.google.common.base.Charsets;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -57,6 +60,7 @@ public class ClosedCaptions {
 	public void saveLoad(WorldEvent.Save event) {
 		// loadTranslations();
 		saveTranslations();
+		//		System.out.println("\u266a ♪");
 	}
 
 	public void loadTranslations() {
@@ -83,16 +87,16 @@ public class ClosedCaptions {
 		GsonBuilder builder = new GsonBuilder();
 		builder.setPrettyPrinting();
 		Gson gson = builder.create();
-		FileWriter rw = null;
+		Writer wr = null;
 		try {
 			if (!file.exists())
 				file.createNewFile();
-			rw = new FileWriter(file);
-			gson.toJson(ClosedCaptionSystem.getInstance().translationSystem.translations, TYPE, rw);
+			wr = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
+			gson.toJson(ClosedCaptionSystem.getInstance().translationSystem.translations, TYPE, wr);
 		} catch (Exception e) {} finally {
 			try {
-				if (rw != null)
-					rw.close();
+				if (wr != null)
+					wr.close();
 			} catch (Exception e) {}
 		}
 	}

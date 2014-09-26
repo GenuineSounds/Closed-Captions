@@ -23,6 +23,7 @@ public class Translations {
 		out = out.replace("]", ChatFormatting.RESET.toString());
 		out = out.replace("}", ChatFormatting.RESET.toString());
 		out = out.replace(">", ChatFormatting.RESET.toString());
+		out = out.replace("~", "\u266a");
 		return out;
 	}
 
