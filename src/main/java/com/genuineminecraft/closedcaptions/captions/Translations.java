@@ -1,4 +1,4 @@
-package com.genuineminecraft.closedcaptions.translations;
+package com.genuineminecraft.closedcaptions.captions;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,10 +9,9 @@ import java.util.Random;
 
 import net.minecraft.client.resources.I18n;
 
-import com.genuineminecraft.closedcaptions.captions.Caption;
 import com.mojang.realmsclient.gui.ChatFormatting;
 
-public class TranslationContainer {
+public class Translations {
 
 	public static String formatTranslation(String translation) {
 		String out = translation;
@@ -29,13 +28,8 @@ public class TranslationContainer {
 
 	public Map<String, ArrayList<String>> translations;
 
-	public TranslationContainer() {
+	public Translations() {
 		translations = Collections.synchronizedMap(new HashMap<String, ArrayList<String>>());
-	}
-
-	public void addTranslation(String key, String translation) {
-		initTranslation(key);
-		translations.get(key).add(translation);
 	}
 
 	public boolean hasTranslation(Caption caption) {
