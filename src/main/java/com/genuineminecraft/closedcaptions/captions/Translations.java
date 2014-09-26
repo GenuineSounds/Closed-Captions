@@ -35,6 +35,8 @@ public class Translations {
 
 	public boolean hasTranslation(Caption caption) {
 		initTranslation(caption.key);
+		if (caption.directMessage)
+			return true;
 		return !translations.get(caption.key).isEmpty();
 	}
 

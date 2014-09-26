@@ -7,14 +7,16 @@ public class Caption implements Comparable<Caption> {
 	public final String key;
 	public final float volume;
 	public final float pitch;
-	public String message;
+	public final boolean directMessage;
 	public boolean disabled = false;
+	public String message;
 	protected int lifespan;
 	protected int currentTick;
 	protected int previousTick;
 
 	public Caption(String message) {
 		this.key = Caption.DIRECT_MESSAGE;
+		this.directMessage = true;
 		this.message = message;
 		this.volume = 1;
 		this.pitch = 1;
@@ -23,6 +25,7 @@ public class Caption implements Comparable<Caption> {
 
 	public Caption(String key, float volume, float pitch) {
 		this.key = key;
+		this.directMessage = false;
 		this.volume = volume;
 		this.pitch = pitch;
 		this.lifespan = this.currentTick = this.previousTick = Caption.DEFAULT_TIMER;
@@ -35,10 +38,6 @@ public class Caption implements Comparable<Caption> {
 		this.previousTick = ticksToRun;
 	}
 
-	public String getKey() {
-		return this.key;
-	}
-
 	public String getMessage() {
 		return this.message;
 	}
@@ -47,16 +46,8 @@ public class Caption implements Comparable<Caption> {
 		return (float) this.currentTick / (float) this.lifespan;
 	}
 
-	public float getPitch() {
-		return this.pitch;
-	}
-
 	public float getPreviousPercent() {
 		return (float) this.previousTick / (float) this.lifespan;
-	}
-
-	public float getVolume() {
-		return this.volume;
 	}
 
 	public float getPercentGuess(float partialTick) {
