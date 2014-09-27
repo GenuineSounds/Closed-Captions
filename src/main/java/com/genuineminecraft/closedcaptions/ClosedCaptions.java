@@ -58,9 +58,7 @@ public class ClosedCaptions {
 
 	@SubscribeEvent
 	public void saveLoad(WorldEvent.Save event) {
-		// loadTranslations();
 		saveTranslations();
-		//		System.out.println("\u266a ♪");
 	}
 
 	public void loadTranslations() {

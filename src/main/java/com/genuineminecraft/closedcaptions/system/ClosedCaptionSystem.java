@@ -99,7 +99,7 @@ public class ClosedCaptionSystem {
 
 	@SubscribeEvent
 	public void eventEntity(PlaySoundAtEntityEvent event) {
-		if (event == null || event.entity == null || event.name == null || event.name.isEmpty() || event.name.equals("none"))
+		if (event == null || event.entity == null || event.name == null || event.name.isEmpty() || event.name.equalsIgnoreCase("none") || event.name.equalsIgnoreCase("minecraft:none"))
 			return;
 		if (Minecraft.getMinecraft().thePlayer == null)
 			return;
