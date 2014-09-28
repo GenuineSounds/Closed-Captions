@@ -370,14 +370,14 @@ public class ClosedCaptionSystem {
 	private void drawGradientRect(int x, int y, int w, int h, int color1, int color2) {
 		w += x;
 		h += y;
-		float alpha1 = (float) ((color1 >> 24) & 0xFF) / 255F;
-		float red1 = (float) ((color1 >> 16) & 0xFF) / 255F;
-		float green1 = (float) ((color1 >> 8) & 0xFF) / 255F;
-		float blue1 = (float) ((color1 >> 0) & 0xFF) / 255F;
-		float alpha2 = (float) ((color2 >> 24) & 0xFF) / 255F;
-		float red2 = (float) ((color2 >> 16) & 0xFF) / 255F;
-		float green2 = (float) ((color2 >> 8) & 0xFF) / 255F;
-		float blue2 = (float) ((color2 >> 0) & 0xFF) / 255F;
+		float alpha1 = ((color1 >> 24) & 0xFF) / 255F;
+		float red1 = ((color1 >> 16) & 0xFF) / 255F;
+		float green1 = ((color1 >> 8) & 0xFF) / 255F;
+		float blue1 = ((color1 >> 0) & 0xFF) / 255F;
+		float alpha2 = ((color2 >> 24) & 0xFF) / 255F;
+		float red2 = ((color2 >> 16) & 0xFF) / 255F;
+		float green2 = ((color2 >> 8) & 0xFF) / 255F;
+		float blue2 = ((color2 >> 0) & 0xFF) / 255F;
 		glDisable(GL_TEXTURE_2D);
 		glDisable(GL_ALPHA_TEST);
 		glEnable(GL_BLEND);
