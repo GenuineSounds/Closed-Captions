@@ -30,30 +30,30 @@ public class Translations {
 	public Map<String, ArrayList<String>> translations;
 
 	public Translations() {
-		translations = Collections.synchronizedMap(new HashMap<String, ArrayList<String>>());
-	}
-
-	public boolean hasTranslation(Caption caption) {
-		initTranslation(caption.key);
-		if (caption.directMessage)
-			return true;
-		return !translations.get(caption.key).isEmpty();
+		this.translations = Collections.synchronizedMap(new HashMap<String, ArrayList<String>>());
 	}
 
 	public void assignTranslation(Caption caption) {
-		initTranslation(caption.key);
-		List<String> trans = translations.get(caption.key);
+		this.initTranslation(caption.key);
+		List<String> trans = this.translations.get(caption.key);
 		if (!(caption.disabled = trans.isEmpty()))
 			caption.message = formatTranslation(trans.get(new Random().nextInt(trans.size())));
 	}
 
+	public boolean hasTranslation(Caption caption) {
+		this.initTranslation(caption.key);
+		if (caption.directMessage)
+			return true;
+		return !this.translations.get(caption.key).isEmpty();
+	}
+
 	private void initTranslation(String key) {
-		synchronized (translations) {
-			if (!translations.containsKey(key)) {
-				translations.put(key, new ArrayList<String>());
+		synchronized (this.translations) {
+			if (!this.translations.containsKey(key)) {
+				this.translations.put(key, new ArrayList<String>());
 				String first = I18n.format(key);
 				if (!first.equals(key) && !first.isEmpty())
-					translations.get(key).add(first);
+					this.translations.get(key).add(first);
 			}
 		}
 	}

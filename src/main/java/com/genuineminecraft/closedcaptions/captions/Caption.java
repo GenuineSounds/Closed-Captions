@@ -38,6 +38,11 @@ public class Caption implements Comparable<Caption> {
 		this.previousTick = ticksToRun;
 	}
 
+	@Override
+	public int compareTo(Caption o) {
+		return this.key.compareTo(o.key);
+	}
+
 	public String getMessage() {
 		return this.message;
 	}
@@ -46,12 +51,12 @@ public class Caption implements Comparable<Caption> {
 		return (float) this.currentTick / (float) this.lifespan;
 	}
 
-	public float getPreviousPercent() {
-		return (float) this.previousTick / (float) this.lifespan;
-	}
-
 	public float getPercentGuess(float partialTick) {
 		return this.getPreviousPercent() + ((this.getPercent() - this.getPreviousPercent()) * partialTick);
+	}
+
+	public float getPreviousPercent() {
+		return (float) this.previousTick / (float) this.lifespan;
 	}
 
 	public boolean isDisabled() {
@@ -68,10 +73,5 @@ public class Caption implements Comparable<Caption> {
 
 	public boolean tick() {
 		return (this.previousTick = this.currentTick--) > 0;
-	}
-
-	@Override
-	public int compareTo(Caption o) {
-		return key.compareTo(o.key);
 	}
 }
