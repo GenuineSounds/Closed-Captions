@@ -59,11 +59,14 @@ public class ClosedCaptions {
 			Map<String, ArrayList<String>> tc = gson.fromJson(fr, TYPE);
 			if (tc != null)
 				ClosedCaptionSystem.getInstance().translationSystem.translations = tc;
-		} catch (Exception e) {} finally {
+		}
+		catch (Exception e) {}
+		finally {
 			try {
 				if (fr != null)
 					fr.close();
-			} catch (Exception e) {}
+			}
+			catch (Exception e) {}
 		}
 	}
 
@@ -91,11 +94,14 @@ public class ClosedCaptions {
 				file.createNewFile();
 			wr = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
 			gson.toJson(ClosedCaptionSystem.getInstance().translationSystem.translations, TYPE, wr);
-		} catch (Exception e) {} finally {
+		}
+		catch (Exception e) {}
+		finally {
 			try {
 				if (wr != null)
 					wr.close();
-			} catch (Exception e) {}
+			}
+			catch (Exception e) {}
 		}
 	}
 }
