@@ -17,7 +17,7 @@ import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glPopMatrix;
 import static org.lwjgl.opengl.GL11.glPushMatrix;
-import static org.lwjgl.opengl.GL11.glRotatef;
+import static org.lwjgl.opengl.GL11.glRotated;
 import static org.lwjgl.opengl.GL11.glScalef;
 import static org.lwjgl.opengl.GL11.glShadeModel;
 import static org.lwjgl.opengl.GL11.glTranslated;
@@ -376,14 +376,14 @@ public class ClosedCaptionSystem {
 					y -= 1;
 				double z = RenderManager.instance.viewerPosZ - (caption.prevPosZ + ((caption.posZ - caption.prevPosZ) * deltaTime));
 				glTranslated(-x, -y, -z);
-				glRotatef(-RenderManager.instance.playerViewY + 180, 0.0F, 1.0F, 0.0F);
-				glRotatef(-RenderManager.instance.playerViewX, 1.0F, 0.0F, 0.0F);
+				glRotated(RenderManager.instance.playerViewY + 180, 0, -0.5, 0);
+				glRotated(RenderManager.instance.playerViewX, -1, 0, 0);
 				float scale = 0.02F * caption.getScale();
 				glScalef(scale, -scale, scale);
 				this.drawCaptions3D(caption, deltaTime);
 				glScalef(1F / scale, -(1F / scale), 1F / scale);
-				glRotatef(RenderManager.instance.playerViewX, 1.0F, 0.0F, 0.0F);
-				glRotatef(RenderManager.instance.playerViewY - 180, 0.0F, 1.0F, 0.0F);
+				glRotated(RenderManager.instance.playerViewX, 1, 0, 0);
+				glRotated(RenderManager.instance.playerViewY - 180, 0, 1, 0);
 				glTranslated(x, y, z);
 			}
 		}

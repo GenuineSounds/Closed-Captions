@@ -107,7 +107,7 @@ public class Caption3D extends Caption {
 				out = 1;
 			return out;
 		}
-		return 1.0f;
+		return 1;
 	}
 
 	public boolean is2D() {
