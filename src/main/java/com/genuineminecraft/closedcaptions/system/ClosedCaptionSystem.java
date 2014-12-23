@@ -2,6 +2,7 @@ package com.genuineminecraft.closedcaptions.system;
 
 import static org.lwjgl.opengl.GL11.GL_ALPHA_TEST;
 import static org.lwjgl.opengl.GL11.GL_BLEND;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.GL_FLAT;
 import static org.lwjgl.opengl.GL11.GL_LIGHTING;
 import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
@@ -70,6 +71,7 @@ public class ClosedCaptionSystem {
 
 	private static ClosedCaptionSystem instance;
 	public static final String BT_MOD_NAME = "BattleText";
+	private static FontRenderer fr;
 	private List<Caption2D> messages2D = Collections.synchronizedList(new ArrayList<Caption2D>());
 	private List<Caption3D> messages3D = Collections.synchronizedList(new ArrayList<Caption3D>());
 	public Translations translationSystem = new Translations();
@@ -86,6 +88,8 @@ public class ClosedCaptionSystem {
 	}
 
 	public void createCaption(String name, Entity entity, float volume, float pitch) {
+		if (fr == null)
+			fr = Minecraft.getMinecraft().fontRenderer;
 		if (entity == null || entity.equals(Minecraft.getMinecraft().thePlayer)) {
 			this.createCaption(name, volume, pitch);
 			return;
@@ -96,6 +100,8 @@ public class ClosedCaptionSystem {
 	}
 
 	public void createCaption(String name, float volume, float pitch) {
+		if (fr == null)
+			fr = Minecraft.getMinecraft().fontRenderer;
 		if (btIsLoaded()) {
 			if (name.contains("game.player"))
 				return;
@@ -115,6 +121,8 @@ public class ClosedCaptionSystem {
 	}
 
 	public void createCaption(String name, ISound sound) {
+		if (fr == null)
+			fr = Minecraft.getMinecraft().fontRenderer;
 		if (sound.getXPosF() == 0 && sound.getYPosF() == 0 && sound.getZPosF() == 0) {
 			this.createCaption(name, sound.getVolume(), sound.getPitch());
 			return;
@@ -130,7 +138,6 @@ public class ClosedCaptionSystem {
 		double template = Math.ceil(resolution.getScaledWidth_double() / 2) - 98;
 		if (template > 180)
 			template = 180;
-		FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 		int w = 0;
 		int size = 0;
 		double mostPercent = 0;
@@ -148,22 +155,19 @@ public class ClosedCaptionSystem {
 				if (mostPercent < percent)
 					mostPercent = percent;
 			}
-		}
-		if (size < 1) {
-			size = 1;
-		}
-		int h = size * 10 - 2;
-		int x = -w;
-		int y = -h;
-		double moveInTips = Math.pow(1 - mostPercent * 4, 4) * w;
-		if (mostPercent < 0.25)
-			glTranslated(moveInTips, 0, 0);
-		this.drawTooltip(x, y, w, h, this.mainColor, this.outlineColor, this.secondaryColor);
-		if (mostPercent < 0.25)
-			glTranslated(-moveInTips, 0, 0);
-		glTranslated(0, 0, 1);
-		glEnable(GL_BLEND);
-		synchronized (this.messages2D) {
+			if (size < 1)
+				size = 1;
+			int h = size * 10 - 2;
+			int x = -w;
+			int y = -h;
+			double moveInTips = Math.pow(1 - mostPercent * 4, 4) * w;
+			if (mostPercent < 0.25)
+				glTranslated(moveInTips, 0, 0);
+			this.drawTooltip(x, y, w, h, this.mainColor, this.outlineColor, this.secondaryColor);
+			if (mostPercent < 0.25)
+				glTranslated(-moveInTips, 0, 0);
+			glTranslated(0, 0, 1);
+			glEnable(GL_BLEND);
 			for (Caption2D caption : this.messages2D) {
 				if (!this.translationSystem.hasTranslation(caption))
 					continue;
@@ -182,7 +186,6 @@ public class ClosedCaptionSystem {
 	}
 
 	private void drawCaptions3D(Caption caption, float deltaTime) {
-		FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 		if (this.messages3D.size() > 0) {
 			int w = fr.getStringWidth(caption.message);
 			int h = 8;
@@ -337,16 +340,16 @@ public class ClosedCaptionSystem {
 		glPushMatrix();
 		glTranslated(resolution.getScaledWidth(), resolution.getScaledHeight() - 32, 100);
 		this.drawCaptions2D(resolution, deltaTime);
-		glTranslated(-(resolution.getScaledWidth()), -resolution.getScaledHeight() - 32, -100);
+		glTranslated(-resolution.getScaledWidth(), -(resolution.getScaledHeight() - 32), -100);
 		glPopMatrix();
 	}
 
 	public void render3D(float deltaTime) {
 		if (RenderManager.instance == null || RenderManager.instance.worldObj == null)
 			return;
+		long tick = RenderManager.instance.worldObj.getTotalWorldTime();
+		List<Caption> removalQueue = new ArrayList<Caption>();
 		synchronized (this.messages3D) {
-			long tick = RenderManager.instance.worldObj.getTotalWorldTime();
-			List<Caption> removalQueue = new ArrayList<Caption>();
 			if (this.tick3D != tick) {
 				for (Caption caption : this.messages3D)
 					if (!caption.tick())
@@ -354,18 +357,17 @@ public class ClosedCaptionSystem {
 				this.tick3D = tick;
 			}
 			this.messages3D.removeAll(removalQueue);
-		}
-		glPushMatrix();
-		glDisable(GL_LIGHTING);
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		synchronized (this.messages3D) {
+			glPushMatrix();
+			glDisable(GL_LIGHTING);
+			glDisable(GL_DEPTH_TEST);
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			for (Caption3D caption : this.messages3D) {
 				if (!this.translationSystem.hasTranslation(caption))
 					continue;
-				int distance = (int) (16 * caption.getScale());
-				if (distance < 16)
-					distance = 16;
+				int distance = (int) (8 * caption.getScale());
+				if (distance < 8)
+					distance = 8;
 				if (caption.isEntity() && caption.getDistanceToEntity(Minecraft.getMinecraft().thePlayer) > distance)
 					continue;
 				double x = RenderManager.instance.viewerPosX - (caption.prevPosX + ((caption.posX - caption.prevPosX) * deltaTime));
@@ -388,6 +390,7 @@ public class ClosedCaptionSystem {
 			}
 		}
 		glDisable(GL_BLEND);
+		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_LIGHTING);
 		glPopMatrix();
 	}

@@ -137,9 +137,15 @@ public class Caption3D extends Caption {
 	}
 
 	private void updatePos() {
-		this.prevPosX = this.posX;
-		this.prevPosY = this.posY;
-		this.prevPosZ = this.posZ;
+		if (this.entity != null) {
+			this.prevPosX = this.entity.prevPosX;
+			this.prevPosY = this.entity.prevPosY;
+			this.prevPosZ = this.entity.prevPosZ;
+		} else if (this.sound != null) {
+			this.prevPosX = this.posX;
+			this.prevPosY = this.posY;
+			this.prevPosZ = this.posZ;
+		}
 		if (this.entity != null) {
 			this.posX = this.entity.posX;
 			this.posY = this.entity.posY;
