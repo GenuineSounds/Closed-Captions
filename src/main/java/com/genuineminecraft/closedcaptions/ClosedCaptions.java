@@ -38,14 +38,27 @@ public class ClosedCaptions {
 	private File folder;
 
 	@EventHandler
+	public void pre(FMLPreInitializationEvent event) {
+		this.folder = new File(event.getModConfigurationDirectory(), "ClosedCaptions");
+		this.folder.mkdirs();
+		this.loadTranslations();
+		this.saveTranslations();
+	}
+
+	@EventHandler
+	public void init(FMLInitializationEvent event) {
+		MinecraftForge.EVENT_BUS.register(ClosedCaptionSystem.getInstance());
+		MinecraftForge.EVENT_BUS.register(this);
+	}
+
+	@EventHandler
 	public void disable(FMLModDisabledEvent event) {
 		System.out.println(event.toString());
 	}
 
-	@EventHandler
-	public void load(FMLInitializationEvent event) {
-		MinecraftForge.EVENT_BUS.register(ClosedCaptionSystem.getInstance());
-		MinecraftForge.EVENT_BUS.register(this);
+	@SubscribeEvent
+	public void saveLoad(WorldEvent.Save event) {
+		this.saveTranslations();
 	}
 
 	public void loadTranslations() {
@@ -68,19 +81,6 @@ public class ClosedCaptions {
 			}
 			catch (Exception e) {}
 		}
-	}
-
-	@EventHandler
-	public void preload(FMLPreInitializationEvent event) {
-		this.folder = new File(event.getModConfigurationDirectory(), "ClosedCaptions");
-		this.folder.mkdirs();
-		this.loadTranslations();
-		this.saveTranslations();
-	}
-
-	@SubscribeEvent
-	public void saveLoad(WorldEvent.Save event) {
-		this.saveTranslations();
 	}
 
 	public void saveTranslations() {
