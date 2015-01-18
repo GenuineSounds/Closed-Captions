@@ -39,10 +39,10 @@ public class ClosedCaptions {
 
 	@EventHandler
 	public void pre(FMLPreInitializationEvent event) {
-		this.folder = new File(event.getModConfigurationDirectory(), "ClosedCaptions");
-		this.folder.mkdirs();
-		this.loadTranslations();
-		this.saveTranslations();
+		folder = new File(event.getModConfigurationDirectory(), "ClosedCaptions");
+		folder.mkdirs();
+		loadTranslations();
+		saveTranslations();
 	}
 
 	@EventHandler
@@ -58,18 +58,18 @@ public class ClosedCaptions {
 
 	@SubscribeEvent
 	public void saveLoad(WorldEvent.Save event) {
-		this.saveTranslations();
+		saveTranslations();
 	}
 
 	public void loadTranslations() {
-		File file = new File(this.folder, "captions.json");
+		File file = new File(folder, "captions.json");
 		if (!file.exists())
 			return;
 		Gson gson = new GsonBuilder().create();
 		FileReader fr = null;
 		try {
 			fr = new FileReader(file);
-			Map<String, ArrayList<String>> tc = gson.fromJson(fr, TYPE);
+			Map<String, ArrayList<String>> tc = gson.fromJson(fr, ClosedCaptions.TYPE);
 			if (tc != null)
 				ClosedCaptionSystem.getInstance().translationSystem.translations = tc;
 		}
@@ -84,7 +84,7 @@ public class ClosedCaptions {
 	}
 
 	public void saveTranslations() {
-		File file = new File(this.folder, "captions.json");
+		File file = new File(folder, "captions.json");
 		GsonBuilder builder = new GsonBuilder();
 		builder.setPrettyPrinting();
 		Gson gson = builder.create();
@@ -93,7 +93,7 @@ public class ClosedCaptions {
 			if (!file.exists())
 				file.createNewFile();
 			wr = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
-			gson.toJson(ClosedCaptionSystem.getInstance().translationSystem.translations, TYPE, wr);
+			gson.toJson(ClosedCaptionSystem.getInstance().translationSystem.translations, ClosedCaptions.TYPE, wr);
 		}
 		catch (Exception e) {}
 		finally {

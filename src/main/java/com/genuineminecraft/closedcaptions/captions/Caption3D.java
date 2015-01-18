@@ -47,36 +47,36 @@ public class Caption3D extends Caption {
 		if (entity == null)
 			return;
 		this.entity = entity;
-		this.posX = entity.posX;
-		this.posY = entity.posY;
-		this.posZ = entity.posZ;
-		this.prevPosX = entity.prevPosX;
-		this.prevPosY = entity.prevPosY;
-		this.prevPosZ = entity.prevPosZ;
+		posX = entity.posX;
+		posY = entity.posY;
+		posZ = entity.posZ;
+		prevPosX = entity.prevPosX;
+		prevPosY = entity.prevPosY;
+		prevPosZ = entity.prevPosZ;
 	}
 
 	public void attach(ISound sound) {
 		if (sound == null)
 			return;
 		this.sound = sound;
-		this.posX = sound.getXPosF();
-		this.posY = sound.getYPosF();
-		this.posZ = sound.getZPosF();
+		posX = sound.getXPosF();
+		posY = sound.getYPosF();
+		posZ = sound.getZPosF();
 	}
 
 	@Override
 	public int compareTo(Caption o) {
 		if (o instanceof Caption3D)
-			return (int) (this.getDistanceToCaption((Caption3D) o) * 10000f);
-		return this.key.compareTo(o.key);
+			return (int) (getDistanceToCaption((Caption3D) o) * 10000f);
+		return key.compareTo(o.key);
 	}
 
 	public boolean equalTo(Caption3D caption) {
-		if (this.isEntity() && caption.isEntity())
-			return this.nameEquals(caption.key) && this.entity.equals(caption.entity);
-		if (this.isSound() && caption.isSound())
-			return this.nameEquals(caption.key) && this.sound.equals(caption.sound);
-		return this.nameEquals(caption.key) && this.getDistanceToCaption(caption) <= 0.01;
+		if (isEntity() && caption.isEntity())
+			return nameEquals(caption.key) && entity.equals(caption.entity);
+		if (isSound() && caption.isSound())
+			return nameEquals(caption.key) && sound.equals(caption.sound);
+		return nameEquals(caption.key) && getDistanceToCaption(caption) <= 0.01;
 	}
 
 	public double getDistanceTo(double posX, double posZ) {
@@ -101,8 +101,8 @@ public class Caption3D extends Caption {
 	}
 
 	public float getScale() {
-		if (this.entity != null) {
-			float out = this.entity.getShadowSize();
+		if (isEntity()) {
+			float out = entity.getShadowSize();
 			if (out < 1)
 				out = 1;
 			return out;
@@ -111,49 +111,52 @@ public class Caption3D extends Caption {
 	}
 
 	public boolean is2D() {
-		return ((this.entity instanceof EntityItem || this.entity instanceof EntityXPOrb) || this.sound instanceof PositionedSoundRecord) && this.isWithin(Minecraft.getMinecraft().thePlayer, 8);
+		return (entity instanceof EntityItem || entity instanceof EntityXPOrb || sound instanceof PositionedSoundRecord) && isWithin(Minecraft.getMinecraft().thePlayer, 4);
 	}
 
 	public boolean isEntity() {
-		return this.entity != null;
+		return entity != null;
 	}
 
 	public boolean isSound() {
-		return this.sound != null;
+		return sound != null;
 	}
 
 	public boolean isWithin(Caption3D caption, double distance) {
-		return this.getDistanceToCaption(caption) <= distance;
+		return getDistanceToCaption(caption) <= distance;
 	}
 
 	public boolean isWithin(Entity entity, double distance) {
-		return this.getDistanceToEntity(entity) <= distance;
+		return getDistanceToEntity(entity) <= distance;
 	}
 
 	@Override
 	public boolean tick() {
-		this.updatePos();
+		updatePos();
 		return super.tick();
 	}
 
 	private void updatePos() {
-		if (this.entity != null) {
-			this.prevPosX = this.entity.prevPosX;
-			this.prevPosY = this.entity.prevPosY;
-			this.prevPosZ = this.entity.prevPosZ;
-		} else if (this.sound != null) {
-			this.prevPosX = this.posX;
-			this.prevPosY = this.posY;
-			this.prevPosZ = this.posZ;
-		}
-		if (this.entity != null) {
-			this.posX = this.entity.posX;
-			this.posY = this.entity.posY;
-			this.posZ = this.entity.posZ;
-		} else if (this.sound != null) {
-			this.posX = this.sound.getXPosF();
-			this.posY = this.sound.getYPosF();
-			this.posZ = this.sound.getZPosF();
+		if (isEntity() && entity.isDead)
+			entity = null;
+		if (isEntity()) {
+			prevPosX = entity.prevPosX;
+			prevPosY = entity.prevPosY;
+			prevPosZ = entity.prevPosZ;
+			posX = entity.posX;
+			posY = entity.posY;
+			posZ = entity.posZ;
+		} else if (isSound()) {
+			prevPosX = posX;
+			prevPosY = posY;
+			prevPosZ = posZ;
+			posX = sound.getXPosF();
+			posY = sound.getYPosF();
+			posZ = sound.getZPosF();
+		} else {
+			prevPosX = posX;
+			prevPosY = posY;
+			prevPosZ = posZ;
 		}
 	}
 }

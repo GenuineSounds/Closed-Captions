@@ -15,52 +15,52 @@ public class Caption implements Comparable<Caption> {
 	protected int previousTick;
 
 	public Caption(String message) {
-		this.key = Caption.DIRECT_MESSAGE;
-		this.directMessage = true;
+		key = Caption.DIRECT_MESSAGE;
+		directMessage = true;
 		this.message = message;
-		this.volume = 1;
-		this.pitch = 1;
-		this.lifespan = this.currentTick = this.previousTick = Caption.DEFAULT_TIMER;
+		volume = 1;
+		pitch = 1;
+		lifespan = currentTick = previousTick = Caption.DEFAULT_TIMER;
 	}
 
 	public Caption(String key, float volume, float pitch) {
 		this.key = key;
-		this.directMessage = false;
+		directMessage = false;
 		this.volume = volume;
 		this.pitch = pitch;
-		this.lifespan = this.currentTick = this.previousTick = Caption.DEFAULT_TIMER;
+		lifespan = currentTick = previousTick = Caption.DEFAULT_TIMER;
 	}
 
 	public Caption(String key, float volume, float pitch, int ticksToRun) {
 		this(key, volume, pitch);
-		this.lifespan = ticksToRun;
-		this.currentTick = ticksToRun;
-		this.previousTick = ticksToRun;
+		lifespan = ticksToRun;
+		currentTick = ticksToRun;
+		previousTick = ticksToRun;
 	}
 
 	@Override
 	public int compareTo(Caption o) {
-		return this.key.compareTo(o.key);
+		return key.compareTo(o.key);
 	}
 
 	public String getMessage() {
-		return this.message;
+		return message;
 	}
 
 	public float getPercent() {
-		return (float) this.currentTick / (float) this.lifespan;
+		return (float) currentTick / (float) lifespan;
 	}
 
 	public float getPercentGuess(float partialTick) {
-		return this.getPreviousPercent() + ((this.getPercent() - this.getPreviousPercent()) * partialTick);
+		return getPreviousPercent() + (getPercent() - getPreviousPercent()) * partialTick;
 	}
 
 	public float getPreviousPercent() {
-		return (float) this.previousTick / (float) this.lifespan;
+		return (float) previousTick / (float) lifespan;
 	}
 
 	public boolean isDisabled() {
-		return this.disabled;
+		return disabled;
 	}
 
 	public boolean nameEquals(String key) {
@@ -68,10 +68,10 @@ public class Caption implements Comparable<Caption> {
 	}
 
 	public void resetTime() {
-		this.lifespan = this.currentTick = this.previousTick = Caption.DEFAULT_TIMER;
+		lifespan = currentTick = previousTick = Caption.DEFAULT_TIMER;
 	}
 
 	public boolean tick() {
-		return (this.previousTick = this.currentTick--) > 0;
+		return (previousTick = currentTick--) > 0;
 	}
 }
