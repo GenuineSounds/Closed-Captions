@@ -33,7 +33,7 @@ public class ClosedCaptions {
 	public static ClosedCaptions instance;
 	public static final String MODID = "ClosedCaptions";
 	public static final String NAME = "Closed Captions";
-	public static final String VERSION = "1.7.10-r3";
+	public static final String VERSION = "1.7.10-1.0.5";
 	public static final Type TYPE = new TypeToken<Map<String, ArrayList<String>>>() {}.getType();
 	private File folder;
 
