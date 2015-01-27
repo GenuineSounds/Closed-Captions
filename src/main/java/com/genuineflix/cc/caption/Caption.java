@@ -1,9 +1,12 @@
-package com.genuineminecraft.closedcaptions.captions;
+package com.genuineflix.cc.caption;
+
+import com.genuineflix.cc.system.TranslationSystem;
+import com.genuineflix.cc.translation.Translation;
 
 public class Caption implements Comparable<Caption> {
 
 	public static final int DEFAULT_TIMER = 60;
-	public static final String DIRECT_MESSAGE = "direct-message";
+	public static final String DIRECT_MESSAGE_KEY = "[Direct]";
 	public final String key;
 	public final float volume;
 	public final float pitch;
@@ -14,8 +17,8 @@ public class Caption implements Comparable<Caption> {
 	protected int currentTick;
 	protected int previousTick;
 
-	public Caption(String message) {
-		key = Caption.DIRECT_MESSAGE;
+	public Caption(final String message) {
+		key = Caption.DIRECT_MESSAGE_KEY;
 		directMessage = true;
 		this.message = message;
 		volume = 1;
@@ -23,24 +26,25 @@ public class Caption implements Comparable<Caption> {
 		lifespan = currentTick = previousTick = Caption.DEFAULT_TIMER;
 	}
 
-	public Caption(String key, float volume, float pitch) {
+	public Caption(final String key, final float volume, final float pitch) {
+		this(key, volume, pitch, Caption.DEFAULT_TIMER);
+	}
+
+	public Caption(final String key, final float volume, final float pitch, final int ticksToRun) {
 		this.key = key;
-		directMessage = false;
 		this.volume = volume;
 		this.pitch = pitch;
-		lifespan = currentTick = previousTick = Caption.DEFAULT_TIMER;
+		lifespan = currentTick = previousTick = ticksToRun;
+		directMessage = false;
+		assignTranslation();
 	}
 
-	public Caption(String key, float volume, float pitch, int ticksToRun) {
-		this(key, volume, pitch);
-		lifespan = ticksToRun;
-		currentTick = ticksToRun;
-		previousTick = ticksToRun;
-	}
-
-	@Override
-	public int compareTo(Caption o) {
-		return key.compareTo(o.key);
+	private void assignTranslation() {
+		final Translation translation = TranslationSystem.instance.get(this);
+		if (translation.hasTranslations())
+			message = TranslationSystem.formatTranslation(translation.getNext());
+		else
+			disabled = true;
 	}
 
 	public String getMessage() {
@@ -51,7 +55,7 @@ public class Caption implements Comparable<Caption> {
 		return (float) currentTick / (float) lifespan;
 	}
 
-	public float getPercentGuess(float partialTick) {
+	public float getPercentGuess(final float partialTick) {
 		return getPreviousPercent() + (getPercent() - getPreviousPercent()) * partialTick;
 	}
 
@@ -63,7 +67,7 @@ public class Caption implements Comparable<Caption> {
 		return disabled;
 	}
 
-	public boolean nameEquals(String key) {
+	public boolean nameEquals(final String key) {
 		return this.key.equalsIgnoreCase(key);
 	}
 
@@ -73,5 +77,10 @@ public class Caption implements Comparable<Caption> {
 
 	public boolean tick() {
 		return (previousTick = currentTick--) > 0;
+	}
+
+	@Override
+	public int compareTo(final Caption o) {
+		return key.compareTo(o.key);
 	}
 }

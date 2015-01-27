@@ -1,4 +1,4 @@
-package com.genuineminecraft.closedcaptions.captions;
+package com.genuineflix.cc.caption;
 
 import java.util.Comparator;
 
@@ -16,15 +16,16 @@ public class Caption3D extends Caption {
 	public double posX, prevPosX;
 	public double posY, prevPosY;
 	public double posZ, prevPosZ;
+	public double size = 1;
 	private float scale;
 	public static Comparator<Caption3D> DISTANCE = new Comparator<Caption3D>() {
 
 		@Override
-		public int compare(Caption3D o1, Caption3D o2) {
+		public int compare(final Caption3D o1, final Caption3D o2) {
 			if (Minecraft.getMinecraft().thePlayer == null)
 				return 0;
-			double d1 = o1.getDistanceToEntity(Minecraft.getMinecraft().thePlayer);
-			double d2 = o2.getDistanceToEntity(Minecraft.getMinecraft().thePlayer);
+			final double d1 = o1.getDistanceToEntity(Minecraft.getMinecraft().thePlayer);
+			final double d2 = o2.getDistanceToEntity(Minecraft.getMinecraft().thePlayer);
 			if (d1 < d2)
 				return 1;
 			if (d1 > d2)
@@ -33,18 +34,18 @@ public class Caption3D extends Caption {
 		}
 	};
 
-	public Caption3D(String message, Entity entity, float volume, float pitch) {
+	public Caption3D(final String message, final Entity entity, final float volume, final float pitch) {
 		super(message, volume, pitch);
 		this.attach(entity);
 	}
 
-	public Caption3D(String message, ISound sound, float volume, float pitch) {
+	public Caption3D(final String message, final ISound sound, final float volume, final float pitch) {
 		super(message, volume, pitch);
 		this.attach(sound);
 	}
 
-	public void attach(Entity entity) {
-		if (entity == null)
+	public void attach(final Entity entity) {
+		if (this.entity != null || entity == null)
 			return;
 		this.entity = entity;
 		posX = entity.posX;
@@ -53,9 +54,10 @@ public class Caption3D extends Caption {
 		prevPosX = entity.prevPosX;
 		prevPosY = entity.prevPosY;
 		prevPosZ = entity.prevPosZ;
+		size = entity.height + 0.5;
 	}
 
-	public void attach(ISound sound) {
+	public void attach(final ISound sound) {
 		if (sound == null)
 			return;
 		this.sound = sound;
@@ -65,44 +67,42 @@ public class Caption3D extends Caption {
 	}
 
 	@Override
-	public int compareTo(Caption o) {
+	public int compareTo(final Caption o) {
 		if (o instanceof Caption3D)
 			return (int) (getDistanceToCaption((Caption3D) o) * 10000f);
 		return key.compareTo(o.key);
 	}
 
-	public boolean equalTo(Caption3D caption) {
-		if (isEntity() && caption.isEntity())
-			return nameEquals(caption.key) && entity.equals(caption.entity);
-		if (isSound() && caption.isSound())
-			return nameEquals(caption.key) && sound.equals(caption.sound);
-		return nameEquals(caption.key) && getDistanceToCaption(caption) <= 0.01;
+	public boolean equalTo(final Caption3D caption) {
+		if (!nameEquals(caption.key))
+			return false;
+		return getDistanceToCaption(caption) <= 0.1;
 	}
 
-	public double getDistanceTo(double posX, double posZ) {
-		double distanceX = this.posX - posX;
-		double distanceZ = this.posZ - posZ;
-		return Math.sqrt(distanceX * distanceX + distanceZ * distanceZ);
+	public double getDistanceToCaption(final Caption3D caption) {
+		return getDistanceTo(caption.posX, caption.posY, caption.posZ);
 	}
 
-	public double getDistanceTo(double posX, double posY, double posZ) {
-		double distanceX = this.posX - posX;
-		double distanceY = this.posY - posY;
-		double distanceZ = this.posZ - posZ;
+	public double getDistanceToEntity(final Entity entity) {
+		return getDistanceTo(entity.posX, entity.posY, entity.posZ);
+	}
+
+	public double getDistanceTo(final double posX, final double posY, final double posZ) {
+		final double distanceX = this.posX - posX;
+		final double distanceY = this.posY - posY;
+		final double distanceZ = this.posZ - posZ;
 		return Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
 	}
 
-	public double getDistanceToCaption(Caption3D caption) {
-		return this.getDistanceTo(caption.posX, caption.posY, caption.posZ);
-	}
-
-	public double getDistanceToEntity(Entity entity) {
-		return this.getDistanceTo(entity.posX, entity.posY, entity.posZ);
+	public double getDistanceIgnoringHeight(final double posX, final double posZ) {
+		final double distanceX = this.posX - posX;
+		final double distanceZ = this.posZ - posZ;
+		return Math.sqrt(distanceX * distanceX + distanceZ * distanceZ);
 	}
 
 	public float getScale() {
 		if (isEntity()) {
-			float out = entity.getShadowSize();
+			float out = (float) (size / 2);
 			if (out < 1)
 				out = 1;
 			return out;
@@ -122,11 +122,11 @@ public class Caption3D extends Caption {
 		return sound != null;
 	}
 
-	public boolean isWithin(Caption3D caption, double distance) {
+	public boolean isWithin(final Caption3D caption, final double distance) {
 		return getDistanceToCaption(caption) <= distance;
 	}
 
-	public boolean isWithin(Entity entity, double distance) {
+	public boolean isWithin(final Entity entity, final double distance) {
 		return getDistanceToEntity(entity) <= distance;
 	}
 

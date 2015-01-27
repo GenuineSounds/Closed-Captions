@@ -17,9 +17,9 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "1.7.10-1.0.5"
-group = "com.genuineminecraft.closedcaptions"
-archivesBaseName = "ClosedCaptions"
+version = "1.7.10-1.0.8"
+group = "com.genuineflix.cc"
+archivesBaseName = "ClosedCaption"
 
 minecraft {
 	version = "1.7.10-10.13.2.1272"
