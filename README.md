@@ -1,6 +1,6 @@
-ClosedCaptions
+ClosedCaption
 ==============
-[Genuine] Closed Captions is a mod for Minecraft that adds closed captions to Minecraft.
+[Genuine] Closed Caption is a mod for Minecraft that adds closed captions to Minecraft.
 
 License
 =======
