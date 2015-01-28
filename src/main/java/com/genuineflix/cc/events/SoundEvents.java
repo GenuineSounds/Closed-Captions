@@ -31,7 +31,7 @@ public class SoundEvents {
 
 	@SubscribeEvent
 	public void eventEntity(final PlaySoundAtEntityEvent event) {
-		if (event.name.isEmpty() || event.name.equalsIgnoreCase("none") || event.name.endsWith(":none") || event.entity instanceof EntityItem)
+		if (event == null || event.name == null || event.name.isEmpty() || event.name.equalsIgnoreCase("none") || event.name.endsWith(":none") || event.entity instanceof EntityItem)
 			return;
 		createCaption(event.name, event.entity, event.volume, event.pitch);
 	}
