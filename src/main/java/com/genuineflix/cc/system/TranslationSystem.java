@@ -11,8 +11,6 @@ import com.mojang.realmsclient.gui.ChatFormatting;
 
 public class TranslationSystem {
 
-	public static final TranslationSystem instance = new TranslationSystem();
-
 	public static String formatTranslation(final String translation) {
 		String out = translation;
 		out = out.replace("(", ChatFormatting.BOLD.toString());
@@ -27,19 +25,34 @@ public class TranslationSystem {
 		return out;
 	}
 
+	public static final TranslationSystem instance = new TranslationSystem();
 	private final List<String> keys = new ArrayList<String>();
 	private List<Translation> translations = new ArrayList<Translation>();
 
 	private TranslationSystem() {}
 
+	public boolean contains(final Caption caption) {
+		return keys.contains(caption);
+	}
+
+	public Translation get(final Caption caption) {
+		for (final Translation translation : translations)
+			if (translation.sound.equalsIgnoreCase(caption.key))
+				return translation;
+		initTranslation(caption);
+		return Translation.NONE;
+	}
+
 	public List<Translation> getTranslations() {
 		return translations;
 	}
 
-	public void setTranslations(final List<Translation> translations) {
-		this.translations = translations;
-		for (final Translation translation : translations)
-			keys.add(translation.sound);
+	public boolean hasTranslation(final Caption caption) {
+		if (caption.directMessage)
+			return true;
+		if (!contains(caption))
+			return false;
+		return get(caption).hasTranslations();
 	}
 
 	private void initTranslation(final Caption caption) {
@@ -54,23 +67,9 @@ public class TranslationSystem {
 		}
 	}
 
-	public boolean hasTranslation(final Caption caption) {
-		if (caption.directMessage)
-			return true;
-		if (!contains(caption))
-			return false;
-		return get(caption).hasTranslations();
-	}
-
-	public boolean contains(final Caption caption) {
-		return keys.contains(caption);
-	}
-
-	public Translation get(final Caption caption) {
+	public void setTranslations(final List<Translation> translations) {
+		this.translations = translations;
 		for (final Translation translation : translations)
-			if (translation.sound.equalsIgnoreCase(caption.key))
-				return translation;
-		initTranslation(caption);
-		return Translation.NONE;
+			keys.add(translation.sound);
 	}
 }

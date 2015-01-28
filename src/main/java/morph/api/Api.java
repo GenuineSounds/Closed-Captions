@@ -12,63 +12,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 public final class Api {
 
 	/**
-	 * Returns if a player is has a morph. If morph progress < 1.0F, player is mid-morphing.
-	 * Players demorphing are considered as a player with a morph until the demorph is complete.
-	 * @param Player Username
-	 * @param Clientside (false for Serverside)
+	 * Allows the rendering of the next player rendered.
+	 * Prevents Morph from cancelling the player render event to render the morphed entity.
 	 */
-	public static boolean hasMorph(final String playerName, final boolean isClient) {
+	public static void allowNextPlayerRender() {
 		try {
-			return (Boolean) Class.forName("morph.common.core.ApiHandler").getDeclaredMethod("hasMorph", String.class, boolean.class).invoke(null, playerName, isClient);
+			Class.forName("morph.common.core.ApiHandler").getDeclaredMethod("allowNextPlayerRender").invoke(null);
 		}
-		catch (final Exception e) {
-			return false;
-		}
-	}
-
-	/**
-	 * Returns morph progression of a player. Time per morph is 80 ticks.
-	 * If player does not have a morph, 1.0F will be returned.
-	 * @param Player Username
-	 * @param Clientside (false for Serverside)
-	 */
-	public static float morphProgress(final String playerName, final boolean isClient) {
-		try {
-			return (Float) Class.forName("morph.common.core.ApiHandler").getDeclaredMethod("morphProgress", String.class, boolean.class).invoke(null, playerName, isClient);
-		}
-		catch (final Exception e) {
-			return 1.0F;
-		}
-	}
-
-	/**
-	 * Returns previous entity instance used to render the morph.
-	 * If player does not have a previous morph state, null will be returned.
-	 * @param Player Username
-	 * @param Clientside (false for Serverside)
-	 */
-	public static EntityLivingBase getPrevMorphEntity(final String playerName, final boolean isClient) {
-		try {
-			return (EntityLivingBase) Class.forName("morph.common.core.ApiHandler").getDeclaredMethod("getPrevMorphEntity", String.class, boolean.class).invoke(null, playerName, isClient);
-		}
-		catch (final Exception e) {
-			return null;
-		}
-	}
-
-	/**
-	 * Returns entity instance used to render the morph.
-	 * If player does not have a morph, null will be returned.
-	 * @param Player Username
-	 * @param Clientside (false for Serverside)
-	 */
-	public static EntityLivingBase getMorphEntity(final String playerName, final boolean isClient) {
-		try {
-			return (EntityLivingBase) Class.forName("morph.common.core.ApiHandler").getDeclaredMethod("getMorphEntity", String.class, boolean.class).invoke(null, playerName, isClient);
-		}
-		catch (final Exception e) {
-			return null;
-		}
+		catch (final Exception e) {}
 	}
 
 	/**
@@ -79,6 +30,18 @@ public final class Api {
 	public static void blacklistEntity(final Class<? extends EntityLivingBase> clz) {
 		try {
 			Class.forName("morph.common.core.ApiHandler").getDeclaredMethod("blacklistEntity", Class.class).invoke(null, clz);
+		}
+		catch (final Exception e) {}
+	}
+
+	/**
+	 * Forces a player to demorph.
+	 * Called Serverside only.
+	 * @param player
+	 */
+	public static void forceDemorph(final EntityPlayerMP player) {
+		try {
+			Class.forName("morph.common.core.ApiHandler").getDeclaredMethod("forceDemorph", EntityPlayerMP.class).invoke(null, player);
 		}
 		catch (final Exception e) {}
 	}
@@ -100,15 +63,62 @@ public final class Api {
 	}
 
 	/**
-	 * Forces a player to demorph.
-	 * Called Serverside only.
-	 * @param player
+	 * Returns entity instance used to render the morph.
+	 * If player does not have a morph, null will be returned.
+	 * @param Player Username
+	 * @param Clientside (false for Serverside)
 	 */
-	public static void forceDemorph(final EntityPlayerMP player) {
+	public static EntityLivingBase getMorphEntity(final String playerName, final boolean isClient) {
 		try {
-			Class.forName("morph.common.core.ApiHandler").getDeclaredMethod("forceDemorph", EntityPlayerMP.class).invoke(null, player);
+			return (EntityLivingBase) Class.forName("morph.common.core.ApiHandler").getDeclaredMethod("getMorphEntity", String.class, boolean.class).invoke(null, playerName, isClient);
 		}
-		catch (final Exception e) {}
+		catch (final Exception e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Returns the black grainy morph skin that overlays the player when the player is morphing
+	 * @return Morph Skin Resource Location
+	 */
+	@SideOnly(Side.CLIENT)
+	public static ResourceLocation getMorphSkinTexture() {
+		try {
+			return (ResourceLocation) Class.forName("morph.common.core.ApiHandler").getDeclaredMethod("getMorphSkinTexture").invoke(null);
+		}
+		catch (final Exception e) {
+			return AbstractClientPlayer.locationStevePng;
+		}
+	}
+
+	/**
+	 * Returns previous entity instance used to render the morph.
+	 * If player does not have a previous morph state, null will be returned.
+	 * @param Player Username
+	 * @param Clientside (false for Serverside)
+	 */
+	public static EntityLivingBase getPrevMorphEntity(final String playerName, final boolean isClient) {
+		try {
+			return (EntityLivingBase) Class.forName("morph.common.core.ApiHandler").getDeclaredMethod("getPrevMorphEntity", String.class, boolean.class).invoke(null, playerName, isClient);
+		}
+		catch (final Exception e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Returns if a player is has a morph. If morph progress < 1.0F, player is mid-morphing.
+	 * Players demorphing are considered as a player with a morph until the demorph is complete.
+	 * @param Player Username
+	 * @param Clientside (false for Serverside)
+	 */
+	public static boolean hasMorph(final String playerName, final boolean isClient) {
+		try {
+			return (Boolean) Class.forName("morph.common.core.ApiHandler").getDeclaredMethod("hasMorph", String.class, boolean.class).invoke(null, playerName, isClient);
+		}
+		catch (final Exception e) {
+			return false;
+		}
 	}
 
 	/**
@@ -127,27 +137,17 @@ public final class Api {
 	}
 
 	/**
-	 * Allows the rendering of the next player rendered.
-	 * Prevents Morph from cancelling the player render event to render the morphed entity.
+	 * Returns morph progression of a player. Time per morph is 80 ticks.
+	 * If player does not have a morph, 1.0F will be returned.
+	 * @param Player Username
+	 * @param Clientside (false for Serverside)
 	 */
-	public static void allowNextPlayerRender() {
+	public static float morphProgress(final String playerName, final boolean isClient) {
 		try {
-			Class.forName("morph.common.core.ApiHandler").getDeclaredMethod("allowNextPlayerRender").invoke(null);
-		}
-		catch (final Exception e) {}
-	}
-
-	/**
-	 * Returns the black grainy morph skin that overlays the player when the player is morphing
-	 * @return Morph Skin Resource Location
-	 */
-	@SideOnly(Side.CLIENT)
-	public static ResourceLocation getMorphSkinTexture() {
-		try {
-			return (ResourceLocation) Class.forName("morph.common.core.ApiHandler").getDeclaredMethod("getMorphSkinTexture").invoke(null);
+			return (Float) Class.forName("morph.common.core.ApiHandler").getDeclaredMethod("morphProgress", String.class, boolean.class).invoke(null, playerName, isClient);
 		}
 		catch (final Exception e) {
-			return AbstractClientPlayer.locationStevePng;
+			return 1.0F;
 		}
 	}
 

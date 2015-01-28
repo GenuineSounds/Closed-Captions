@@ -4,27 +4,6 @@ import org.lwjgl.opengl.GL11;
 
 public class RenderCommon {
 
-	public static void drawTooltip(final int x, final int y, final int w, final int h, final int color1, final int color2, final int color3) {
-		// Main
-		RenderCommon.drawGradientRect(x - 3, y - 3, w + 6, h + 6, color1, color1);
-		// Top bar
-		RenderCommon.drawGradientRect(x - 3, y - 4, w + 6, 1, color1, color1);
-		// Right Bar
-		RenderCommon.drawGradientRect(x + w + 3, y - 3, 1, h + 6, color1, color1);
-		// Bottom Bar
-		RenderCommon.drawGradientRect(x - 3, y + h + 3, w + 6, 1, color1, color1);
-		// Left Bar
-		RenderCommon.drawGradientRect(x - 4, y - 3, 1, h + 6, color1, color1);
-		// Top Line
-		RenderCommon.drawGradientRect(x - 3, y - 3, w + 6, 1, color2, color2);
-		// Right Line
-		RenderCommon.drawGradientRect(x + w + 2, y - 2, 1, h + 4, color2, color3);
-		// Bottom Line
-		RenderCommon.drawGradientRect(x - 3, y + h + 2, w + 6, 1, color3, color3);
-		// Left Line
-		RenderCommon.drawGradientRect(x - 3, y - 2, 1, h + 4, color2, color3);
-	}
-
 	public static void drawGradientRect(final int x, final int y, int w, int h, final int color1, final int color2) {
 		w += x;
 		h += y;
@@ -54,5 +33,26 @@ public class RenderCommon {
 		GL11.glDisable(GL11.GL_BLEND);
 		GL11.glEnable(GL11.GL_ALPHA_TEST);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
+	}
+
+	public static void drawTooltip(final int x, final int y, final int w, final int h, final int color1, final int color2, final int color3) {
+		// Main
+		RenderCommon.drawGradientRect(x - 3, y - 3, w + 6, h + 6, color1, color1);
+		// Top bar
+		RenderCommon.drawGradientRect(x - 3, y - 4, w + 6, 1, color1, color1);
+		// Right Bar
+		RenderCommon.drawGradientRect(x + w + 3, y - 3, 1, h + 6, color1, color1);
+		// Bottom Bar
+		RenderCommon.drawGradientRect(x - 3, y + h + 3, w + 6, 1, color1, color1);
+		// Left Bar
+		RenderCommon.drawGradientRect(x - 4, y - 3, 1, h + 6, color1, color1);
+		// Top Line
+		RenderCommon.drawGradientRect(x - 3, y - 3, w + 6, 1, color2, color2);
+		// Right Line
+		RenderCommon.drawGradientRect(x + w + 2, y - 2, 1, h + 4, color2, color3);
+		// Bottom Line
+		RenderCommon.drawGradientRect(x - 3, y + h + 2, w + 6, 1, color3, color3);
+		// Left Line
+		RenderCommon.drawGradientRect(x - 3, y - 2, 1, h + 4, color2, color3);
 	}
 }

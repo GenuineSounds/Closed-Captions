@@ -47,6 +47,11 @@ public class Caption implements Comparable<Caption> {
 			disabled = true;
 	}
 
+	@Override
+	public int compareTo(final Caption o) {
+		return key.compareTo(o.key);
+	}
+
 	public String getMessage() {
 		return message;
 	}
@@ -77,10 +82,5 @@ public class Caption implements Comparable<Caption> {
 
 	public boolean tick() {
 		return (previousTick = currentTick--) > 0;
-	}
-
-	@Override
-	public int compareTo(final Caption o) {
-		return key.compareTo(o.key);
 	}
 }

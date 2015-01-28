@@ -23,19 +23,6 @@ public class Render2D {
 		fr = Minecraft.getMinecraft().fontRenderer;
 	}
 
-	public void render(final List<Caption2D> messages, final ScaledResolution resolution, final float partialTicks) {
-		res = resolution;
-		GL11.glDisable(GL11.GL_LIGHTING);
-		GL11.glEnable(GL11.GL_ALPHA_TEST);
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		GL11.glPushMatrix();
-		GL11.glTranslated(res.getScaledWidth(), res.getScaledHeight() - 32, 100);
-		drawCaptions(messages, partialTicks);
-		GL11.glTranslated(-res.getScaledWidth(), -(res.getScaledHeight() - 32), -100);
-		GL11.glPopMatrix();
-	}
-
 	private void drawCaptions(final List<Caption2D> messages2D, final float deltaTime) {
 		double template = Math.ceil(res.getScaledWidth_double() / 2) - 98;
 		if (template > 180)
@@ -79,5 +66,18 @@ public class Render2D {
 			y += 10;
 		}
 		GL11.glTranslated(0, 0, -1);
+	}
+
+	public void render(final List<Caption2D> messages, final ScaledResolution resolution, final float partialTicks) {
+		res = resolution;
+		GL11.glDisable(GL11.GL_LIGHTING);
+		GL11.glEnable(GL11.GL_ALPHA_TEST);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glPushMatrix();
+		GL11.glTranslated(res.getScaledWidth(), res.getScaledHeight() - 32, 100);
+		drawCaptions(messages, partialTicks);
+		GL11.glTranslated(-res.getScaledWidth(), -(res.getScaledHeight() - 32), -100);
+		GL11.glPopMatrix();
 	}
 }

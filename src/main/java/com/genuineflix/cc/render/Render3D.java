@@ -22,19 +22,6 @@ public class Render3D {
 		fr = Minecraft.getMinecraft().fontRenderer;
 	}
 
-	public void render(final List<Caption3D> messages, final float partialTicks) {
-		GL11.glPushMatrix();
-		GL11.glDisable(GL11.GL_LIGHTING);
-		GL11.glDisable(GL11.GL_DEPTH_TEST);
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		drawAllCaptions(messages, partialTicks);
-		GL11.glDisable(GL11.GL_BLEND);
-		GL11.glEnable(GL11.GL_DEPTH_TEST);
-		GL11.glEnable(GL11.GL_LIGHTING);
-		GL11.glPopMatrix();
-	}
-
 	private void drawAllCaptions(final List<Caption3D> messages, final float partialTicks) {
 		for (final Caption3D caption : messages) {
 			if (outOfRenderDistance(caption))
@@ -55,15 +42,6 @@ public class Render3D {
 		}
 	}
 
-	private boolean outOfRenderDistance(final Caption3D caption) {
-		int distance = (int) (16 * caption.getScale());
-		if (distance < 16)
-			distance = 16;
-		if (caption.isWithin(Minecraft.getMinecraft().thePlayer, distance))
-			return false;
-		return true;
-	}
-
 	private void drawCaption(final Caption3D caption, final float partialTicks) {
 		final int w = fr.getStringWidth(caption.message);
 		final int h = 8;
@@ -76,5 +54,27 @@ public class Render3D {
 		GL11.glTranslated(0, 0, 1);
 		fr.drawStringWithShadow(caption.message, x, y, alpha << 24 | 0xFFFFFF);
 		GL11.glTranslated(0, 0, -1);
+	}
+
+	private boolean outOfRenderDistance(final Caption3D caption) {
+		int distance = (int) (16 * caption.getScale());
+		if (distance < 16)
+			distance = 16;
+		if (caption.isWithin(Minecraft.getMinecraft().thePlayer, distance))
+			return false;
+		return true;
+	}
+
+	public void render(final List<Caption3D> messages, final float partialTicks) {
+		GL11.glPushMatrix();
+		GL11.glDisable(GL11.GL_LIGHTING);
+		GL11.glDisable(GL11.GL_DEPTH_TEST);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		drawAllCaptions(messages, partialTicks);
+		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		GL11.glEnable(GL11.GL_LIGHTING);
+		GL11.glPopMatrix();
 	}
 }

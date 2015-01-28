@@ -21,12 +21,22 @@ public class SoundEvents {
 	public final System2D system2D = new System2D();
 	public final System3D system3D = new System3D();
 
-	public void registerEvents() {
-		MinecraftForge.EVENT_BUS.register(this);
-		MinecraftForge.EVENT_BUS.register(system2D);
-		FMLCommonHandler.instance().bus().register(system2D);
-		MinecraftForge.EVENT_BUS.register(system3D);
-		FMLCommonHandler.instance().bus().register(system3D);
+	public void createCaption(final String name, final Entity entity, final float volume, final float pitch) {
+		if (entity == null || Minecraft.getMinecraft().thePlayer != null && entity.equals(Minecraft.getMinecraft().thePlayer))
+			system2D.add(new Caption2D(name, volume, pitch));
+		else
+			system3D.add(new Caption3D(name, entity, volume, pitch));
+	}
+
+	public void createCaption(final String name, final ISound sound) {
+		final Caption2D c2d = new Caption2D(name, sound.getVolume(), sound.getPitch());
+		final Caption3D c3d = new Caption3D(name, sound, sound.getVolume(), sound.getPitch());
+		if (sound.getXPosF() == 0 && sound.getYPosF() == 0 && sound.getZPosF() == 0)
+			system2D.add(c2d);
+		else if (c3d.isWithin(Minecraft.getMinecraft().thePlayer, 5))
+			system2D.add(c2d);
+		else
+			system3D.add(c3d);
 	}
 
 	@SubscribeEvent
@@ -51,21 +61,11 @@ public class SoundEvents {
 		}
 	}
 
-	public void createCaption(final String name, final Entity entity, final float volume, final float pitch) {
-		if (entity == null || Minecraft.getMinecraft().thePlayer != null && entity.equals(Minecraft.getMinecraft().thePlayer))
-			system2D.add(new Caption2D(name, volume, pitch));
-		else
-			system3D.add(new Caption3D(name, entity, volume, pitch));
-	}
-
-	public void createCaption(final String name, final ISound sound) {
-		final Caption2D c2d = new Caption2D(name, sound.getVolume(), sound.getPitch());
-		final Caption3D c3d = new Caption3D(name, sound, sound.getVolume(), sound.getPitch());
-		if (sound.getXPosF() == 0 && sound.getYPosF() == 0 && sound.getZPosF() == 0)
-			system2D.add(c2d);
-		else if (c3d.isWithin(Minecraft.getMinecraft().thePlayer, 5))
-			system2D.add(c2d);
-		else
-			system3D.add(c3d);
+	public void registerEvents() {
+		MinecraftForge.EVENT_BUS.register(this);
+		MinecraftForge.EVENT_BUS.register(system2D);
+		FMLCommonHandler.instance().bus().register(system2D);
+		MinecraftForge.EVENT_BUS.register(system3D);
+		FMLCommonHandler.instance().bus().register(system3D);
 	}
 }

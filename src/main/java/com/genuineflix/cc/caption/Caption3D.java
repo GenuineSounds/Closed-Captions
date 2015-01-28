@@ -79,12 +79,10 @@ public class Caption3D extends Caption {
 		return getDistanceToCaption(caption) <= 0.1;
 	}
 
-	public double getDistanceToCaption(final Caption3D caption) {
-		return getDistanceTo(caption.posX, caption.posY, caption.posZ);
-	}
-
-	public double getDistanceToEntity(final Entity entity) {
-		return getDistanceTo(entity.posX, entity.posY, entity.posZ);
+	public double getDistanceIgnoringHeight(final double posX, final double posZ) {
+		final double distanceX = this.posX - posX;
+		final double distanceZ = this.posZ - posZ;
+		return Math.sqrt(distanceX * distanceX + distanceZ * distanceZ);
 	}
 
 	public double getDistanceTo(final double posX, final double posY, final double posZ) {
@@ -94,10 +92,12 @@ public class Caption3D extends Caption {
 		return Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
 	}
 
-	public double getDistanceIgnoringHeight(final double posX, final double posZ) {
-		final double distanceX = this.posX - posX;
-		final double distanceZ = this.posZ - posZ;
-		return Math.sqrt(distanceX * distanceX + distanceZ * distanceZ);
+	public double getDistanceToCaption(final Caption3D caption) {
+		return getDistanceTo(caption.posX, caption.posY, caption.posZ);
+	}
+
+	public double getDistanceToEntity(final Entity entity) {
+		return getDistanceTo(entity.posX, entity.posY, entity.posZ);
 	}
 
 	public float getScale() {

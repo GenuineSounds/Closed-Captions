@@ -24,29 +24,6 @@ public class System2D {
 	private final Render2D render2D = new Render2D();
 	private final List<Caption2D> messages2D = new ArrayList<Caption2D>();
 
-	@SubscribeEvent
-	public synchronized void tick(final ClientTickEvent event) {
-		if (event.phase == Phase.START)
-			return;
-		final Minecraft mc = Minecraft.getMinecraft();
-		if (mc.thePlayer == null || mc.currentScreen != null && mc.currentScreen.doesGuiPauseGame())
-			return;
-		for (final IMCMessage imc : FMLInterModComms.fetchRuntimeMessages(ClosedCaption.instance))
-			if (imc.key.equals(Caption.DIRECT_MESSAGE_KEY))
-				messages2D.add(new Caption2D(imc.getStringValue()));
-		final List<Caption> removalQueue = new ArrayList<Caption>();
-		for (final Caption caption : messages2D)
-			if (!caption.tick() || caption.isDisabled())
-				removalQueue.add(caption);
-		messages2D.removeAll(removalQueue);
-	}
-
-	@SubscribeEvent
-	public synchronized void render(final RenderGameOverlayEvent.Post event) {
-		if (event.type == ElementType.ALL)
-			render2D.render(messages2D, event.resolution, event.partialTicks);
-	}
-
 	public synchronized void add(final Caption2D caption) {
 		if (Loader.isModLoaded("BattleText"))
 			if (caption.key.contains("game.player"))
@@ -63,5 +40,28 @@ public class System2D {
 
 	public synchronized void directMessage(final String message) {
 		messages2D.add(new Caption2D(message));
+	}
+
+	@SubscribeEvent
+	public synchronized void render(final RenderGameOverlayEvent.Post event) {
+		if (event.type == ElementType.ALL)
+			render2D.render(messages2D, event.resolution, event.partialTicks);
+	}
+
+	@SubscribeEvent
+	public synchronized void tick(final ClientTickEvent event) {
+		if (event.phase == Phase.START)
+			return;
+		final Minecraft mc = Minecraft.getMinecraft();
+		if (mc.thePlayer == null || mc.currentScreen != null && mc.currentScreen.doesGuiPauseGame())
+			return;
+		for (final IMCMessage imc : FMLInterModComms.fetchRuntimeMessages(ClosedCaption.instance))
+			if (imc.key.equals(Caption.DIRECT_MESSAGE_KEY))
+				messages2D.add(new Caption2D(imc.getStringValue()));
+		final List<Caption> removalQueue = new ArrayList<Caption>();
+		for (final Caption caption : messages2D)
+			if (!caption.tick() || caption.isDisabled())
+				removalQueue.add(caption);
+		messages2D.removeAll(removalQueue);
 	}
 }

@@ -38,22 +38,9 @@ public class ClosedCaption {
 	private File folder;
 
 	@EventHandler
-	public void pre(final FMLPreInitializationEvent event) {
-		folder = new File(event.getModConfigurationDirectory(), "ClosedCaption");
-		folder.mkdirs();
-		loadTranslations();
-		saveTranslations();
-	}
-
-	@EventHandler
 	public void init(final FMLInitializationEvent event) {
 		MinecraftForge.EVENT_BUS.register(this);
 		new SoundEvents().registerEvents();
-	}
-
-	@SubscribeEvent
-	public void saveLoad(final WorldEvent.Save event) {
-		saveTranslations();
 	}
 
 	public void loadTranslations() {
@@ -76,6 +63,19 @@ public class ClosedCaption {
 			}
 			catch (final Exception e) {}
 		}
+	}
+
+	@EventHandler
+	public void pre(final FMLPreInitializationEvent event) {
+		folder = new File(event.getModConfigurationDirectory(), "ClosedCaption");
+		folder.mkdirs();
+		loadTranslations();
+		saveTranslations();
+	}
+
+	@SubscribeEvent
+	public void saveLoad(final WorldEvent.Save event) {
+		saveTranslations();
 	}
 
 	public void saveTranslations() {

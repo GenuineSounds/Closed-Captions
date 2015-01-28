@@ -20,25 +20,6 @@ public class System3D {
 	private final Render3D render3D = new Render3D();
 	private final List<Caption3D> messages3D = new ArrayList<Caption3D>();
 
-	@SubscribeEvent
-	public synchronized void tick(final ClientTickEvent event) {
-		if (event.phase == Phase.START)
-			return;
-		final Minecraft mc = Minecraft.getMinecraft();
-		if (mc.thePlayer == null || mc.currentScreen != null && mc.currentScreen.doesGuiPauseGame())
-			return;
-		final List<Caption> removalQueue = new ArrayList<Caption>();
-		for (final Caption caption : messages3D)
-			if (!caption.tick() || caption.isDisabled())
-				removalQueue.add(caption);
-		messages3D.removeAll(removalQueue);
-	}
-
-	@SubscribeEvent
-	public synchronized void render3D(final RenderWorldLastEvent event) {
-		render3D.render(messages3D, event.partialTicks);
-	}
-
 	public synchronized void add(final Caption3D caption) {
 		if (caption.isDisabled())
 			return;
@@ -58,5 +39,24 @@ public class System3D {
 			return;
 		messages3D.add(caption);
 		Collections.sort(messages3D, Caption3D.DISTANCE);
+	}
+
+	@SubscribeEvent
+	public synchronized void render3D(final RenderWorldLastEvent event) {
+		render3D.render(messages3D, event.partialTicks);
+	}
+
+	@SubscribeEvent
+	public synchronized void tick(final ClientTickEvent event) {
+		if (event.phase == Phase.START)
+			return;
+		final Minecraft mc = Minecraft.getMinecraft();
+		if (mc.thePlayer == null || mc.currentScreen != null && mc.currentScreen.doesGuiPauseGame())
+			return;
+		final List<Caption> removalQueue = new ArrayList<Caption>();
+		for (final Caption caption : messages3D)
+			if (!caption.tick() || caption.isDisabled())
+				removalQueue.add(caption);
+		messages3D.removeAll(removalQueue);
 	}
 }

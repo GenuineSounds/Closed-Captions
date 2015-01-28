@@ -15,22 +15,6 @@ public class Translation {
 		this.sound = sound;
 	}
 
-	public String get(final int index) {
-		return list.get(0);
-	}
-
-	public String getPrevious() {
-		return get(--Translation.index % list.size());
-	}
-
-	public String get() {
-		return get(Translation.index % list.size());
-	}
-
-	public String getNext() {
-		return get(++Translation.index % list.size());
-	}
-
 	public void add(final String trans) {
 		list.add(trans);
 	}
@@ -39,12 +23,28 @@ public class Translation {
 		list.clear();
 	}
 
-	public boolean hasTranslations() {
-		return !(this == Translation.NONE || list.isEmpty());
+	public String get() {
+		return get(Translation.index % list.size());
+	}
+
+	public String get(final int index) {
+		return list.get(0);
+	}
+
+	public String getNext() {
+		return get(++Translation.index % list.size());
+	}
+
+	public String getPrevious() {
+		return get(--Translation.index % list.size());
 	}
 
 	@Override
 	public int hashCode() {
 		return sound.hashCode();
+	}
+
+	public boolean hasTranslations() {
+		return !(this == Translation.NONE || list.isEmpty());
 	}
 }
