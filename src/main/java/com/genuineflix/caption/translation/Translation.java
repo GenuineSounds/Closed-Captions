@@ -1,4 +1,4 @@
-package com.genuineflix.cc.translation;
+package com.genuineflix.caption.translation;
 
 import java.util.ArrayList;
 import java.util.List;

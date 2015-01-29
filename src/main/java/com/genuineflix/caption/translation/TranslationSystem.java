@@ -1,12 +1,11 @@
-package com.genuineflix.cc.system;
+package com.genuineflix.caption.translation;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.resources.I18n;
 
-import com.genuineflix.cc.caption.Caption;
-import com.genuineflix.cc.translation.Translation;
+import com.genuineflix.caption.caption.Caption;
 import com.mojang.realmsclient.gui.ChatFormatting;
 
 public class TranslationSystem {

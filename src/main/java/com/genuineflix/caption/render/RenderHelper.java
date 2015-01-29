@@ -1,8 +1,12 @@
-package com.genuineflix.cc.render;
+package com.genuineflix.caption.render;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.ScaledResolution;
 
 import org.lwjgl.opengl.GL11;
 
-public class RenderCommon {
+public class RenderHelper {
 
 	public static void drawGradientRect(final int x, final int y, int w, int h, final int color1, final int color2) {
 		w += x;
@@ -37,22 +41,32 @@ public class RenderCommon {
 
 	public static void drawTooltip(final int x, final int y, final int w, final int h, final int color1, final int color2, final int color3) {
 		// Main
-		RenderCommon.drawGradientRect(x - 3, y - 3, w + 6, h + 6, color1, color1);
+		drawGradientRect(x - 3, y - 3, w + 6, h + 6, color1, color1);
 		// Top bar
-		RenderCommon.drawGradientRect(x - 3, y - 4, w + 6, 1, color1, color1);
+		drawGradientRect(x - 3, y - 4, w + 6, 1, color1, color1);
 		// Right Bar
-		RenderCommon.drawGradientRect(x + w + 3, y - 3, 1, h + 6, color1, color1);
+		drawGradientRect(x + w + 3, y - 3, 1, h + 6, color1, color1);
 		// Bottom Bar
-		RenderCommon.drawGradientRect(x - 3, y + h + 3, w + 6, 1, color1, color1);
+		drawGradientRect(x - 3, y + h + 3, w + 6, 1, color1, color1);
 		// Left Bar
-		RenderCommon.drawGradientRect(x - 4, y - 3, 1, h + 6, color1, color1);
+		drawGradientRect(x - 4, y - 3, 1, h + 6, color1, color1);
 		// Top Line
-		RenderCommon.drawGradientRect(x - 3, y - 3, w + 6, 1, color2, color2);
+		drawGradientRect(x - 3, y - 3, w + 6, 1, color2, color2);
 		// Right Line
-		RenderCommon.drawGradientRect(x + w + 2, y - 2, 1, h + 4, color2, color3);
+		drawGradientRect(x + w + 2, y - 2, 1, h + 4, color2, color3);
 		// Bottom Line
-		RenderCommon.drawGradientRect(x - 3, y + h + 2, w + 6, 1, color3, color3);
+		drawGradientRect(x - 3, y + h + 2, w + 6, 1, color3, color3);
 		// Left Line
-		RenderCommon.drawGradientRect(x - 3, y - 2, 1, h + 4, color2, color3);
+		drawGradientRect(x - 3, y - 2, 1, h + 4, color2, color3);
+	}
+
+	public static ScaledResolution res;
+	public static final FontRenderer fr;
+	public static final int mainColor = 0xC0100010;
+	public static final int outlineColor = 0x505000FF;
+	public static final int secondaryColor;
+	static {
+		secondaryColor = (outlineColor & 0xFEFEFE) >> 1 | outlineColor & 0xFF000000;
+		fr = Minecraft.getMinecraft().fontRenderer;
 	}
 }

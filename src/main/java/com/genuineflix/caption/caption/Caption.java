@@ -1,9 +1,9 @@
-package com.genuineflix.cc.caption;
+package com.genuineflix.caption.caption;
 
-import com.genuineflix.cc.system.TranslationSystem;
-import com.genuineflix.cc.translation.Translation;
+import com.genuineflix.caption.translation.Translation;
+import com.genuineflix.caption.translation.TranslationSystem;
 
-public class Caption implements Comparable<Caption> {
+public abstract class Caption implements Comparable<Caption> {
 
 	public static final int DEFAULT_TIMER = 60;
 	public static final String DIRECT_MESSAGE_KEY = "[Direct]";

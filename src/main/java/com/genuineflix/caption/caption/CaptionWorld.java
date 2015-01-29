@@ -1,15 +1,14 @@
-package com.genuineflix.cc.caption;
+package com.genuineflix.caption.caption;
 
 import java.util.Comparator;
 
+import javax.vecmath.Vector3d;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
-import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.item.EntityXPOrb;
 
-public class Caption3D extends Caption {
+public class CaptionWorld extends Caption {
 
 	public Entity entity;
 	public ISound sound;
@@ -18,14 +17,14 @@ public class Caption3D extends Caption {
 	public double posZ, prevPosZ;
 	public double size = 1;
 	private float scale;
-	public static Comparator<Caption3D> DISTANCE = new Comparator<Caption3D>() {
+	public static Comparator<CaptionWorld> DISTANCE = new Comparator<CaptionWorld>() {
 
 		@Override
-		public int compare(final Caption3D o1, final Caption3D o2) {
+		public int compare(final CaptionWorld o1, final CaptionWorld o2) {
 			if (Minecraft.getMinecraft().thePlayer == null)
 				return 0;
-			final double d1 = o1.getDistanceToEntity(Minecraft.getMinecraft().thePlayer);
-			final double d2 = o2.getDistanceToEntity(Minecraft.getMinecraft().thePlayer);
+			final double d1 = o1.getDistanceTo(Minecraft.getMinecraft().thePlayer);
+			final double d2 = o2.getDistanceTo(Minecraft.getMinecraft().thePlayer);
 			if (d1 < d2)
 				return 1;
 			if (d1 > d2)
@@ -34,12 +33,12 @@ public class Caption3D extends Caption {
 		}
 	};
 
-	public Caption3D(final String message, final Entity entity, final float volume, final float pitch) {
+	public CaptionWorld(final String message, final Entity entity, final float volume, final float pitch) {
 		super(message, volume, pitch);
 		this.attach(entity);
 	}
 
-	public Caption3D(final String message, final ISound sound, final float volume, final float pitch) {
+	public CaptionWorld(final String message, final ISound sound, final float volume, final float pitch) {
 		super(message, volume, pitch);
 		this.attach(sound);
 	}
@@ -68,21 +67,25 @@ public class Caption3D extends Caption {
 
 	@Override
 	public int compareTo(final Caption o) {
-		if (o instanceof Caption3D)
-			return (int) (getDistanceToCaption((Caption3D) o) * 10000f);
+		if (o instanceof CaptionWorld)
+			return (int) (getDistanceTo((CaptionWorld) o) * 10000f);
 		return key.compareTo(o.key);
 	}
 
-	public boolean equalTo(final Caption3D caption) {
+	public boolean equalTo(final CaptionWorld caption) {
 		if (!nameEquals(caption.key))
 			return false;
-		return getDistanceToCaption(caption) <= 0.1;
+		return getDistanceTo(caption) <= 0.1;
 	}
 
 	public double getDistanceIgnoringHeight(final double posX, final double posZ) {
 		final double distanceX = this.posX - posX;
 		final double distanceZ = this.posZ - posZ;
 		return Math.sqrt(distanceX * distanceX + distanceZ * distanceZ);
+	}
+
+	public double getDistanceTo(final CaptionWorld caption) {
+		return getDistanceTo(caption.posX, caption.posY, caption.posZ);
 	}
 
 	public double getDistanceTo(final double posX, final double posY, final double posZ) {
@@ -92,12 +95,12 @@ public class Caption3D extends Caption {
 		return Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
 	}
 
-	public double getDistanceToCaption(final Caption3D caption) {
-		return getDistanceTo(caption.posX, caption.posY, caption.posZ);
+	public double getDistanceTo(final Entity entity) {
+		return getDistanceTo(entity.posX, entity.posY, entity.posZ);
 	}
 
-	public double getDistanceToEntity(final Entity entity) {
-		return getDistanceTo(entity.posX, entity.posY, entity.posZ);
+	public double getDistanceTo(final Vector3d entity) {
+		return getDistanceTo(entity.x, entity.y, entity.z);
 	}
 
 	public float getScale() {
@@ -110,10 +113,6 @@ public class Caption3D extends Caption {
 		return 1;
 	}
 
-	public boolean is2D() {
-		return (entity instanceof EntityItem || entity instanceof EntityXPOrb || sound instanceof PositionedSoundRecord) && isWithin(Minecraft.getMinecraft().thePlayer, 4);
-	}
-
 	public boolean isEntity() {
 		return entity != null;
 	}
@@ -122,23 +121,23 @@ public class Caption3D extends Caption {
 		return sound != null;
 	}
 
-	public boolean isWithin(final Caption3D caption, final double distance) {
-		return getDistanceToCaption(caption) <= distance;
+	public boolean isWithin(final CaptionWorld caption, final double distance) {
+		return caption != null && getDistanceTo(caption) <= distance;
 	}
 
 	public boolean isWithin(final Entity entity, final double distance) {
-		return getDistanceToEntity(entity) <= distance;
+		return entity != null && getDistanceTo(entity) <= distance;
 	}
 
 	@Override
 	public boolean tick() {
+		if (isEntity() && entity.isDead)
+			entity = null;
 		updatePos();
 		return super.tick();
 	}
 
 	private void updatePos() {
-		if (isEntity() && entity.isDead)
-			entity = null;
 		if (isEntity()) {
 			prevPosX = entity.prevPosX;
 			prevPosY = entity.prevPosY;

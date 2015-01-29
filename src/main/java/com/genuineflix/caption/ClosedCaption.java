@@ -1,4 +1,4 @@
-package com.genuineflix.cc;
+package com.genuineflix.caption;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -11,9 +11,12 @@ import java.util.List;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
 
-import com.genuineflix.cc.events.SoundEvents;
-import com.genuineflix.cc.system.TranslationSystem;
-import com.genuineflix.cc.translation.Translation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.genuineflix.caption.events.SoundEvents;
+import com.genuineflix.caption.translation.Translation;
+import com.genuineflix.caption.translation.TranslationSystem;
 import com.google.common.base.Charsets;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
@@ -33,7 +36,8 @@ public class ClosedCaption {
 	public static ClosedCaption instance;
 	public static final String MODID = "ClosedCaption";
 	public static final String NAME = "Closed Caption";
-	public static final String VERSION = "1.0.8";
+	public static final String VERSION = "1.0.11";
+	public static final Logger log = LogManager.getLogger(MODID);
 	public static final Type TYPE = new TypeToken<List<Translation>>() {}.getType();
 	private File folder;
 
