@@ -13,8 +13,8 @@ import net.minecraft.client.gui.ScaledResolution;
 
 import org.lwjgl.opengl.GL11;
 
-import com.genuineflix.caption.caption.Caption;
 import com.genuineflix.caption.caption.CaptionHUD;
+import com.mojang.realmsclient.gui.ChatFormatting;
 
 public class RenderHUD {
 
@@ -25,8 +25,8 @@ public class RenderHUD {
 		int w = 0;
 		int size = 0;
 		double mostPercent = 0;
-		for (final Caption caption : messages2D) {
-			int swidth = fr.getStringWidth(caption.message) + 2;
+		for (final CaptionHUD caption : messages2D) {
+			int swidth = fr.getStringWidth(caption.message + (caption.amount > 0 ? caption.amount : "")) + 3;
 			if (swidth < template)
 				swidth = (int) template;
 			if (w < swidth)
@@ -49,14 +49,14 @@ public class RenderHUD {
 			GL11.glTranslated(-moveInTips, 0, 0);
 		GL11.glTranslated(0, 0, 1);
 		GL11.glEnable(GL11.GL_BLEND);
-		for (final Caption caption : messages2D) {
+		for (final CaptionHUD caption : messages2D) {
 			final double action = Math.pow(1 - caption.getPercentGuess(deltaTime), 8);
 			int alpha = (int) ((1 - action) * 0xFF);
 			if (alpha < 28)
 				alpha = 28;
 			final double fadeMove = action * w;
 			GL11.glTranslated(fadeMove, 0, 0);
-			fr.drawStringWithShadow(caption.message, x + 1, y, alpha << 24 | 0xFFFFFF);
+			fr.drawStringWithShadow(caption.message + (caption.amount > 0 ? caption.amount : "") + ChatFormatting.RESET, x + 1, y, alpha << 24 | 0xFFFFFF);
 			GL11.glTranslated(-fadeMove, 0, 0);
 			y += 10;
 		}
@@ -64,6 +64,8 @@ public class RenderHUD {
 	}
 
 	public static void render(final List<CaptionHUD> messages, final ScaledResolution resolution, final float partialTicks) {
+		if (messages == null)
+			return;
 		res = resolution;
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL11.GL_ALPHA_TEST);

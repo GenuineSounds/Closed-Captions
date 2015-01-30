@@ -56,7 +56,11 @@ public class ContainerWorld {
 			return;
 		this.tick = tick;
 		synchronized (messages) {
-			ContainerHelper.removeOldCaptions(messages);
+			final List<Caption> removalQueue = new ArrayList<Caption>();
+			for (final Caption caption : messages)
+				if (!caption.tick() || caption.isDisabled())
+					removalQueue.add(caption);
+			messages.removeAll(removalQueue);
 			renderMessages = ImmutableList.copyOf(messages);
 		}
 	}

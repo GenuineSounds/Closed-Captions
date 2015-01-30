@@ -55,6 +55,8 @@ public class RenderWorld {
 	}
 
 	public static void render(final List<CaptionWorld> messages, final float partialTicks) {
+		if (messages == null)
+			return;
 		GL11.glPushMatrix();
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glDisable(GL11.GL_DEPTH_TEST);

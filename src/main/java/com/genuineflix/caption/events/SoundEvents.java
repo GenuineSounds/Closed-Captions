@@ -1,6 +1,5 @@
 package com.genuineflix.caption.events;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.entity.Entity;
@@ -25,7 +24,7 @@ public class SoundEvents {
 	}
 
 	private static boolean isCaptionBroken(final CaptionWorld caption) {
-		return caption.isWithin(Minecraft.getMinecraft().thePlayer, 2) || captionObjectCheck(caption) || ((int) caption.posX | (int) caption.posY | (int) caption.posZ) == 0;
+		return captionObjectCheck(caption) || ((int) caption.posX | (int) caption.posY | (int) caption.posZ) == 0;
 	}
 
 	private static boolean isNameBroken(final String name) {
