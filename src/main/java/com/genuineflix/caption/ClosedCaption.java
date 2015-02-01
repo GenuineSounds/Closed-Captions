@@ -85,6 +85,7 @@ public class ClosedCaption {
 
 	@SubscribeEvent
 	public void saveLoad(final WorldEvent.Save event) {
+		loadTranslations();
 		saveTranslations();
 	}
 
