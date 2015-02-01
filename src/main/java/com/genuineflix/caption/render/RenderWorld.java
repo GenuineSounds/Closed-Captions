@@ -28,7 +28,7 @@ public class RenderWorld {
 		GL11.glRotated(instance.playerViewX, -1, 0, 0);
 		final float scale = 0.02F * caption.getScale();
 		GL11.glScalef(scale, -scale, scale);
-		final int w = fr.getStringWidth(caption.message);
+		final int w = fr.getStringWidth(caption.getMessage());
 		final int h = 8;
 		final int x = -w / 2;
 		final int y = -h;
@@ -37,7 +37,7 @@ public class RenderWorld {
 			alpha = 28;
 		drawTooltip(x, y, w, h, alpha << 24 | mainColor & 0xFFFFFF, alpha << 24 | outlineColor & 0xFFFFFF, alpha << 24 | secondaryColor & 0xFFFFFF);
 		GL11.glTranslated(0, 0, 1);
-		fr.drawStringWithShadow(caption.message, x, y, alpha << 24 | 0xFFFFFF);
+		fr.drawStringWithShadow(caption.getMessage(), x, y, alpha << 24 | 0xFFFFFF);
 		GL11.glTranslated(0, 0, -1);
 		GL11.glScalef(1F / scale, -(1F / scale), 1F / scale);
 		GL11.glRotated(instance.playerViewX, 1, 0, 0);

@@ -2,8 +2,9 @@ package com.genuineflix.caption.caption;
 
 import com.genuineflix.caption.translation.Translation;
 import com.genuineflix.caption.translation.TranslationSystem;
+import com.genuineflix.util.Titulary;
 
-public abstract class Caption implements Comparable<Caption> {
+public abstract class Caption implements Titulary<Caption> {
 
 	public static final int DEFAULT_TIMER = 60;
 	public static final String DIRECT_MESSAGE_KEY = "[Direct]";
@@ -11,8 +12,8 @@ public abstract class Caption implements Comparable<Caption> {
 	public final float volume;
 	public final float pitch;
 	public final boolean directMessage;
-	public boolean disabled = false;
-	public String message;
+	private boolean disabled = false;
+	private String message;
 	protected int lifespan;
 	protected int currentTick;
 	protected int previousTick;
@@ -41,15 +42,20 @@ public abstract class Caption implements Comparable<Caption> {
 
 	private void assignTranslation() {
 		final Translation translation = TranslationSystem.instance.get(this);
-		if (translation.hasTranslations())
+		if (!translation.isEmpty())
 			message = TranslationSystem.formatTranslation(translation.getNext());
 		else
 			disabled = true;
 	}
 
 	@Override
-	public int compareTo(final Caption o) {
-		return key.compareTo(o.key);
+	public int compareToKey(final String str) {
+		return key.compareTo(str);
+	}
+
+	@Override
+	public String getKey() {
+		return key;
 	}
 
 	public String getMessage() {
@@ -68,16 +74,33 @@ public abstract class Caption implements Comparable<Caption> {
 		return (float) previousTick / (float) lifespan;
 	}
 
+	@Override
+	public Caption getValue() {
+		return this;
+	}
+
 	public boolean isDisabled() {
 		return disabled;
 	}
 
-	public boolean nameEquals(final String key) {
-		return this.key.equalsIgnoreCase(key);
+	@Override
+	public boolean nameEquals(final String str) {
+		return key.equalsIgnoreCase(str);
 	}
 
 	public void resetTime() {
 		lifespan = currentTick = previousTick = Caption.DEFAULT_TIMER;
+	}
+
+	@Override
+	public Caption setValue(final Caption value) {
+		final Caption old = this;
+		disabled = value.disabled;
+		message = value.message;
+		lifespan = value.lifespan;
+		currentTick = value.currentTick;
+		previousTick = value.previousTick;
+		return old;
 	}
 
 	public boolean tick() {

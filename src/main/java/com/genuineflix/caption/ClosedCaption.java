@@ -7,6 +7,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
@@ -15,7 +16,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.genuineflix.caption.events.SoundEvents;
-import com.genuineflix.caption.translation.Translation;
 import com.genuineflix.caption.translation.TranslationSystem;
 import com.google.common.base.Charsets;
 import com.google.common.reflect.TypeToken;
@@ -38,8 +38,14 @@ public class ClosedCaption {
 	public static final String NAME = "Closed Caption";
 	public static final String VERSION = "1.0.11";
 	public static final Logger log = LogManager.getLogger(MODID);
-	public static final Type TYPE = new TypeToken<List<Translation>>() {}.getType();
+	private static final GsonBuilder GSON_BUILDER = new GsonBuilder();
+	private static final Type GSON_TYPE = new TypeToken<Map<String, List<String>>>() {}.getType();
 	private File folder;
+	static {
+		GSON_BUILDER.setPrettyPrinting();
+		GSON_BUILDER.disableHtmlEscaping();
+		GSON_BUILDER.enableComplexMapKeySerialization();
+	}
 
 	@EventHandler
 	public void init(final FMLInitializationEvent event) {
@@ -51,13 +57,13 @@ public class ClosedCaption {
 		final File file = new File(folder, "translations.json");
 		if (!file.exists())
 			return;
-		final Gson gson = new GsonBuilder().create();
+		final Gson gson = GSON_BUILDER.create();
 		FileReader fr = null;
 		try {
 			fr = new FileReader(file);
-			final List<Translation> tc = gson.fromJson(fr, ClosedCaption.TYPE);
-			if (tc != null)
-				TranslationSystem.instance.setTranslations(tc);
+			final Map<String, List<String>> ts = gson.fromJson(fr, ClosedCaption.GSON_TYPE);
+			if (ts != null)
+				TranslationSystem.instance.setMap(ts);
 		}
 		catch (final Exception e) {}
 		finally {
@@ -84,15 +90,13 @@ public class ClosedCaption {
 
 	public void saveTranslations() {
 		final File file = new File(folder, "translations.json");
-		final GsonBuilder builder = new GsonBuilder();
-		builder.setPrettyPrinting();
-		final Gson gson = builder.create();
+		final Gson gson = GSON_BUILDER.create();
 		Writer wr = null;
 		try {
 			if (!file.exists())
 				file.createNewFile();
 			wr = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
-			gson.toJson(TranslationSystem.instance.getTranslations(), ClosedCaption.TYPE, wr);
+			gson.toJson(TranslationSystem.instance.getMap(), ClosedCaption.GSON_TYPE, wr);
 		}
 		catch (final Exception e) {}
 		finally {

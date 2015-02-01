@@ -26,7 +26,7 @@ public class RenderHUD {
 		int size = 0;
 		double mostPercent = 0;
 		for (final CaptionHUD caption : messages2D) {
-			int swidth = fr.getStringWidth(caption.message + (caption.amount > 0 ? caption.amount : "")) + 3;
+			int swidth = fr.getStringWidth(caption.getMessage() + (caption.amount > 0 ? caption.amount : "")) + 3;
 			if (swidth < template)
 				swidth = (int) template;
 			if (w < swidth)
@@ -56,7 +56,7 @@ public class RenderHUD {
 				alpha = 28;
 			final double fadeMove = action * w;
 			GL11.glTranslated(fadeMove, 0, 0);
-			fr.drawStringWithShadow(caption.message + (caption.amount > 0 ? caption.amount : "") + ChatFormatting.RESET, x + 1, y, alpha << 24 | 0xFFFFFF);
+			fr.drawStringWithShadow(caption.getMessage() + (caption.amount > 0 ? caption.amount : "") + ChatFormatting.RESET, x + 1, y, alpha << 24 | 0xFFFFFF);
 			GL11.glTranslated(-fadeMove, 0, 0);
 			y += 10;
 		}

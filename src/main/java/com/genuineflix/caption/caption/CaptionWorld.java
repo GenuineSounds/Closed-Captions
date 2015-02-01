@@ -78,12 +78,6 @@ public class CaptionWorld extends Caption {
 		return getDistanceTo(caption) <= 0.1;
 	}
 
-	public double getDistanceIgnoringHeight(final double posX, final double posZ) {
-		final double distanceX = this.posX - posX;
-		final double distanceZ = this.posZ - posZ;
-		return Math.sqrt(distanceX * distanceX + distanceZ * distanceZ);
-	}
-
 	public double getDistanceTo(final CaptionWorld caption) {
 		return getDistanceTo(caption.posX, caption.posY, caption.posZ);
 	}
@@ -101,6 +95,10 @@ public class CaptionWorld extends Caption {
 
 	public double getDistanceTo(final Vector3d entity) {
 		return getDistanceTo(entity.x, entity.y, entity.z);
+	}
+
+	public double getDistanceToPlayer() {
+		return getDistanceTo(Minecraft.getMinecraft().thePlayer);
 	}
 
 	public float getScale() {
@@ -122,11 +120,15 @@ public class CaptionWorld extends Caption {
 	}
 
 	public boolean isWithin(final CaptionWorld caption, final double distance) {
-		return caption != null && getDistanceTo(caption) <= distance;
+		return entity != null && getDistanceTo(caption) <= distance;
 	}
 
 	public boolean isWithin(final Entity entity, final double distance) {
 		return entity != null && getDistanceTo(entity) <= distance;
+	}
+
+	public boolean isWithinPlayer(final double distance) {
+		return Minecraft.getMinecraft().thePlayer != null || getDistanceToPlayer() <= distance;
 	}
 
 	@Override

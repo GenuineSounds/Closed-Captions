@@ -1,10 +1,13 @@
 package com.genuineflix.caption.events;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.sound.PlaySoundEvent17;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
@@ -19,12 +22,17 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class SoundEvents {
 
-	private static boolean captionObjectCheck(final CaptionWorld caption) {
+	private static boolean isCaptionHUD(final CaptionWorld caption) {
+		return isEntityHUD(caption) || isEntityPlayer(caption);
+	}
+
+	private static boolean isEntityHUD(final CaptionWorld caption) {
 		return caption.entity instanceof EntityItem || caption.entity instanceof EntityXPOrb || caption.sound instanceof PositionedSoundRecord;
 	}
 
-	private static boolean isCaptionBroken(final CaptionWorld caption) {
-		return captionObjectCheck(caption) || ((int) caption.posX | (int) caption.posY | (int) caption.posZ) == 0;
+	private static boolean isEntityPlayer(final CaptionWorld caption) {
+		final EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+		return player != null && caption.entity instanceof EntityPlayer && player.getDisplayName().equals(((EntityPlayer) caption.entity).getDisplayName());
 	}
 
 	private static boolean isNameBroken(final String name) {
@@ -39,16 +47,16 @@ public class SoundEvents {
 	public final ContainerWorld world = new ContainerWorld();
 
 	public void createCaption(final String name, final Entity entity, final float volume, final float pitch) {
-		final CaptionWorld cap3d = new CaptionWorld(name, entity, volume, pitch);
-		if (isCaptionBroken(cap3d))
+		final CaptionWorld caption = new CaptionWorld(name, entity, volume, pitch);
+		if (isCaptionHUD(caption))
 			hud.add(new CaptionHUD(name, volume, pitch));
 		else
-			world.add(cap3d);
+			world.add(caption);
 	}
 
 	public void createCaption(final String name, final ISound sound) {
 		final CaptionWorld caption = new CaptionWorld(name, sound, sound.getVolume(), sound.getPitch());
-		if (isCaptionBroken(caption))
+		if (isCaptionHUD(caption))
 			hud.add(new CaptionHUD(name, sound.getVolume(), sound.getPitch()));
 		else
 			world.add(caption);
@@ -56,16 +64,14 @@ public class SoundEvents {
 
 	@SubscribeEvent
 	public void eventEntity(final PlaySoundAtEntityEvent event) {
-		if (isRemote(event))
-			return;
-		if (isNameBroken(event.name))
+		if (isRemote(event) || isNameBroken(event.name))
 			return;
 		createCaption(event.name, event.entity, event.volume, event.pitch);
 	}
 
 	@SubscribeEvent
 	public void eventISound(final PlaySoundEvent17 event) {
-		if (event.category == null || event.sound == null || event.name == null || event.name.isEmpty() || event.name.equals("none"))
+		if (event.category == null || event.sound == null || isNameBroken(event.name))
 			return;
 		switch (event.category) {
 			case PLAYERS:
