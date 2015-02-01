@@ -22,6 +22,10 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class SoundEvents {
 
+	private static boolean displayBoth(final String name) {
+		return name.contains("primed");
+	}
+
 	private static boolean isCaptionHUD(final CaptionWorld caption) {
 		return isEntityHUD(caption) || isEntityPlayer(caption);
 	}
@@ -47,19 +51,27 @@ public class SoundEvents {
 	public final ContainerWorld world = new ContainerWorld();
 
 	public void createCaption(final String name, final Entity entity, final float volume, final float pitch) {
-		final CaptionWorld caption = new CaptionWorld(name, entity, volume, pitch);
-		if (isCaptionHUD(caption))
-			hud.add(new CaptionHUD(name, volume, pitch));
+		final CaptionWorld caption3D = new CaptionWorld(name, entity, volume, pitch);
+		final CaptionHUD caption2D = new CaptionHUD(name, volume, pitch);
+		if (displayBoth(name)) {
+			hud.add(caption2D);
+			world.add(caption3D);
+		} else if (isCaptionHUD(caption3D))
+			hud.add(caption2D);
 		else
-			world.add(caption);
+			world.add(caption3D);
 	}
 
 	public void createCaption(final String name, final ISound sound) {
-		final CaptionWorld caption = new CaptionWorld(name, sound, sound.getVolume(), sound.getPitch());
-		if (isCaptionHUD(caption))
-			hud.add(new CaptionHUD(name, sound.getVolume(), sound.getPitch()));
+		final CaptionWorld caption3D = new CaptionWorld(name, sound, sound.getVolume(), sound.getPitch());
+		final CaptionHUD caption2D = new CaptionHUD(name, sound.getVolume(), sound.getPitch());
+		if (displayBoth(name)) {
+			hud.add(caption2D);
+			world.add(caption3D);
+		} else if (isCaptionHUD(caption3D))
+			hud.add(caption2D);
 		else
-			world.add(caption);
+			world.add(caption3D);
 	}
 
 	@SubscribeEvent
