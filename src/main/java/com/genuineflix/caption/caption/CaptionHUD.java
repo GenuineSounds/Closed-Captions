@@ -13,6 +13,11 @@ public class CaptionHUD extends Caption {
 		super(name, volume, pitch);
 	}
 
+	public CaptionHUD(final String message, final float amount, final int ticks) {
+		super(message, ticks);
+		this.amount = amount;
+	}
+
 	@Override
 	public int compareTo(final Caption t) {
 		if (t instanceof CaptionHUD)

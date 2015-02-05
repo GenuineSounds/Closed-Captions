@@ -1,10 +1,11 @@
 package com.genuineflix.caption.translation;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import net.minecraft.client.resources.I18n;
 
@@ -23,7 +24,8 @@ public class TranslationSystem {
 		out = out.replace("]", ChatFormatting.RESET.toString());
 		out = out.replace("}", ChatFormatting.RESET.toString());
 		out = out.replace(">", ChatFormatting.RESET.toString());
-		out = out.replace("~", "\u266a");
+		out = out.replace('~', '\u266a');
+		out = out.replace('|', '\n');
 		return out;
 	}
 
@@ -45,9 +47,12 @@ public class TranslationSystem {
 	}
 
 	public Map<String, List<String>> getMap() {
-		final Map<String, List<String>> map = new HashMap<String, List<String>>();
-		for (final Translation translation : translations)
-			map.put(translation.getKey(), translation.getValue());
+		final Map<String, List<String>> map = new TreeMap<String, List<String>>();
+		for (final Translation translation : translations) {
+			final List<String> list = translation.getValue();
+			Collections.sort(list);
+			map.put(translation.getKey(), list);
+		}
 		return map;
 	}
 
@@ -63,11 +68,11 @@ public class TranslationSystem {
 		if (contains(caption))
 			return;
 		final Translation translation = new Translation(caption);
+		translations.add(translation);
 		final String formatted = I18n.format(caption.key);
 		if (formatted.equals(caption.key) || formatted.isEmpty())
 			return;
 		translation.add(formatted);
-		translations.add(translation);
 	}
 
 	public void setMap(final Map<String, List<String>> map) {
