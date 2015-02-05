@@ -10,6 +10,8 @@ import com.genuineflix.util.Titulary;
 public class Translation implements Titulary<List<String>> {
 
 	public static final Translation NONE = new Translation("NONE");
+	public static final Translation DIRECT = new Translation("DIRECT");
+	public static final Translation DISABLED = new Translation("DISABLED");
 	private final String name;
 	private final List<String> list;
 	private transient int index = 0;
@@ -33,7 +35,7 @@ public class Translation implements Titulary<List<String>> {
 
 	@Override
 	public int compareTo(final List<String> t) {
-		return list.size() - t.size();
+		return getValue().size() - t.size();
 	}
 
 	@Override
@@ -47,11 +49,7 @@ public class Translation implements Titulary<List<String>> {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj instanceof List)
-			return getValue().equals(obj);
-		if (obj instanceof Titulary)
-			return getValue().equals(((Titulary) obj).getValue());
-		return super.equals(obj);
+		return getKey().equals(obj);
 	}
 
 	public String get(final int index) {
@@ -86,7 +84,11 @@ public class Translation implements Titulary<List<String>> {
 	}
 
 	public boolean isEmpty() {
-		return this == Translation.NONE || getValue().isEmpty();
+		return this.equals(Translation.NONE) || getValue().isEmpty();
+	}
+
+	public boolean isDisabled() {
+		return this.equals(Translation.DISABLED);
 	}
 
 	@Override
