@@ -39,12 +39,19 @@ public class ContainerHUD {
 	}
 
 	public void directMessage(final String message, final float amount) {
-		final CaptionHUD caption = new CaptionHUD(message, amount);
+		dm(new CaptionHUD(message, amount));
+	}
+
+	public void directMessage(final String message, final float amount, final int ticks) {
+		dm(new CaptionHUD(message, amount, ticks));
+	}
+
+	public void dm(final CaptionHUD caption) {
 		synchronized (messages) {
 			for (final CaptionHUD old : messages) {
 				if (!old.getMessage().equals(caption.getMessage()))
 					continue;
-				old.amount += amount;
+				old.amount += caption.amount;
 				old.resetTime();
 				return;
 			}
@@ -56,17 +63,22 @@ public class ContainerHUD {
 		for (final IMCMessage imc : FMLInterModComms.fetchRuntimeMessages(ClosedCaption.instance)) {
 			if (!imc.key.equals(Caption.DIRECT_MESSAGE_KEY))
 				continue;
-			final NBTTagCompound tag = imc.getNBTValue();
-			final float amount = tag.getFloat("amount");
-			final StringBuilder message = new StringBuilder();
-			final String type = tag.getString("type");
-			if ("healing".equals(type)) {
-				message.append("Healing: ");
-				message.append(ChatFormatting.GREEN.toString());
-			}
-			if ("damage".equals(type))
-				message.append(tag.getString("message"));
-			directMessage(message.toString(), amount);
+			if (imc.isNBTMessage()) {
+				final NBTTagCompound tag = imc.getNBTValue();
+				final float amount = tag.getFloat("amount");
+				final StringBuilder message = new StringBuilder();
+				final String type = tag.getString("type");
+				if ("healing".equals(type)) {
+					message.append("Healing: ");
+					message.append(ChatFormatting.GREEN.toString());
+				} else
+					message.append(tag.getString("message"));
+				if (tag.hasKey("ticks"))
+					directMessage(message.toString(), amount, tag.getInteger("ticks"));
+				else
+					directMessage(message.toString(), amount);
+			} else if (imc.isStringMessage())
+				directMessage(imc.getStringValue(), 0);
 		}
 	}
 

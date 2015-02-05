@@ -19,12 +19,7 @@ public abstract class Caption implements Titulary<Caption> {
 	protected int previousTick;
 
 	public Caption(final String message) {
-		key = Caption.DIRECT_MESSAGE_KEY;
-		directMessage = true;
-		this.message = message;
-		volume = 1;
-		pitch = 1;
-		lifespan = currentTick = previousTick = Caption.DEFAULT_TIMER;
+		this(message, Caption.DEFAULT_TIMER);
 	}
 
 	public Caption(final String key, final float volume, final float pitch) {
@@ -35,12 +30,23 @@ public abstract class Caption implements Titulary<Caption> {
 		this.key = key;
 		this.volume = volume;
 		this.pitch = pitch;
-		lifespan = currentTick = previousTick = ticksToRun;
 		directMessage = false;
+		lifespan = currentTick = previousTick = ticksToRun;
 		assignTranslation();
 	}
 
+	public Caption(final String message, final int ticksToRun) {
+		key = Caption.DIRECT_MESSAGE_KEY;
+		directMessage = true;
+		this.message = message;
+		volume = 1;
+		pitch = 1;
+		lifespan = currentTick = previousTick = ticksToRun;
+	}
+
 	private void assignTranslation() {
+		if (DIRECT_MESSAGE_KEY.equals(key))
+			return;
 		final Translation translation = TranslationSystem.instance.get(this);
 		if (!translation.isEmpty())
 			message = TranslationSystem.formatTranslation(translation.getNext());
@@ -89,7 +95,7 @@ public abstract class Caption implements Titulary<Caption> {
 	}
 
 	public void resetTime() {
-		lifespan = currentTick = previousTick = Caption.DEFAULT_TIMER;
+		currentTick = previousTick = lifespan;
 	}
 
 	@Override
