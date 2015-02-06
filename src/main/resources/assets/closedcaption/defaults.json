@@ -1,9 +1,15 @@
-{  
-  "ambient.weather.thunder":[  
-    "[Thunder]"
+{
+  "_formatcodes_":[  
+    "( Bold )",
+    "[ Italic ]",
+    "{ Strike-through }",
+    "< Obfuscated/Magic/Ender >"
   ],
   "ambient.cave.cave":[  
     "[Creepy]"
+  ],
+  "ambient.weather.thunder":[  
+    "[Thunder]"
   ],
   "creeper.primed":[  
     "GET READY!"
@@ -23,11 +29,11 @@
   "game.hostile.hurt.fall.small":[  
     "[Damage]"
   ],
-  "game.hostile.swim.splash":[  
-    "(Splash)"
-  ],
   "game.hostile.swim":[  
     "(Splish)"
+  ],
+  "game.hostile.swim.splash":[  
+    "(Splash)"
   ],
   "game.neutral.hurt.fall.big":[  
     "[Heavy Damage]"
@@ -35,14 +41,17 @@
   "game.neutral.hurt.fall.small":[  
     "[Damage]"
   ],
-  "game.neutral.swim.splash":[  
-    "(Splash)"
-  ],
   "game.neutral.swim":[  
     "(Splish)"
   ],
+  "game.neutral.swim.splash":[  
+    "(Splash)"
+  ],
   "game.player.die":[  
     "[Player Dies]"
+  ],
+  "game.player.hurt":[  
+    "Ouch!"
   ],
   "game.player.hurt.fall.big":[  
     "[Heavy Damage]"
@@ -50,14 +59,11 @@
   "game.player.hurt.fall.small":[  
     "[Damage]"
   ],
-  "game.player.hurt":[  
-    "Ouch!"
+  "game.player.swim":[  
+    "(Splish)"
   ],
   "game.player.swim.splash":[  
     "(Splash)"
-  ],
-  "game.player.swim":[  
-    "(Splish)"
   ],
   "game.tnt.primed":[  
     "[Fuse is lit!]"
@@ -134,11 +140,11 @@
   "mob.ghast.scream":[  
     "Screeeaaa!"
   ],
-  "mob.horse.donkey.idle":[  
-    "Eee Ooo"
-  ],
   "mob.horse.death":[  
     "Neigh!"
+  ],
+  "mob.horse.donkey.idle":[  
+    "Eee Ooo"
   ],
   "mob.horse.hit":[  
     "Snort"
@@ -225,7 +231,7 @@
     "(Screech)"
   ],
   "mob.witch.idle":[  
-    "Ahahahahaha!|(Screech)",
+    "Ahahahahaha! [Screech]",
     "Ahh, here are my potions!",
     "Potions...",
     "Potions? Where are my potions?",
@@ -261,14 +267,14 @@
   "mob.zombiepig.zpighurt":[  
     "Oink! Brains!"
   ],
+  "music.game":[  
+    "~ [Music] ~"
+  ],
   "music.game.creative":[  
     "~ [Creative Music] ~"
   ],
   "music.game.nether":[  
     "~ [Nether Music] ~"
-  ],
-  "music.game":[  
-    "~ [Music] ~"
   ],
   "music.menu":[  
     "~ [Menu Music] ~"
@@ -321,14 +327,17 @@
   "random.splash":[  
     "(Splash)"
   ],
+  "records.11":[  
+    "~ [C418 - 11] ~"
+  ],
   "records.13":[  
     "~ [C418 - 13] ~"
   ],
-  "records.cat":[  
-    "~ [C418 - cat] ~"
-  ],
   "records.blocks":[  
     "~ [C418 - blocks] ~"
+  ],
+  "records.cat":[  
+    "~ [C418 - cat] ~"
   ],
   "records.chirp":[  
     "~ [C418 - chirp] ~"
@@ -348,13 +357,10 @@
   "records.strad":[  
     "~ [C418 - strad] ~"
   ],
-  "records.ward":[  
-    "~ [C418 - ward] ~"
-  ],
-  "records.11":[  
-    "~ [C418 - 11] ~"
-  ],
   "records.wait":[  
     "~ [C418 - wait] ~"
+  ],
+  "records.ward":[  
+    "~ [C418 - ward] ~"
   ]
 }

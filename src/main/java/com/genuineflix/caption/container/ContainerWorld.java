@@ -7,6 +7,7 @@ import java.util.List;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 
+import com.genuineflix.caption.ClosedCaption;
 import com.genuineflix.caption.caption.Caption;
 import com.genuineflix.caption.caption.CaptionWorld;
 import com.genuineflix.caption.render.RenderWorld;
@@ -46,6 +47,8 @@ public class ContainerWorld {
 
 	@SubscribeEvent
 	public void render3D(final RenderWorldLastEvent event) {
+		if (!ClosedCaption.enabled)
+			return;
 		tick();
 		RenderWorld.render(renderMessages, event.partialTicks);
 	}

@@ -14,14 +14,12 @@ import java.util.Map;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.world.WorldEvent;
 
-import com.genuineflix.caption.ClosedCaption;
 import com.genuineflix.caption.translation.TranslationSystem;
 import com.google.common.base.Charsets;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class Config {
@@ -36,39 +34,26 @@ public class Config {
 		this.folder = folder;
 		save = new File(folder, "translations.json");
 		main = new Configuration(new File(folder, "Main.cfg"));
-		loadTranslations(getClass().getClassLoader().getResourceAsStream("assets/closedcaption/defaults.json"));
+		loadEnableSave(getClass().getClassLoader().getResourceAsStream("assets/closedcaption/defaults.json"), save);
 	}
 
 	public void init() {
-		loadTranslations(save);
-		saveTranslations(save);
+		loadEnableSave(save, save);
 	}
 
 	@SubscribeEvent
 	public void saveLoad(final WorldEvent.Save event) {
-		loadTranslations(save);
-		saveTranslations(save);
+		loadEnableSave(save, save);
 	}
 
-	@SubscribeEvent
-	public void onConfigChanged(final ConfigChangedEvent event) {
-		if (event instanceof ConfigChangedEvent.OnConfigChangedEvent && ClosedCaption.MODID.equals(event.modID)) {
-			loadConfig(event.configID);
-			if (hasChanged())
-				save();
-		}
+	private void loadEnableSave(final InputStream input, final File output) {
+		loadTranslations(input);
+		saveTranslations(output);
 	}
 
-	public void save() {
-		main.save();
-	}
-
-	public boolean hasChanged() {
-		return true;
-	}
-
-	public void loadConfig(final String configID) {
-		ClosedCaption.log.warn(configID);
+	private void loadEnableSave(final File input, final File output) {
+		loadTranslations(input);
+		saveTranslations(output);
 	}
 
 	public void saveTranslations(final File file) {

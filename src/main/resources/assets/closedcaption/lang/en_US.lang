@@ -1,13 +1,16 @@
-closedcaption.config.title=ClosedCaption Options
+closedcaption.config.title=ClosedCaption
 
 closedcaption.config.general=General
 closedcaption.config.graphic=Graphics
-closedcaption.config.caption=Captions
+closedcaption.config.enable=Enable/Disable
+closedcaption.config.edit=Add/Edit/Remove
 
 closedcaption.config.sub.general=General
 closedcaption.config.sub.graphic=Graphics
-closedcaption.config.sub.caption=Captions
+closedcaption.config.sub.enable=Toggle Captions
+closedcaption.config.sub.edit=Edit Translations
 
 closedcaption.config.sub.general.tooltip=General settings for ClosedCaptions.
 closedcaption.config.sub.graphic.tooltip=Change the positions of the HUD.
-closedcaption.config.sub.caption.tooltip=Enable, disable, and edit captions.
+closedcaption.config.sub.enable.tooltip=Enable or disable captions.
+closedcaption.config.sub.edit.tooltip=Add, edit, remove translations.

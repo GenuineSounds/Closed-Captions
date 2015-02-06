@@ -1,8 +1,8 @@
 package com.genuineflix.caption.translation;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Map.Entry;
 
 import com.genuineflix.caption.caption.Caption;
 import com.genuineflix.util.Titulary;
@@ -14,6 +14,7 @@ public class Translation implements Titulary<List<String>> {
 	public static final Translation DISABLED = new Translation("DISABLED");
 	private final String name;
 	private final List<String> list;
+	private transient boolean enabled = true;
 	private transient int index = 0;
 
 	public Translation(final Caption caption) {
@@ -49,6 +50,8 @@ public class Translation implements Titulary<List<String>> {
 
 	@Override
 	public boolean equals(final Object obj) {
+		if (obj instanceof Entry)
+			return hashCode() == obj.hashCode();
 		return getKey().equals(obj);
 	}
 
@@ -84,11 +87,11 @@ public class Translation implements Titulary<List<String>> {
 	}
 
 	public boolean isEmpty() {
-		return this.equals(Translation.NONE) || getValue().isEmpty();
+		return equals(Translation.NONE) || getValue().isEmpty();
 	}
 
 	public boolean isDisabled() {
-		return this.equals(Translation.DISABLED);
+		return equals(Translation.DISABLED) || !enabled;
 	}
 
 	@Override
@@ -98,8 +101,7 @@ public class Translation implements Titulary<List<String>> {
 
 	@Override
 	public List<String> setValue(final List<String> value) {
-		final List<String> old = new ArrayList<String>(size());
-		Collections.copy(old, getValue());
+		final List<String> old = new ArrayList<String>(getValue());
 		getValue().clear();
 		getValue().addAll(value);
 		return old;
@@ -107,5 +109,9 @@ public class Translation implements Titulary<List<String>> {
 
 	public int size() {
 		return getValue().size();
+	}
+
+	public void setEnabled(final boolean enabled) {
+		this.enabled = enabled;
 	}
 }

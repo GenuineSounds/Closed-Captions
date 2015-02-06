@@ -12,6 +12,7 @@ import net.minecraftforge.client.event.sound.PlaySoundEvent17;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
 
+import com.genuineflix.caption.ClosedCaption;
 import com.genuineflix.caption.caption.CaptionHUD;
 import com.genuineflix.caption.caption.CaptionWorld;
 import com.genuineflix.caption.container.ContainerHUD;
@@ -76,14 +77,14 @@ public class SoundEvents {
 
 	@SubscribeEvent
 	public void eventEntity(final PlaySoundAtEntityEvent event) {
-		if (isRemote(event) || isNameBroken(event.name))
+		if (isRemote(event) || isNameBroken(event.name) || !ClosedCaption.enabled)
 			return;
 		createCaption(event.name, event.entity, event.volume, event.pitch);
 	}
 
 	@SubscribeEvent
 	public void eventISound(final PlaySoundEvent17 event) {
-		if (event.category == null || event.sound == null || isNameBroken(event.name))
+		if (event.category == null || event.sound == null || isNameBroken(event.name) || !ClosedCaption.enabled)
 			return;
 		switch (event.category) {
 			case PLAYERS:

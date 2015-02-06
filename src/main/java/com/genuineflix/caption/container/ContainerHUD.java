@@ -84,7 +84,7 @@ public class ContainerHUD {
 
 	@SubscribeEvent
 	public void render(final RenderGameOverlayEvent.Post event) {
-		if (event.type != ElementType.ALL)
+		if (event.type != ElementType.ALL || !ClosedCaption.enabled)
 			return;
 		tick();
 		RenderHUD.render(ImmutableList.copyOf(messages), event.resolution, event.partialTicks);
