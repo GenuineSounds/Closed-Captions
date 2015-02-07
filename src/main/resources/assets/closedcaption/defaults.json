@@ -1,366 +1,450 @@
 {
-  "_formatcodes_":[  
+  "_formatcodes": [
     "( Bold )",
     "[ Italic ]",
     "{ Strike-through }",
     "< Obfuscated/Magic/Ender >"
   ],
-  "ambient.cave.cave":[  
+  "ambient.cave.cave": [
     "[Creepy]"
   ],
-  "ambient.weather.thunder":[  
+  "ambient.weather.thunder": [
     "[Thunder]"
   ],
-  "creeper.primed":[  
-    "GET READY!"
+  "creeper.primed": [
+    "GET READY!",
+    "Explosion!",
+    "BE PREPARED!"
   ],
-  "fire.fire":[  
+  "fire.fire": [
     "(Crackle)"
   ],
-  "fire.ignite":[  
+  "fire.ignite": [
     "[Ignites]"
   ],
-  "fireworks.launch":[  
+  "fireworks.launch": [
     "(Whistle)"
   ],
-  "game.hostile.hurt.fall.big":[  
+  "game.hostile.hurt.fall.big": [
     "[Heavy Damage]"
   ],
-  "game.hostile.hurt.fall.small":[  
+  "game.hostile.hurt.fall.small": [
     "[Damage]"
   ],
-  "game.hostile.swim":[  
+  "game.hostile.swim": [
     "(Splish)"
   ],
-  "game.hostile.swim.splash":[  
+  "game.hostile.swim.splash": [
     "(Splash)"
   ],
-  "game.neutral.hurt.fall.big":[  
+  "game.neutral.hurt.fall.big": [
     "[Heavy Damage]"
   ],
-  "game.neutral.hurt.fall.small":[  
-    "[Damage]"
+  "game.neutral.hurt.fall.small": [
+    "[Small Damage]"
   ],
-  "game.neutral.swim":[  
+  "game.neutral.swim": [
     "(Splish)"
   ],
-  "game.neutral.swim.splash":[  
+  "game.neutral.swim.splash": [
     "(Splash)"
   ],
-  "game.player.die":[  
-    "[Player Dies]"
+  "game.player.die": [
+    "[Player Dies]",
+    "That's (gotta) hurt!",
+    "That's [gotta] hurt!",
+    "Well... Don't [cry] about it."
   ],
-  "game.player.hurt":[  
-    "Ouch!"
+  "game.player.hurt": [
+    "Ouch!",
+    "That one hurt!"
   ],
-  "game.player.hurt.fall.big":[  
-    "[Heavy Damage]"
+  "game.player.hurt.fall.big": [
+    "[Fell Hard]"
   ],
-  "game.player.hurt.fall.small":[  
-    "[Damage]"
+  "game.player.hurt.fall.small": [
+    "[Fell]"
   ],
-  "game.player.swim":[  
+  "game.player.swim": [
     "(Splish)"
   ],
-  "game.player.swim.splash":[  
+  "game.player.swim.splash": [
     "(Splash)"
   ],
-  "game.tnt.primed":[  
+  "game.tnt.primed": [
     "[Fuse is lit!]"
   ],
-  "gui.button.press":[  
+  "gui.button.press": [
     "[Click]"
   ],
-  "liquid.lavapop":[  
+  "liquid.lavapop": [
     "(Pop)"
   ],
-  "mob.bat.death":[  
+  "mob.bat.death": [
     "Screech!"
   ],
-  "mob.bat.hurt":[  
+  "mob.bat.hurt": [
     "Squeak!"
   ],
-  "mob.bat.idle":[  
+  "mob.bat.idle": [
     "Squeak"
   ],
-  "mob.bat.takeoff":[  
+  "mob.bat.takeoff": [
     "[Flaps away]"
   ],
-  "mob.blaze.breathe":[  
-    "Burning..."
+  "mob.blaze.breathe": [
+    "Burning...",
+    "Fire...",
+    "Death..."
   ],
-  "mob.blaze.death":[  
-    "DEATH!"
+  "mob.blaze.death": [
+    "DEATH!",
+    "Corruption!",
+    "FIRE!"
   ],
-  "mob.blaze.hit":[  
-    "Fire..."
+  "mob.blaze.hit": [
+    "Burning...",
+    "Fire...",
+    "Death..."
   ],
-  "mob.chicken.hurt":[  
-    "BaKAWK!"
+  "mob.chicken.hurt": [
+    "BaKAWK!",
+    "BAK BAK BAK"
   ],
-  "mob.chicken.plop":[  
-    "(Plop)"
+  "mob.chicken.plop": [
+    "(Plop)",
+    "I made dis"
   ],
-  "mob.chicken.say":[  
-    "Cluck"
+  "mob.chicken.say": [
+    "Cluck",
+    "Cluck Cluck"
   ],
-  "mob.cow.hurt":[  
+  "mob.cow.hurt": [
     "Mooo!"
   ],
-  "mob.cow.say":[  
-    "Moo"
+  "mob.cow.say": [
+    "Moo",
+    "I'm hungry"
   ],
-  "mob.creeper.death":[  
-    "[Fizzles]"
+  "mob.creeper.death": [
+    "[Fizzles]",
+    "I wish [I] had nine lives"
   ],
-  "mob.creeper.say":[  
+  "mob.creeper.say": [
     "Tsssss!"
   ],
-  "mob.endermen.death":[  
-    "<You gave me hugs!>"
+  "mob.endermen.death": [
+    "<You gave me hugs!>",
+    "<I'm going back to HugLand!>"
   ],
-  "mob.endermen.hit":[  
+  "mob.endermen.hit": [
+    "<Hello friend!>",
     "<Thanks for the hug!>"
   ],
-  "mob.endermen.idle":[  
-    "<Hello friend!>"
+  "mob.endermen.idle": [
+    "<Find me somebody to love>"
   ],
-  "mob.endermen.portal":[  
+  "mob.endermen.portal": [
     "<I'll be back with more hugs>"
   ],
-  "mob.endermen.scream":[  
-    "<Prepare for a HUG!!!>"
+  "mob.endermen.scream": [
+    "<Prepare for a HUG!!!>",
+    "<Love me!>"
   ],
-  "mob.ghast.death":[  
-    "SCREEEAAA!!!"
+  "mob.ghast.death": [
+    "SCREEEAAA!!!",
+    "More... more... MORE!"
   ],
-  "mob.ghast.moan":[  
-    "Screaaa..."
+  "mob.ghast.moan": [
+    "Screaaa...",
+    "More... MORE!",
+    "I found you!"
   ],
-  "mob.ghast.scream":[  
-    "Screeeaaa!"
+  "mob.ghast.scream": [
+    "Screeeaaa!",
+    "Peek-a-boo!"
   ],
-  "mob.horse.death":[  
+  "mob.horse.death": [
     "Neigh!"
   ],
-  "mob.horse.donkey.idle":[  
+  "mob.horse.donkey.idle": [
     "Eee Ooo"
   ],
-  "mob.horse.hit":[  
+  "mob.horse.hit": [
     "Snort"
   ],
-  "mob.horse.idle":[  
+  "mob.horse.idle": [
     "Neigh"
   ],
-  "mob.horse.land":[  
+  "mob.horse.land": [
     "(Whine)"
   ],
-  "mob.horse.soft":[  
+  "mob.horse.soft": [
     "(Snort)"
   ],
-  "mob.irongolem.death":[  
+  "mob.irongolem.death": [
     "HODOR!"
   ],
-  "mob.irongolem.hit":[  
+  "mob.irongolem.hit": [
     "Hodor!"
   ],
-  "mob.irongolem.throw":[  
+  "mob.irongolem.throw": [
     "Hodor..."
   ],
-  "mob.irongolem.walk":[  
+  "mob.irongolem.walk": [
     "(Stomp Stomp)"
   ],
-  "mob.magmacube.big":[  
+  "mob.magmacube.big": [
     "(Split)"
   ],
-  "mob.magmacube.small":[  
+  "mob.magmacube.small": [
     "(Splat)"
   ],
-  "mob.pig.death":[  
+  "mob.pig.death": [
     "OINK!"
   ],
-  "mob.pig.say":[  
-    "Oink"
+  "mob.pig.say": [
+    "Oink",
+    "Oink oink"
   ],
-  "mob.sheep.say":[  
-    "Baaah"
+  "mob.sheep.say": [
+    "Baaah",
+    "Baa ram ewe"
   ],
-  "mob.skeleton.death":[  
-    "Jolly Roger!"
+  "mob.skeleton.death": [
+    "Jolly Roger!",
+    "The curse is lifted",
+    "I feel... cold..."
   ],
-  "mob.skeleton.hurt":[  
-    "Me Bones!"
+  "mob.skeleton.hurt": [
+    "Me Bones!",
+    "You think that HURT?!"
   ],
-  "mob.skeleton.say":[  
-    "~ Dem Bones ~"
+  "mob.skeleton.say": [
+    "~ Dem Bones ~",
+    "~ A pirates life for me ~",
+    "~ Yo Ho Yo Ho ~"
   ],
-  "mob.slime.big":[  
+  "mob.slime.big": [
     "(Split)"
   ],
-  "mob.slime.small":[  
+  "mob.slime.small": [
     "(Splat)"
   ],
-  "mob.spider.death":[  
+  "mob.spider.death": [
     "TSSSKK!"
   ],
-  "mob.spider.say":[  
+  "mob.spider.say": [
     "Tsssk"
   ],
-  "mob.villager.death":[  
-    "Why?!"
+  "mob.villager.death": [
+    "Why?!",
+    "I'm so scared",
+    "I can see the light"
   ],
-  "mob.villager.haggle":[  
-    "You wanna trade?"
+  "mob.villager.haggle": [
+    "You wanna trade?",
+    "What are ya buyin'?",
+    "What are ya sellin'?"
   ],
-  "mob.villager.hit":[  
-    "Hey! Stop that!"
+  "mob.villager.hit": [
+    "Hey! Stop that!",
+    "That was rude"
   ],
-  "mob.villager.idle":[  
-    "Work work work"
+  "mob.villager.idle": [
+    "~ Whistle while you work ~",
+    "Looking for that thing?",
+    "A new person in town...",
+    "They say zombies exist",
+    "Could it really be true?",
+    "Work work work",
+    "How're the crops this year?",
+    "Hmm",
+    "Lovely weather",
+    "How's the weather?"
   ],
-  "mob.villager.no":[  
-    "No..."
+  "mob.villager.no": [
+    "No",
+    "No...",
+    "NO!",
+    "Absolutely not",
+    "I don't [think] so!",
+    "Maybe later"
   ],
-  "mob.villager.yes":[  
-    "Yes"
+  "mob.villager.yes": [
+    "Yes",
+    "Sure",
+    "I suppose",
+    "That's fine",
+    "Better than nothing"
   ],
-  "mob.witch.death":[  
-    "I'll get you my pretty!"
+  "mob.witch.death": [
+    "I'll get you my pretty!",
+    "I'll be BACK!",
+    "You think this is the end?"
   ],
-  "mob.witch.hurt":[  
-    "(Screech)"
+  "mob.witch.hurt": [
+    "[Screech]",
+    "Mwaaaaa!",
+    "Hocus Pocus!"
   ],
-  "mob.witch.idle":[  
+  "mob.witch.idle": [
     "Ahahahahaha! [Screech]",
     "Ahh, here are my potions!",
     "Potions...",
     "Potions? Where are my potions?",
-    "Where are my potions?"
+    "Where are my potions?",
+    "~ Hocus Pocus ~"
   ],
-  "mob.wolf.bark":[  
-    "Roof Roof"
+  "mob.wolf.bark": [
+    "Bark",
+    "Roof",
+    "Roof roof!"
   ],
-  "mob.wolf.growl":[  
-    "Snarl"
+  "mob.wolf.growl": [
+    "Snarl",
+    "Growl"
   ],
-  "mob.wolf.panting":[  
+  "mob.wolf.panting": [
     "(Panting)"
   ],
-  "mob.zombie.death":[  
-    "Braaaiiins!"
+  "mob.zombie.death": [
+    "Braaaiiins!",
+    "You've released me"
   ],
-  "mob.zombie.hurt":[  
-    "Braaiins!"
+  "mob.zombie.hurt": [
+    "Braaiins!",
+    "Ouch! Brains."
   ],
-  "mob.zombie.say":[  
+  "mob.zombie.say": [
+    "Brains?",
+    "I am cursed...",
+    "I'm hungry"
+  ],
+  "mob.zombiepig.zpig": [
+    "Oink",
+    "Oink?",
+    "Snort",
+    "Snort?",
+    "Oink, Brains?",
+    "Snort, Brains?",
+    "Brains",
     "Brains?"
   ],
-  "mob.zombiepig.zpig":[  
-    "Oink, Brains?"
+  "mob.zombiepig.zpigangry": [
+    "Oink! Braaiins!"
   ],
-  "mob.zombiepig.zpigangry":[  
-    "Oink, Brains!"
+  "mob.zombiepig.zpigdeath": [
+    "OINK! BRAINS!"
   ],
-  "mob.zombiepig.zpigdeath":[  
-    "OINK, BRAINS!"
-  ],
-  "mob.zombiepig.zpighurt":[  
+  "mob.zombiepig.zpighurt": [
     "Oink! Brains!"
   ],
-  "music.game":[  
+  "music.game": [
     "~ [Music] ~"
   ],
-  "music.game.creative":[  
+  "music.game.creative": [
     "~ [Creative Music] ~"
   ],
-  "music.game.nether":[  
+  "music.game.nether": [
     "~ [Nether Music] ~"
   ],
-  "music.menu":[  
+  "music.menu": [
     "~ [Menu Music] ~"
   ],
-  "portal.portal":[  
-    "[Portal]"
+  "portal.portal": [
+    "[Come to me]",
+    "[Feel my power]"
   ],
-  "portal.trigger":[  
+  "portal.trigger": [
     "[Portal Activates]"
   ],
-  "random.bow":[  
+  "random.bow": [
     "[Fires]"
   ],
-  "random.bowhit":[  
+  "random.bowhit": [
     "[Hits]"
   ],
-  "random.burp":[  
+  "random.burp": [
     "(Burp)"
   ],
-  "random.chestclosed":[  
-    "[Chest Closed]"
+  "random.chestclosed": [
+    "[Chest Closes]"
   ],
-  "random.chestopen":[  
-    "[Chest Open]"
+  "random.chestopen": [
+    "[Chest Opens]"
   ],
-  "random.click":[  
+  "random.click": [
     "(Click)"
   ],
-  "random.drink":[  
-    "Mmmm"
+  "random.door_close": [
+    "[Door Closes]"
   ],
-  "random.eat":[  
-    "Yummy"
+  "random.door_open": [
+    "[Door Opens]"
   ],
-  "random.explode":[  
-    "(BOOOOM)"
+  "random.drink": [
+    "Mmmm",
+    "[Slurp]"
   ],
-  "random.fizz":[  
+  "random.eat": [
+    "Yummy",
+    "Yum",
+    "Yum!"
+  ],
+  "random.explode": [
+    "(BOOOOM)",
+    "Drop the bass!"
+  ],
+  "random.fizz": [
     "(Fizz)"
   ],
-  "random.levelup":[  
+  "random.levelup": [
     "[Leveled Up]"
   ],
-  "random.orb":[  
+  "random.orb": [
     "[Experience Gained]"
   ],
-  "random.pop":[  
+  "random.pop": [
     "(Pop)"
   ],
-  "random.splash":[  
+  "random.splash": [
     "(Splash)"
   ],
-  "records.11":[  
+  "records.11": [
     "~ [C418 - 11] ~"
   ],
-  "records.13":[  
+  "records.13": [
     "~ [C418 - 13] ~"
   ],
-  "records.blocks":[  
+  "records.blocks": [
     "~ [C418 - blocks] ~"
   ],
-  "records.cat":[  
+  "records.cat": [
     "~ [C418 - cat] ~"
   ],
-  "records.chirp":[  
+  "records.chirp": [
     "~ [C418 - chirp] ~"
   ],
-  "records.far":[  
+  "records.far": [
     "~ [C418 - far] ~"
   ],
-  "records.mall":[  
+  "records.mall": [
     "~ [C418 - mall] ~"
   ],
-  "records.mellohi":[  
+  "records.mellohi": [
     "~ [C418 - mellohi] ~"
   ],
-  "records.stal":[  
+  "records.stal": [
     "~ [C418 - stal] ~"
   ],
-  "records.strad":[  
+  "records.strad": [
     "~ [C418 - strad] ~"
   ],
-  "records.wait":[  
+  "records.wait": [
     "~ [C418 - wait] ~"
   ],
-  "records.ward":[  
+  "records.ward": [
     "~ [C418 - ward] ~"
   ]
 }

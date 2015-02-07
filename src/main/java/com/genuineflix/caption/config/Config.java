@@ -34,29 +34,29 @@ public class Config {
 		this.folder = folder;
 		save = new File(folder, "translations.json");
 		main = new Configuration(new File(folder, "Main.cfg"));
-		loadEnableSave(getClass().getClassLoader().getResourceAsStream("assets/closedcaption/defaults.json"), save);
+		loadSave(getClass().getClassLoader().getResourceAsStream("assets/closedcaption/defaults.json"), save);
 	}
 
 	public void init() {
-		loadEnableSave(save, save);
+		loadSave(save);
 	}
 
 	@SubscribeEvent
 	public void saveLoad(final WorldEvent.Save event) {
-		loadEnableSave(save, save);
+		loadSave(save);
 	}
 
-	private void loadEnableSave(final InputStream input, final File output) {
+	private void loadSave(final InputStream input, final File output) {
 		loadTranslations(input);
 		saveTranslations(output);
 	}
 
-	private void loadEnableSave(final File input, final File output) {
-		loadTranslations(input);
-		saveTranslations(output);
+	private void loadSave(final File save) {
+		loadTranslations(save);
+		saveTranslations(save);
 	}
 
-	public void saveTranslations(final File file) {
+	public static void saveTranslations(final File file) {
 		final Gson gson = GSON_BUILDER.create();
 		Writer wr = null;
 		try {
@@ -75,7 +75,7 @@ public class Config {
 		}
 	}
 
-	public void loadTranslations(final File file) {
+	public static void loadTranslations(final File file) {
 		if (!file.exists())
 			return;
 		final Gson gson = GSON_BUILDER.create();
@@ -96,7 +96,7 @@ public class Config {
 		}
 	}
 
-	public void loadTranslations(final InputStream is) {
+	public static void loadTranslations(final InputStream is) {
 		final Gson gson = GSON_BUILDER.create();
 		InputStreamReader fr = null;
 		try {
