@@ -55,10 +55,10 @@ public class SoundEvents {
 		final CaptionWorld caption3D = new CaptionWorld(name, entity, volume, pitch);
 		final CaptionHUD caption2D = new CaptionHUD(name, volume, pitch);
 		if (displayBoth(name)) {
-			hud.add(caption2D);
+			hud.message(caption2D);
 			world.add(caption3D);
 		} else if (isCaptionHUD(caption3D))
-			hud.add(caption2D);
+			hud.message(caption2D);
 		else
 			world.add(caption3D);
 	}
@@ -67,10 +67,10 @@ public class SoundEvents {
 		final CaptionWorld caption3D = new CaptionWorld(name, sound, sound.getVolume(), sound.getPitch());
 		final CaptionHUD caption2D = new CaptionHUD(name, sound.getVolume(), sound.getPitch());
 		if (displayBoth(name)) {
-			hud.add(caption2D);
+			hud.message(caption2D);
 			world.add(caption3D);
 		} else if (isCaptionHUD(caption3D))
-			hud.add(caption2D);
+			hud.message(caption2D);
 		else
 			world.add(caption3D);
 	}

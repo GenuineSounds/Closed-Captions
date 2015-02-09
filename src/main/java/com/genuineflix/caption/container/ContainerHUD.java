@@ -22,9 +22,34 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 public class ContainerHUD {
 
 	private final List<CaptionHUD> messages = new ArrayList<CaptionHUD>();
+	private ImmutableList<CaptionHUD> renderMessages;
 	private long tick;
 
-	public void add(final CaptionHUD caption) {
+	@SubscribeEvent
+	public void render(final RenderGameOverlayEvent.Post event) {
+		if (event.type != ElementType.ALL || !ClosedCaption.enabled)
+			return;
+		tick();
+		RenderHUD.render(renderMessages, event.resolution, event.partialTicks);
+	}
+
+	private void tick() {
+		final long tick = RenderManager.instance.worldObj.getTotalWorldTime();
+		if (this.tick == tick)
+			return;
+		this.tick = tick;
+		synchronized (messages) {
+			final List<Caption> removalQueue = new ArrayList<Caption>();
+			for (final Caption caption : messages)
+				if (!caption.tick() || caption.isDisabled())
+					removalQueue.add(caption);
+			parseIMCMessages();
+			messages.removeAll(removalQueue);
+			renderMessages = ImmutableList.copyOf(messages);
+		}
+	}
+
+	public void message(final CaptionHUD caption) {
 		if (caption.isDisabled())
 			return;
 		synchronized (messages) {
@@ -38,25 +63,15 @@ public class ContainerHUD {
 		}
 	}
 
-	public void directMessage(final String message, final float amount) {
-		dm(new CaptionHUD(message, amount));
-	}
-
-	public void directMessage(final String message, final float amount, final int ticks) {
-		dm(new CaptionHUD(message, amount, ticks));
-	}
-
-	public void dm(final CaptionHUD caption) {
-		synchronized (messages) {
-			for (final CaptionHUD old : messages) {
-				if (!old.getMessage().equals(caption.getMessage()))
-					continue;
-				old.amount += caption.amount;
-				old.resetTime();
-				return;
-			}
-			messages.add(caption);
+	private void directMessage(final CaptionHUD caption) {
+		for (final CaptionHUD old : messages) {
+			if (!old.getMessage().equals(caption.getMessage()))
+				continue;
+			old.amount += caption.amount;
+			old.resetTime();
+			return;
 		}
+		messages.add(caption);
 	}
 
 	public void parseIMCMessages() {
@@ -74,34 +89,11 @@ public class ContainerHUD {
 				} else
 					message.append(tag.getString("message"));
 				if (tag.hasKey("ticks"))
-					directMessage(message.toString(), amount, tag.getInteger("ticks"));
+					directMessage(new CaptionHUD(message.toString(), amount, tag.getInteger("ticks")));
 				else
-					directMessage(message.toString(), amount);
+					directMessage(new CaptionHUD(message.toString(), amount));
 			} else if (imc.isStringMessage())
-				directMessage(imc.getStringValue(), 0);
-		}
-	}
-
-	@SubscribeEvent
-	public void render(final RenderGameOverlayEvent.Post event) {
-		if (event.type != ElementType.ALL || !ClosedCaption.enabled)
-			return;
-		tick();
-		RenderHUD.render(ImmutableList.copyOf(messages), event.resolution, event.partialTicks);
-	}
-
-	private void tick() {
-		final long tick = RenderManager.instance.worldObj.getTotalWorldTime();
-		if (this.tick == tick)
-			return;
-		this.tick = tick;
-		final List<Caption> removalQueue = new ArrayList<Caption>();
-		synchronized (messages) {
-			for (final Caption caption : messages)
-				if (!caption.tick() || caption.isDisabled())
-					removalQueue.add(caption);
-			parseIMCMessages();
-			messages.removeAll(removalQueue);
+				directMessage(new CaptionHUD(imc.getStringValue(), 0));
 		}
 	}
 }
