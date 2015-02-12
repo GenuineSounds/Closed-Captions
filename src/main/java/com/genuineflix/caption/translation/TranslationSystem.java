@@ -8,15 +8,18 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import net.minecraft.client.resources.I18n;
+import net.minecraft.nbt.NBTTagCompound;
 
+import com.genuineflix.caption.ClosedCaption;
 import com.genuineflix.caption.caption.Caption;
 import com.mojang.realmsclient.gui.ChatFormatting;
 
+import cpw.mods.fml.common.event.FMLInterModComms;
+import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
+
 public class TranslationSystem {
 
-	private static final ChatFormatting[] FORMATS = new ChatFormatting[] {
-			ChatFormatting.BOLD, ChatFormatting.ITALIC, ChatFormatting.STRIKETHROUGH, ChatFormatting.OBFUSCATED, ChatFormatting.UNDERLINE
-	};
+	private static final ChatFormatting[] FORMATS = new ChatFormatting[] { ChatFormatting.BOLD, ChatFormatting.ITALIC, ChatFormatting.STRIKETHROUGH, ChatFormatting.OBFUSCATED, ChatFormatting.UNDERLINE };
 
 	public static String formatTranslation(final String translation) {
 		final StringBuilder out = new StringBuilder(translation.length());
@@ -90,8 +93,12 @@ public class TranslationSystem {
 	private TranslationSystem() {}
 
 	public synchronized boolean contains(final Caption caption) {
+		return caption != null && contains(caption.key);
+	}
+
+	public synchronized boolean contains(final String key) {
 		for (final Translation translation : translations)
-			if (translation.equals(caption.key))
+			if (translation.equals(key))
 				return true;
 		return false;
 	}
@@ -117,7 +124,7 @@ public class TranslationSystem {
 		return map;
 	}
 
-	public synchronized List<Translation> getList() {
+	public List<Translation> getList() {
 		return translations;
 	}
 
@@ -143,6 +150,27 @@ public class TranslationSystem {
 			final Translation tran = new Translation(entry.getKey(), entry.getValue());
 			translations.remove(tran);
 			translations.add(tran);
+		}
+	}
+
+	public void handleIMCMessages() {
+		final List<IMCMessage> imcMessages = FMLInterModComms.fetchRuntimeMessages(ClosedCaption.MODID);
+		for (final IMCMessage message : imcMessages) {
+			final String key = message.key;
+			final List<String> translations = new ArrayList<String>();
+			if (message.isStringMessage())
+				translations.add(message.getStringValue());
+			else {
+				final NBTTagCompound tag = message.getNBTValue();
+				int count = 0;
+				String translation = "";
+				while (!(translation = tag.getString("" + count)).isEmpty()) {
+					translations.add(translation);
+					count++;
+				}
+			}
+			final Translation translation = new Translation(key, translations);
+			if (contains(key)) {}
 		}
 	}
 }

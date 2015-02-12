@@ -133,6 +133,12 @@
   "mob.creeper.say": [
     "Tsssss!"
   ],
+  "mob.enderdragon.growl": [
+    "(Growl)",
+    "(Roar)",
+    "I AM DEATH!",
+    "You will [not] leave alive!"
+  ],
   "mob.endermen.death": [
     "<You gave me hugs!>",
     "<I'm going back to HugLand!>"
@@ -149,7 +155,8 @@
   ],
   "mob.endermen.scream": [
     "<Prepare for a HUG!!!>",
-    "<Love me!>"
+    "<Love me!>",
+    "[Staring Intensifies]"
   ],
   "mob.ghast.death": [
     "SCREEEAAA!!!",

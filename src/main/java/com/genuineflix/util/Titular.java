@@ -2,7 +2,7 @@ package com.genuineflix.util;
 
 import java.util.Map.Entry;
 
-public interface Titulary<T> extends Entry<String, T>, Comparable<T> {
+public interface Titular<T> extends Entry<String, T>, Comparable<T> {
 
 	@Override
 	int compareTo(T t);

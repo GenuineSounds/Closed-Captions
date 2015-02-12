@@ -9,11 +9,13 @@ import org.apache.logging.log4j.Logger;
 
 import com.genuineflix.caption.config.Config;
 import com.genuineflix.caption.events.SoundEvents;
+import com.genuineflix.caption.translation.TranslationSystem;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 @Mod(modid = ClosedCaption.MODID, name = ClosedCaption.NAME, version = ClosedCaption.VERSION)
@@ -39,5 +41,10 @@ public class ClosedCaption {
 	@EventHandler
 	public void init(final FMLInitializationEvent event) {
 		config.init();
+	}
+
+	@EventHandler
+	public void post(final FMLPostInitializationEvent event) {
+		TranslationSystem.instance.handleIMCMessages();
 	}
 }
