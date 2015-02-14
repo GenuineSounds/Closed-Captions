@@ -45,7 +45,7 @@ public abstract class Caption implements Titular<Caption> {
 	}
 
 	private void assignTranslation() {
-		if (DIRECT_MESSAGE_KEY.equals(key))
+		if (Caption.DIRECT_MESSAGE_KEY.equals(key))
 			return;
 		final Translation translation = TranslationSystem.instance.get(this);
 		if (!translation.isEmpty())

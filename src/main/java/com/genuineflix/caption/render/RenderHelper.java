@@ -41,23 +41,23 @@ public class RenderHelper {
 
 	public static void drawTooltip(final int x, final int y, final int w, final int h, final int color1, final int color2, final int color3) {
 		// Main
-		drawGradientRect(x - 3, y - 3, w + 6, h + 6, color1, color1);
+		RenderHelper.drawGradientRect(x - 3, y - 3, w + 6, h + 6, color1, color1);
 		// Top bar
-		drawGradientRect(x - 3, y - 4, w + 6, 1, color1, color1);
+		RenderHelper.drawGradientRect(x - 3, y - 4, w + 6, 1, color1, color1);
 		// Right Bar
-		drawGradientRect(x + w + 3, y - 3, 1, h + 6, color1, color1);
+		RenderHelper.drawGradientRect(x + w + 3, y - 3, 1, h + 6, color1, color1);
 		// Bottom Bar
-		drawGradientRect(x - 3, y + h + 3, w + 6, 1, color1, color1);
+		RenderHelper.drawGradientRect(x - 3, y + h + 3, w + 6, 1, color1, color1);
 		// Left Bar
-		drawGradientRect(x - 4, y - 3, 1, h + 6, color1, color1);
+		RenderHelper.drawGradientRect(x - 4, y - 3, 1, h + 6, color1, color1);
 		// Top Line
-		drawGradientRect(x - 3, y - 3, w + 6, 1, color2, color2);
+		RenderHelper.drawGradientRect(x - 3, y - 3, w + 6, 1, color2, color2);
 		// Right Line
-		drawGradientRect(x + w + 2, y - 2, 1, h + 4, color2, color3);
+		RenderHelper.drawGradientRect(x + w + 2, y - 2, 1, h + 4, color2, color3);
 		// Bottom Line
-		drawGradientRect(x - 3, y + h + 2, w + 6, 1, color3, color3);
+		RenderHelper.drawGradientRect(x - 3, y + h + 2, w + 6, 1, color3, color3);
 		// Left Line
-		drawGradientRect(x - 3, y - 2, 1, h + 4, color2, color3);
+		RenderHelper.drawGradientRect(x - 3, y - 2, 1, h + 4, color2, color3);
 	}
 
 	public static ScaledResolution res;
@@ -66,7 +66,7 @@ public class RenderHelper {
 	public static final int outlineColor = 0x505000FF;
 	public static final int secondaryColor;
 	static {
-		secondaryColor = (outlineColor & 0xFEFEFE) >> 1 | outlineColor & 0xFF000000;
+		secondaryColor = (RenderHelper.outlineColor & 0xFEFEFE) >> 1 | RenderHelper.outlineColor & 0xFF000000;
 		fr = Minecraft.getMinecraft().fontRenderer;
 	}
 }

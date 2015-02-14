@@ -28,7 +28,7 @@ public class SoundEvents {
 	}
 
 	private static boolean isCaptionHUD(final CaptionWorld caption) {
-		return isEntityHUD(caption) || isEntityPlayer(caption);
+		return SoundEvents.isEntityHUD(caption) || SoundEvents.isEntityPlayer(caption);
 	}
 
 	private static boolean isEntityHUD(final CaptionWorld caption) {
@@ -54,10 +54,10 @@ public class SoundEvents {
 	public void createCaption(final String name, final Entity entity, final float volume, final float pitch) {
 		final CaptionWorld caption3D = new CaptionWorld(name, entity, volume, pitch);
 		final CaptionHUD caption2D = new CaptionHUD(name, volume, pitch);
-		if (displayBoth(name)) {
+		if (SoundEvents.displayBoth(name)) {
 			hud.message(caption2D);
 			world.add(caption3D);
-		} else if (isCaptionHUD(caption3D))
+		} else if (SoundEvents.isCaptionHUD(caption3D))
 			hud.message(caption2D);
 		else
 			world.add(caption3D);
@@ -66,10 +66,10 @@ public class SoundEvents {
 	public void createCaption(final String name, final ISound sound) {
 		final CaptionWorld caption3D = new CaptionWorld(name, sound, sound.getVolume(), sound.getPitch());
 		final CaptionHUD caption2D = new CaptionHUD(name, sound.getVolume(), sound.getPitch());
-		if (displayBoth(name)) {
+		if (SoundEvents.displayBoth(name)) {
 			hud.message(caption2D);
 			world.add(caption3D);
-		} else if (isCaptionHUD(caption3D))
+		} else if (SoundEvents.isCaptionHUD(caption3D))
 			hud.message(caption2D);
 		else
 			world.add(caption3D);
@@ -77,14 +77,14 @@ public class SoundEvents {
 
 	@SubscribeEvent
 	public void eventEntity(final PlaySoundAtEntityEvent event) {
-		if (isRemote(event) || isNameBroken(event.name) || !ClosedCaption.enabled)
+		if (SoundEvents.isRemote(event) || SoundEvents.isNameBroken(event.name) || !ClosedCaption.enabled)
 			return;
 		createCaption(event.name, event.entity, event.volume, event.pitch);
 	}
 
 	@SubscribeEvent
 	public void eventISound(final PlaySoundEvent17 event) {
-		if (event.category == null || event.sound == null || isNameBroken(event.name) || !ClosedCaption.enabled)
+		if (event.category == null || event.sound == null || SoundEvents.isNameBroken(event.name) || !ClosedCaption.enabled)
 			return;
 		switch (event.category) {
 			case PLAYERS:

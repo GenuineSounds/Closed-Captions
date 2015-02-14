@@ -16,7 +16,6 @@ public class CaptionWorld extends Caption {
 	public double posY, prevPosY;
 	public double posZ, prevPosZ;
 	public double size = 1;
-	private float scale;
 	public static Comparator<CaptionWorld> DISTANCE = new Comparator<CaptionWorld>() {
 
 		@Override

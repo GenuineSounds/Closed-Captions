@@ -19,30 +19,32 @@ import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
 
 public class TranslationSystem {
 
-	private static final ChatFormatting[] FORMATS = new ChatFormatting[] { ChatFormatting.BOLD, ChatFormatting.ITALIC, ChatFormatting.STRIKETHROUGH, ChatFormatting.OBFUSCATED, ChatFormatting.UNDERLINE };
+	private static final ChatFormatting[] FORMATS = new ChatFormatting[] {
+			ChatFormatting.BOLD, ChatFormatting.ITALIC, ChatFormatting.STRIKETHROUGH, ChatFormatting.OBFUSCATED, ChatFormatting.UNDERLINE
+	};
 
 	public static String formatTranslation(final String translation) {
 		final StringBuilder out = new StringBuilder(translation.length());
-		final int[] activeFormats = new int[FORMATS.length];
+		final int[] activeFormats = new int[TranslationSystem.FORMATS.length];
 		for (int index = 0; index < translation.length(); index++) {
 			final char ch = translation.charAt(index);
 			boolean reformat = false;
 			switch (ch) {
 				case '(':
 					activeFormats[0]++;
-					out.append(FORMATS[0].toString());
+					out.append(TranslationSystem.FORMATS[0].toString());
 					break;
 				case '[':
 					activeFormats[1]++;
-					out.append(FORMATS[1].toString());
+					out.append(TranslationSystem.FORMATS[1].toString());
 					break;
 				case '{':
 					activeFormats[2]++;
-					out.append(FORMATS[2].toString());
+					out.append(TranslationSystem.FORMATS[2].toString());
 					break;
 				case '<':
 					activeFormats[3]++;
-					out.append(FORMATS[3].toString());
+					out.append(TranslationSystem.FORMATS[3].toString());
 					break;
 				case ')':
 					if (activeFormats[0] > 0)
@@ -73,7 +75,7 @@ public class TranslationSystem {
 			}
 			if (reformat) {
 				out.append(ChatFormatting.RESET.toString());
-				out.append(reformat(activeFormats));
+				out.append(TranslationSystem.reformat(activeFormats));
 			}
 		}
 		return out.toString();
@@ -83,7 +85,7 @@ public class TranslationSystem {
 		final StringBuilder out = new StringBuilder();
 		for (int i = 0; i < activeFormats.length; i++)
 			if (activeFormats[i] > 0)
-				out.append(FORMATS[i].toString());
+				out.append(TranslationSystem.FORMATS[i].toString());
 		return out.toString();
 	}
 
@@ -169,8 +171,9 @@ public class TranslationSystem {
 					count++;
 				}
 			}
+			// TODO: Implement
 			final Translation translation = new Translation(key, translations);
-			if (contains(key)) {}
+			translation.getCurrent();
 		}
 	}
 }

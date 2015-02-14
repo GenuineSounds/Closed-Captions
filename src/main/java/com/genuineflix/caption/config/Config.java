@@ -24,8 +24,9 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class Config {
 
-	private static final GsonBuilder GSON_BUILDER = new GsonBuilder();
+	@SuppressWarnings("serial")
 	private static final Type GSON_TYPE = new TypeToken<Map<String, List<String>>>() {}.getType();
+	private static final GsonBuilder GSON_BUILDER = new GsonBuilder();
 	public File folder;
 	public File save;
 	public Configuration main;
@@ -47,23 +48,23 @@ public class Config {
 	}
 
 	private void loadSave(final InputStream input, final File output) {
-		loadTranslations(input);
-		saveTranslations(output);
+		Config.loadTranslations(input);
+		Config.saveTranslations(output);
 	}
 
 	private void loadSave(final File save) {
-		loadTranslations(save);
-		saveTranslations(save);
+		Config.loadTranslations(save);
+		Config.saveTranslations(save);
 	}
 
 	public static void saveTranslations(final File file) {
-		final Gson gson = GSON_BUILDER.create();
+		final Gson gson = Config.GSON_BUILDER.create();
 		Writer wr = null;
 		try {
 			if (!file.exists())
 				file.createNewFile();
 			wr = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
-			gson.toJson(TranslationSystem.instance.getMap(), GSON_TYPE, wr);
+			gson.toJson(TranslationSystem.instance.getMap(), Config.GSON_TYPE, wr);
 		}
 		catch (final Exception e) {}
 		finally {
@@ -78,11 +79,11 @@ public class Config {
 	public static void loadTranslations(final File file) {
 		if (!file.exists())
 			return;
-		final Gson gson = GSON_BUILDER.create();
+		final Gson gson = Config.GSON_BUILDER.create();
 		FileReader fr = null;
 		try {
 			fr = new FileReader(file);
-			final Map<String, List<String>> ts = gson.fromJson(fr, GSON_TYPE);
+			final Map<String, List<String>> ts = gson.fromJson(fr, Config.GSON_TYPE);
 			if (ts != null)
 				TranslationSystem.instance.setMap(ts);
 		}
@@ -97,11 +98,11 @@ public class Config {
 	}
 
 	public static void loadTranslations(final InputStream is) {
-		final Gson gson = GSON_BUILDER.create();
+		final Gson gson = Config.GSON_BUILDER.create();
 		InputStreamReader fr = null;
 		try {
 			fr = new InputStreamReader(is);
-			final Map<String, List<String>> ts = gson.fromJson(fr, GSON_TYPE);
+			final Map<String, List<String>> ts = gson.fromJson(fr, Config.GSON_TYPE);
 			if (ts != null)
 				TranslationSystem.instance.setMap(ts);
 		}
@@ -120,8 +121,8 @@ public class Config {
 	}
 
 	static {
-		GSON_BUILDER.setPrettyPrinting();
-		GSON_BUILDER.disableHtmlEscaping();
-		GSON_BUILDER.enableComplexMapKeySerialization();
+		Config.GSON_BUILDER.setPrettyPrinting();
+		Config.GSON_BUILDER.disableHtmlEscaping();
+		Config.GSON_BUILDER.enableComplexMapKeySerialization();
 	}
 }
