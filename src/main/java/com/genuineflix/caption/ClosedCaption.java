@@ -4,9 +4,6 @@ import java.io.File;
 
 import net.minecraftforge.common.MinecraftForge;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.genuineflix.caption.config.Config;
 import com.genuineflix.caption.events.SoundEvents;
 import com.genuineflix.caption.translation.TranslationSystem;
@@ -25,8 +22,7 @@ public class ClosedCaption {
 	public static ClosedCaption instance;
 	public static final String MODID = "ClosedCaption";
 	public static final String NAME = "Closed Caption";
-	public static final String VERSION = "1.0.13";
-	public static final Logger log = LogManager.getLogger(ClosedCaption.MODID);
+	public static final String VERSION = "1.0.15";
 	public static final SoundEvents soundEvents = new SoundEvents();
 	public static final Config config = new Config();
 	public static boolean enabled = true;
