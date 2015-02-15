@@ -21,8 +21,8 @@ public class RenderHelper {
 		final float blue2 = (color2 >> 0 & 0xFF) / 255F;
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glDisable(GL11.GL_ALPHA_TEST);
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		//GL11.glEnable(GL11.GL_BLEND);
+		//GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		GL11.glBegin(GL11.GL_QUADS);
 		GL11.glColor4f(red1, green1, blue1, alpha1);
@@ -34,7 +34,7 @@ public class RenderHelper {
 		GL11.glColor4f(1, 1, 1, 1);
 		GL11.glEnd();
 		GL11.glShadeModel(GL11.GL_FLAT);
-		GL11.glDisable(GL11.GL_BLEND);
+		//GL11.glDisable(GL11.GL_BLEND);
 		GL11.glEnable(GL11.GL_ALPHA_TEST);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
@@ -50,6 +50,7 @@ public class RenderHelper {
 		RenderHelper.drawGradientRect(x - 3, y + h + 3, w + 6, 1, color1, color1);
 		// Left Bar
 		RenderHelper.drawGradientRect(x - 4, y - 3, 1, h + 6, color1, color1);
+		GL11.glTranslated(0, 0, 0.01);
 		// Top Line
 		RenderHelper.drawGradientRect(x - 3, y - 3, w + 6, 1, color2, color2);
 		// Right Line
@@ -58,6 +59,7 @@ public class RenderHelper {
 		RenderHelper.drawGradientRect(x - 3, y + h + 2, w + 6, 1, color3, color3);
 		// Left Line
 		RenderHelper.drawGradientRect(x - 3, y - 2, 1, h + 4, color2, color3);
+		GL11.glTranslated(0, 0, -0.01);
 	}
 
 	public static ScaledResolution res;
