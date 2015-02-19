@@ -31,7 +31,6 @@ public class RenderWorld {
 			alpha = 5;
 		RenderHelper.drawTooltip(x, y, w, h, (alpha << 24) | (RenderHelper.mainColor & 0xFFFFFF), (alpha << 24) | (RenderHelper.outlineColor & 0xFFFFFF), (alpha << 24) | (RenderHelper.secondaryColor & 0xFFFFFF));
 		GL11.glTranslated(0, 0, 0.01);
-//		RenderHelper.fr.drawString("Alpha: " + alpha, x, y, (alpha << 24) + 0xFFFFFF);
 		RenderHelper.fr.drawString(caption.getMessage(), x + 1, y, (alpha << 24) + 0xFFFFFF);
 		GL11.glTranslated(0, 0, -0.01);
 		GL11.glScaled(1D / scale, -(1D / scale), 1D / scale);
