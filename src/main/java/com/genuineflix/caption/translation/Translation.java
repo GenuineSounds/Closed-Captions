@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 import com.genuineflix.caption.caption.Caption;
 import com.genuineflix.util.Titular;
 
-public class Translation implements Titular<List<String>> {
+public class Translation implements Titular<List<String>>, Comparable<List<String>> {
 
 	public static final Translation NONE = new Translation("NONE");
 	public static final Translation DIRECT = new Translation("DIRECT");

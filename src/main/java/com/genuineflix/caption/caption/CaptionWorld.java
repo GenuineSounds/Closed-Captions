@@ -2,13 +2,11 @@ package com.genuineflix.caption.caption;
 
 import java.util.Comparator;
 
-import javax.vecmath.Vector3d;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.entity.Entity;
 
-public class CaptionWorld extends Caption {
+public class CaptionWorld extends Caption implements Comparable<CaptionWorld> {
 
 	public Entity entity;
 	public ISound sound;
@@ -16,21 +14,6 @@ public class CaptionWorld extends Caption {
 	public double posY, prevPosY;
 	public double posZ, prevPosZ;
 	public double size = 1;
-	public static Comparator<CaptionWorld> DISTANCE = new Comparator<CaptionWorld>() {
-
-		@Override
-		public int compare(final CaptionWorld o1, final CaptionWorld o2) {
-			if (Minecraft.getMinecraft().thePlayer == null)
-				return 0;
-			final double d1 = o1.getDistanceTo(Minecraft.getMinecraft().thePlayer);
-			final double d2 = o2.getDistanceTo(Minecraft.getMinecraft().thePlayer);
-			if (d1 < d2)
-				return 1;
-			if (d1 > d2)
-				return -1;
-			return 0;
-		}
-	};
 
 	public CaptionWorld(final String message, final Entity entity, final float volume, final float pitch) {
 		super(message, volume, pitch);
@@ -65,10 +48,12 @@ public class CaptionWorld extends Caption {
 	}
 
 	@Override
-	public int compareTo(final Caption o) {
-		if (o instanceof CaptionWorld)
-			return (int) (getDistanceTo((CaptionWorld) o) * 10000f);
-		return key.compareTo(o.key);
+	public int compareTo(final CaptionWorld o) {
+		if (Minecraft.getMinecraft().thePlayer == null)
+			return 0;
+		final double d1 = getDistanceToPlayer();
+		final double d2 = o.getDistanceToPlayer();
+		return Double.compare(d1, d2);
 	}
 
 	public boolean equalTo(final CaptionWorld caption) {
@@ -90,10 +75,6 @@ public class CaptionWorld extends Caption {
 
 	public double getDistanceTo(final Entity entity) {
 		return getDistanceTo(entity.posX, entity.posY, entity.posZ);
-	}
-
-	public double getDistanceTo(final Vector3d entity) {
-		return getDistanceTo(entity.x, entity.y, entity.z);
 	}
 
 	public double getDistanceToPlayer() {

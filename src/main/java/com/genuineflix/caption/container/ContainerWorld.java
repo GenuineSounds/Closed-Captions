@@ -41,7 +41,7 @@ public class ContainerWorld {
 			if (simpleReset)
 				return;
 			messages.add(caption);
-			Collections.sort(messages, CaptionWorld.DISTANCE);
+			Collections.sort(messages);
 		}
 	}
 

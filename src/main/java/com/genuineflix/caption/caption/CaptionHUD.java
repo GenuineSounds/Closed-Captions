@@ -17,11 +17,4 @@ public class CaptionHUD extends Caption {
 		super(message, ticks);
 		this.amount = amount;
 	}
-
-	@Override
-	public int compareTo(final Caption t) {
-		if (t instanceof CaptionHUD)
-			return Float.compare(amount, ((CaptionHUD) t).amount);
-		return 0;
-	}
 }
