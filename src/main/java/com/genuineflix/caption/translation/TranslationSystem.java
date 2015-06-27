@@ -19,9 +19,8 @@ import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
 
 public class TranslationSystem {
 
-	private static final ChatFormatting[] FORMATS = new ChatFormatting[] {
-			ChatFormatting.BOLD, ChatFormatting.ITALIC, ChatFormatting.STRIKETHROUGH, ChatFormatting.OBFUSCATED, ChatFormatting.UNDERLINE
-	};
+	private static final ChatFormatting[] FORMATS = new ChatFormatting[] { ChatFormatting.BOLD, ChatFormatting.ITALIC,
+			ChatFormatting.STRIKETHROUGH, ChatFormatting.OBFUSCATED, ChatFormatting.UNDERLINE };
 
 	public static String formatTranslation(final String translation) {
 		final StringBuilder out = new StringBuilder(translation.length());
@@ -30,48 +29,48 @@ public class TranslationSystem {
 			final char ch = translation.charAt(index);
 			boolean reformat = false;
 			switch (ch) {
-				case '(':
-					activeFormats[0]++;
-					out.append(TranslationSystem.FORMATS[0].toString());
-					break;
-				case '[':
-					activeFormats[1]++;
-					out.append(TranslationSystem.FORMATS[1].toString());
-					break;
-				case '{':
-					activeFormats[2]++;
-					out.append(TranslationSystem.FORMATS[2].toString());
-					break;
-				case '<':
-					activeFormats[3]++;
-					out.append(TranslationSystem.FORMATS[3].toString());
-					break;
-				case ')':
-					if (activeFormats[0] > 0)
-						activeFormats[0]--;
-					reformat = true;
-					break;
-				case ']':
-					if (activeFormats[1] > 0)
-						activeFormats[1]--;
-					reformat = true;
-					break;
-				case '}':
-					if (activeFormats[2] > 0)
-						activeFormats[2]--;
-					reformat = true;
-					break;
-				case '>':
-					if (activeFormats[3] > 0)
-						activeFormats[3]--;
-					reformat = true;
-					break;
-				case '~':
-					out.append('\u266A');
-					break;
-				default:
-					out.append(ch);
-					break;
+			case '(':
+				activeFormats[0]++;
+				out.append(TranslationSystem.FORMATS[0].toString());
+				break;
+			case '[':
+				activeFormats[1]++;
+				out.append(TranslationSystem.FORMATS[1].toString());
+				break;
+			case '{':
+				activeFormats[2]++;
+				out.append(TranslationSystem.FORMATS[2].toString());
+				break;
+			case '<':
+				activeFormats[3]++;
+				out.append(TranslationSystem.FORMATS[3].toString());
+				break;
+			case ')':
+				if (activeFormats[0] > 0)
+					activeFormats[0]--;
+				reformat = true;
+				break;
+			case ']':
+				if (activeFormats[1] > 0)
+					activeFormats[1]--;
+				reformat = true;
+				break;
+			case '}':
+				if (activeFormats[2] > 0)
+					activeFormats[2]--;
+				reformat = true;
+				break;
+			case '>':
+				if (activeFormats[3] > 0)
+					activeFormats[3]--;
+				reformat = true;
+				break;
+			case '~':
+				out.append('\u266A');
+				break;
+			default:
+				out.append(ch);
+				break;
 			}
 			if (reformat) {
 				out.append(ChatFormatting.RESET.toString());

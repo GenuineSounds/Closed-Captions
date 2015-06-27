@@ -19,7 +19,8 @@ public class RenderHUD {
 		int size = 0;
 		double mostPercent = 0;
 		for (final CaptionHUD caption : messages2D) {
-			int swidth = RenderHelper.fr.getStringWidth(caption.getMessage() + (caption.amount > 0 ? caption.amount : "")) + 3;
+			int swidth = RenderHelper.fr.getStringWidth(caption.getMessage()
+					+ (caption.amount > 0 ? caption.amount : "")) + 3;
 			if (swidth < template)
 				swidth = (int) template;
 			if (w < swidth)
@@ -37,7 +38,8 @@ public class RenderHUD {
 		final double moveInTips = Math.pow(1 - mostPercent * 4, 4) * w;
 		if (mostPercent < 0.25)
 			GL11.glTranslated(moveInTips, 0, 0);
-		RenderHelper.drawTooltip(x, y, w, h, RenderHelper.mainColor, RenderHelper.outlineColor, RenderHelper.secondaryColor);
+		RenderHelper.drawTooltip(x, y, w, h, RenderHelper.mainColor, RenderHelper.outlineColor,
+				RenderHelper.secondaryColor);
 		if (mostPercent < 0.25)
 			GL11.glTranslated(-moveInTips, 0, 0);
 		GL11.glTranslated(0, 0, 1);
@@ -49,14 +51,16 @@ public class RenderHUD {
 				alpha = 28;
 			final double fadeMove = action * w;
 			GL11.glTranslated(fadeMove, 0, 0);
-			RenderHelper.fr.drawStringWithShadow(caption.getMessage() + (caption.amount > 0 ? caption.amount : "") + ChatFormatting.RESET, x + 1, y, alpha << 24 | 0xFFFFFF);
+			RenderHelper.fr.drawStringWithShadow(caption.getMessage() + (caption.amount > 0 ? caption.amount : "")
+					+ ChatFormatting.RESET, x + 1, y, alpha << 24 | 0xFFFFFF);
 			GL11.glTranslated(-fadeMove, 0, 0);
 			y += 10;
 		}
 		GL11.glTranslated(0, 0, -1);
 	}
 
-	public static void render(final List<CaptionHUD> messages, final ScaledResolution resolution, final float partialTicks) {
+	public static void render(final List<CaptionHUD> messages, final ScaledResolution resolution,
+			final float partialTicks) {
 		if (messages == null)
 			return;
 		RenderHelper.res = resolution;

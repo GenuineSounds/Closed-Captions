@@ -1,7 +1,5 @@
 package com.genuineflix.caption.caption;
 
-import java.util.Comparator;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.entity.Entity;

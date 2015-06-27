@@ -39,7 +39,8 @@ public class RenderHelper {
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
 
-	public static void drawTooltip(final int x, final int y, final int w, final int h, final int color1, final int color2, final int color3) {
+	public static void drawTooltip(final int x, final int y, final int w, final int h, final int color1,
+			final int color2, final int color3) {
 		// Main
 		RenderHelper.drawGradientRect(x - 3, y - 3, w + 6, h + 6, color1, color1);
 		// Top bar

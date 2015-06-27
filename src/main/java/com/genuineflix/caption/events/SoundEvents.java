@@ -32,12 +32,14 @@ public class SoundEvents {
 	}
 
 	private static boolean isEntityHUD(final CaptionWorld caption) {
-		return caption.entity instanceof EntityItem || caption.entity instanceof EntityXPOrb || caption.sound instanceof PositionedSoundRecord;
+		return caption.entity instanceof EntityItem || caption.entity instanceof EntityXPOrb
+				|| caption.sound instanceof PositionedSoundRecord;
 	}
 
 	private static boolean isEntityPlayer(final CaptionWorld caption) {
 		final EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
-		return player != null && caption.entity instanceof EntityPlayer && player.getDisplayName().equals(((EntityPlayer) caption.entity).getDisplayName());
+		return player != null && caption.entity instanceof EntityPlayer
+				&& player.getDisplayName().equals(((EntityPlayer) caption.entity).getDisplayName());
 	}
 
 	private static boolean isNameBroken(final String name) {
@@ -84,16 +86,17 @@ public class SoundEvents {
 
 	@SubscribeEvent
 	public void eventISound(final PlaySoundEvent17 event) {
-		if (event.category == null || event.sound == null || SoundEvents.isNameBroken(event.name) || !ClosedCaption.enabled)
+		if (event.category == null || event.sound == null || SoundEvents.isNameBroken(event.name)
+				|| !ClosedCaption.enabled)
 			return;
 		switch (event.category) {
-			case PLAYERS:
-			case ANIMALS:
-			case MOBS:
-				return;
-			default:
-				createCaption(event.name, event.sound);
-				break;
+		case PLAYERS:
+		case ANIMALS:
+		case MOBS:
+			return;
+		default:
+			createCaption(event.name, event.sound);
+			break;
 		}
 	}
 

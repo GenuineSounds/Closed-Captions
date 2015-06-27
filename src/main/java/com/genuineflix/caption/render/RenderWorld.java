@@ -14,9 +14,12 @@ public class RenderWorld {
 	private static void drawCaption(final CaptionWorld caption, final float partialTicks) {
 		if (RenderWorld.outOfRenderDistance(caption))
 			return;
-		final double translateX = RenderManager.instance.viewerPosX - (caption.prevPosX + (caption.posX - caption.prevPosX) * partialTicks);
-		final double translateY = RenderManager.instance.viewerPosY - (caption.prevPosY + (caption.posY - caption.prevPosY) * partialTicks) - caption.size;
-		final double translateZ = RenderManager.instance.viewerPosZ - (caption.prevPosZ + (caption.posZ - caption.prevPosZ) * partialTicks);
+		final double translateX = RenderManager.instance.viewerPosX
+				- (caption.prevPosX + (caption.posX - caption.prevPosX) * partialTicks);
+		final double translateY = RenderManager.instance.viewerPosY
+				- (caption.prevPosY + (caption.posY - caption.prevPosY) * partialTicks) - caption.size;
+		final double translateZ = RenderManager.instance.viewerPosZ
+				- (caption.prevPosZ + (caption.posZ - caption.prevPosZ) * partialTicks);
 		GL11.glTranslated(-translateX, -translateY, -translateZ);
 		GL11.glRotated(RenderManager.instance.playerViewY + 180, 0, -0.5, 0);
 		GL11.glRotated(RenderManager.instance.playerViewX, -1, 0, 0);
@@ -29,7 +32,8 @@ public class RenderWorld {
 		int alpha = (int) ((1 - Math.pow(1 - caption.getPercentGuess(partialTicks), 8)) * 0xFF) + 1;
 		if (alpha < 5)
 			alpha = 5;
-		RenderHelper.drawTooltip(x, y, w, h, (alpha << 24) | (RenderHelper.mainColor & 0xFFFFFF), (alpha << 24) | (RenderHelper.outlineColor & 0xFFFFFF), (alpha << 24) | (RenderHelper.secondaryColor & 0xFFFFFF));
+		RenderHelper.drawTooltip(x, y, w, h, (alpha << 24) | (RenderHelper.mainColor & 0xFFFFFF), (alpha << 24)
+				| (RenderHelper.outlineColor & 0xFFFFFF), (alpha << 24) | (RenderHelper.secondaryColor & 0xFFFFFF));
 		GL11.glTranslated(0, 0, 0.01);
 		RenderHelper.fr.drawString(caption.getMessage(), x + 1, y, (alpha << 24) + 0xFFFFFF);
 		GL11.glTranslated(0, 0, -0.01);
