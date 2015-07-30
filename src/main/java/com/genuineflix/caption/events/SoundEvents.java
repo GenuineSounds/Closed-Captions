@@ -1,25 +1,24 @@
 package com.genuineflix.caption.events;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.ISound;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.item.EntityXPOrb;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.client.event.sound.PlaySoundEvent17;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
-
 import com.genuineflix.caption.ClosedCaption;
 import com.genuineflix.caption.caption.CaptionHUD;
 import com.genuineflix.caption.caption.CaptionWorld;
 import com.genuineflix.caption.container.ContainerHUD;
 import com.genuineflix.caption.container.ContainerWorld;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.ISound;
+import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityXPOrb;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.client.event.sound.PlaySoundEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class SoundEvents {
 
@@ -37,7 +36,7 @@ public class SoundEvents {
 	}
 
 	private static boolean isEntityPlayer(final CaptionWorld caption) {
-		final EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+		final EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
 		return player != null && caption.entity instanceof EntityPlayer
 				&& player.getDisplayName().equals(((EntityPlayer) caption.entity).getDisplayName());
 	}
@@ -85,7 +84,7 @@ public class SoundEvents {
 	}
 
 	@SubscribeEvent
-	public void eventISound(final PlaySoundEvent17 event) {
+	public void eventISound(final PlaySoundEvent event) {
 		if (event.category == null || event.sound == null || SoundEvents.isNameBroken(event.name)
 				|| !ClosedCaption.enabled)
 			return;

@@ -7,15 +7,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import net.minecraft.client.resources.I18n;
-import net.minecraft.nbt.NBTTagCompound;
-
 import com.genuineflix.caption.ClosedCaption;
 import com.genuineflix.caption.caption.Caption;
 import com.mojang.realmsclient.gui.ChatFormatting;
 
-import cpw.mods.fml.common.event.FMLInterModComms;
-import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
+import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
 
 public class TranslationSystem {
 

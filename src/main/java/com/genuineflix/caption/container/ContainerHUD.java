@@ -3,11 +3,6 @@ package com.genuineflix.caption.container;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
-
 import com.genuineflix.caption.ClosedCaption;
 import com.genuineflix.caption.caption.Caption;
 import com.genuineflix.caption.caption.CaptionHUD;
@@ -15,9 +10,13 @@ import com.genuineflix.caption.render.RenderHUD;
 import com.google.common.collect.ImmutableList;
 import com.mojang.realmsclient.gui.ChatFormatting;
 
-import cpw.mods.fml.common.event.FMLInterModComms;
-import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
+import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ContainerHUD {
 
@@ -34,7 +33,7 @@ public class ContainerHUD {
 	}
 
 	private void tick() {
-		final long tick = RenderManager.instance.worldObj.getTotalWorldTime();
+		final long tick = Minecraft.getMinecraft().theWorld.getTotalWorldTime();
 		if (this.tick == tick)
 			return;
 		this.tick = tick;

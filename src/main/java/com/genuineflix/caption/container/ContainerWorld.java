@@ -4,16 +4,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
-
 import com.genuineflix.caption.ClosedCaption;
 import com.genuineflix.caption.caption.Caption;
 import com.genuineflix.caption.caption.CaptionWorld;
 import com.genuineflix.caption.render.RenderWorld;
 import com.google.common.collect.ImmutableList;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraft.client.Minecraft;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ContainerWorld {
 
@@ -54,7 +53,7 @@ public class ContainerWorld {
 	}
 
 	public void tick() {
-		final long tick = RenderManager.instance.worldObj.getTotalWorldTime();
+		final long tick = Minecraft.getMinecraft().theWorld.getTotalWorldTime();
 		if (this.tick == tick)
 			return;
 		this.tick = tick;

@@ -2,12 +2,12 @@ package com.genuineflix.caption.render;
 
 import java.util.List;
 
-import net.minecraft.client.gui.ScaledResolution;
-
 import org.lwjgl.opengl.GL11;
 
 import com.genuineflix.caption.caption.CaptionHUD;
 import com.mojang.realmsclient.gui.ChatFormatting;
+
+import net.minecraft.client.gui.ScaledResolution;
 
 public class RenderHUD {
 
@@ -19,8 +19,8 @@ public class RenderHUD {
 		int size = 0;
 		double mostPercent = 0;
 		for (final CaptionHUD caption : messages2D) {
-			int swidth = RenderHelper.fr.getStringWidth(caption.getMessage()
-					+ (caption.amount > 0 ? caption.amount : "")) + 3;
+			int swidth = RenderHelper.fr
+					.getStringWidth(caption.getMessage() + (caption.amount > 0 ? caption.amount : "")) + 3;
 			if (swidth < template)
 				swidth = (int) template;
 			if (w < swidth)
@@ -51,8 +51,9 @@ public class RenderHUD {
 				alpha = 28;
 			final double fadeMove = action * w;
 			GL11.glTranslated(fadeMove, 0, 0);
-			RenderHelper.fr.drawStringWithShadow(caption.getMessage() + (caption.amount > 0 ? caption.amount : "")
-					+ ChatFormatting.RESET, x + 1, y, alpha << 24 | 0xFFFFFF);
+			RenderHelper.fr.drawStringWithShadow(
+					caption.getMessage() + (caption.amount > 0 ? caption.amount : "") + ChatFormatting.RESET, x + 1, y,
+					alpha << 24 | 0xFFFFFF);
 			GL11.glTranslated(-fadeMove, 0, 0);
 			y += 10;
 		}

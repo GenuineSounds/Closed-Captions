@@ -1,10 +1,10 @@
 package com.genuineflix.caption.render;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
-
-import org.lwjgl.opengl.GL11;
 
 public class RenderHelper {
 
@@ -21,8 +21,8 @@ public class RenderHelper {
 		final float blue2 = (color2 >> 0 & 0xFF) / 255F;
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glDisable(GL11.GL_ALPHA_TEST);
-		//GL11.glEnable(GL11.GL_BLEND);
-		//GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		// GL11.glEnable(GL11.GL_BLEND);
+		// GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		GL11.glBegin(GL11.GL_QUADS);
 		GL11.glColor4f(red1, green1, blue1, alpha1);
@@ -34,7 +34,7 @@ public class RenderHelper {
 		GL11.glColor4f(1, 1, 1, 1);
 		GL11.glEnd();
 		GL11.glShadeModel(GL11.GL_FLAT);
-		//GL11.glDisable(GL11.GL_BLEND);
+		// GL11.glDisable(GL11.GL_BLEND);
 		GL11.glEnable(GL11.GL_ALPHA_TEST);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
@@ -68,8 +68,9 @@ public class RenderHelper {
 	public static final int mainColor = 0xC0100010;
 	public static final int outlineColor = 0x505000FF;
 	public static final int secondaryColor;
+
 	static {
 		secondaryColor = (RenderHelper.outlineColor & 0xFEFEFE) >> 1 | RenderHelper.outlineColor & 0xFF000000;
-		fr = Minecraft.getMinecraft().fontRenderer;
+		fr = Minecraft.getMinecraft().getRenderManager().getFontRenderer();
 	}
 }

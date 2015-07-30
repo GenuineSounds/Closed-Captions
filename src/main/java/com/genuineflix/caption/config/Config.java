@@ -11,16 +11,15 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.event.world.WorldEvent;
-
 import com.genuineflix.caption.translation.TranslationSystem;
 import com.google.common.base.Charsets;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class Config {
 
