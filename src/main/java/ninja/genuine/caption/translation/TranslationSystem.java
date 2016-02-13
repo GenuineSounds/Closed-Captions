@@ -158,45 +158,43 @@ public class TranslationSystem {
 		for (final IMCMessage message : imcMessages) {
 			final String messageKey = message.key;
 			boolean register = false;
-			switch (messageKey.toLowerCase()) {
-				case "directmessage":
-					final List<String> translations = new ArrayList<String>();
-					if (message.isStringMessage())
-						translations.add(message.getStringValue());
-					else {
-						final NBTTagCompound tag = message.getNBTValue();
-						int count = 0;
-						String transMessage = "";
-						while (!(transMessage = tag.getString("" + count)).isEmpty()) {
-							translations.add(transMessage);
-							count++;
-						}
+			if (messageKey.equalsIgnoreCase("directmessage")) {
+				final List<String> translations = new ArrayList<String>();
+				if (message.isStringMessage())
+					translations.add(message.getStringValue());
+				else {
+					final NBTTagCompound tag = message.getNBTValue();
+					int count = 0;
+					String transMessage = "";
+					while (!(transMessage = tag.getString("" + count)).isEmpty()) {
+						translations.add(transMessage);
+						count++;
 					}
-					final Translation transOut = new Translation(messageKey, translations);
-					transOut.getCurrent();
-					break;
-				case "register":
-					register = true;
-				case "add":
-					try {
-						String captionKey = message.getStringValue().split("=")[0].trim();
-						String captionMessage = message.getStringValue().split("=")[1].trim();
-						Translation translation = null;
-						if (register)
-							for (final Translation newTranslation : this.translations) {
-								if (newTranslation.equals(captionKey))
-									translation = newTranslation;
-							}
-						else
-							translation = new Translation(captionKey);
-						translation.add(captionMessage);
-						this.translations.add(translation);
-					} catch (Exception e) {}
-					break;
-				default:
-					System.err.println("Invalid ClosedCaption IMC message recieved from " + message.getSender());
-					break;
+				}
+				final Translation transOut = new Translation(messageKey, translations);
+				transOut.getCurrent();
+				continue;
 			}
+			if (messageKey.equalsIgnoreCase("register"))
+				register = true;
+			if (messageKey.equalsIgnoreCase("add")) {
+				try {
+					String captionKey = message.getStringValue().split("=")[0].trim();
+					String captionMessage = message.getStringValue().split("=")[1].trim();
+					Translation translation = null;
+					if (register)
+						for (final Translation newTranslation : this.translations) {
+							if (newTranslation.equals(captionKey))
+								translation = newTranslation;
+						}
+					else
+						translation = new Translation(captionKey);
+					translation.add(captionMessage);
+					this.translations.add(translation);
+				} catch (Exception e) {}
+				continue;
+			}
+			System.err.println("Invalid ClosedCaption IMC message recieved from " + message.getSender());
 		}
 	}
 }
