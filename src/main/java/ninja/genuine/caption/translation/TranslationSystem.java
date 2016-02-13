@@ -156,8 +156,9 @@ public class TranslationSystem {
 	public synchronized void handleIMCMessages() {
 		final List<IMCMessage> imcMessages = FMLInterModComms.fetchRuntimeMessages(ClosedCaption.MODID);
 		for (final IMCMessage message : imcMessages) {
-			final String key = message.key;
-			switch (key.toLowerCase()) {
+			final String messageKey = message.key;
+			boolean register = false;
+			switch (messageKey.toLowerCase()) {
 				case "directmessage":
 					final List<String> translations = new ArrayList<String>();
 					if (message.isStringMessage())
@@ -165,22 +166,31 @@ public class TranslationSystem {
 					else {
 						final NBTTagCompound tag = message.getNBTValue();
 						int count = 0;
-						String translation = "";
-						while (!(translation = tag.getString("" + count)).isEmpty()) {
-							translations.add(translation);
+						String transMessage = "";
+						while (!(transMessage = tag.getString("" + count)).isEmpty()) {
+							translations.add(transMessage);
 							count++;
 						}
 					}
-					final Translation translation = new Translation(key, translations);
-					translation.getCurrent();
+					final Translation transOut = new Translation(messageKey, translations);
+					transOut.getCurrent();
 					break;
 				case "register":
+					register = true;
+				case "add":
 					try {
-						String cc = message.getStringValue().split("=")[0].trim();
-						String msg = message.getStringValue().split("=")[1].trim();
-						Translation trans = new Translation(cc);
-						trans.add(msg);
-						this.translations.add(trans);
+						String captionKey = message.getStringValue().split("=")[0].trim();
+						String captionMessage = message.getStringValue().split("=")[1].trim();
+						Translation translation = null;
+						if (register)
+							for (final Translation newTranslation : this.translations) {
+								if (newTranslation.equals(captionKey))
+									translation = newTranslation;
+							}
+						else
+							translation = new Translation(captionKey);
+						translation.add(captionMessage);
+						this.translations.add(translation);
 					} catch (Exception e) {}
 					break;
 				default:
