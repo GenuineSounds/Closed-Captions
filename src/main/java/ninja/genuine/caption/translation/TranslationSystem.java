@@ -153,25 +153,40 @@ public class TranslationSystem {
 		}
 	}
 
-	public void handleIMCMessages() {
+	public synchronized void handleIMCMessages() {
 		final List<IMCMessage> imcMessages = FMLInterModComms.fetchRuntimeMessages(ClosedCaption.MODID);
 		for (final IMCMessage message : imcMessages) {
 			final String key = message.key;
-			final List<String> translations = new ArrayList<String>();
-			if (message.isStringMessage())
-				translations.add(message.getStringValue());
-			else {
-				final NBTTagCompound tag = message.getNBTValue();
-				int count = 0;
-				String translation = "";
-				while (!(translation = tag.getString("" + count)).isEmpty()) {
-					translations.add(translation);
-					count++;
-				}
+			switch (key.toLowerCase()) {
+				case "directmessage":
+					final List<String> translations = new ArrayList<String>();
+					if (message.isStringMessage())
+						translations.add(message.getStringValue());
+					else {
+						final NBTTagCompound tag = message.getNBTValue();
+						int count = 0;
+						String translation = "";
+						while (!(translation = tag.getString("" + count)).isEmpty()) {
+							translations.add(translation);
+							count++;
+						}
+					}
+					final Translation translation = new Translation(key, translations);
+					translation.getCurrent();
+					break;
+				case "register":
+					try {
+						String cc = message.getStringValue().split("=")[0].trim();
+						String msg = message.getStringValue().split("=")[1].trim();
+						Translation trans = new Translation(cc);
+						trans.add(msg);
+						this.translations.add(trans);
+					} catch (Exception e) {}
+					break;
+				default:
+					System.err.println("Invalid ClosedCaption IMC message recieved from " + message.getSender());
+					break;
 			}
-			// TODO: Implement
-			final Translation translation = new Translation(key, translations);
-			translation.getCurrent();
 		}
 	}
 }
