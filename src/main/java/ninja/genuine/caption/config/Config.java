@@ -11,31 +11,27 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.event.world.WorldEvent;
-import ninja.genuine.caption.translation.TranslationSystem;
-
 import com.google.common.base.Charsets;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.event.world.WorldEvent;
+import ninja.genuine.caption.translation.TranslationSystem;
 
 public class Config {
 
 	@SuppressWarnings("serial")
 	private static final Type GSON_TYPE = new TypeToken<Map<String, List<String>>>() {}.getType();
 	private static final GsonBuilder GSON_BUILDER = new GsonBuilder();
-	public File folder;
 	public File save;
-	public Configuration main;
 
 	public void pre(final File folder) {
-		this.folder = folder;
+		folder.mkdirs();
 		save = new File(folder, "translations.json");
-		main = new Configuration(new File(folder, "Main.cfg"));
-		loadSave(getClass().getClassLoader().getResourceAsStream("assets/closedcaption/defaults.json"), save);
+		if (!save.exists())
+			loadSave(getClass().getClassLoader().getResourceAsStream("assets/closedcaption/defaults.json"), save);
 	}
 
 	public void init() {

@@ -20,7 +20,7 @@ public class ClosedCaption {
 	public static ClosedCaption instance;
 	public static final String MODID = "ClosedCaption";
 	public static final String NAME = "Closed Caption";
-	public static final String VERSION = "1.0.17";
+	public static final String VERSION = "1.1.0";
 	public static final SoundEvents soundEvents = new SoundEvents();
 	public static final Config config = new Config();
 	public static boolean enabled = true;

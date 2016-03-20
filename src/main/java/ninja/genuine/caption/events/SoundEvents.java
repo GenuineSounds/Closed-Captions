@@ -98,8 +98,8 @@ public class SoundEvents {
 	public void registerEvents() {
 		MinecraftForge.EVENT_BUS.register(this);
 		MinecraftForge.EVENT_BUS.register(hud);
-		FMLCommonHandler.instance().bus().register(hud);
 		MinecraftForge.EVENT_BUS.register(world);
+		FMLCommonHandler.instance().bus().register(hud);
 		FMLCommonHandler.instance().bus().register(world);
 	}
 }

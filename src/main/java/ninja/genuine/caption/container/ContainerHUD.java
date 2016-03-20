@@ -3,6 +3,12 @@ package ninja.genuine.caption.container;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
+import com.mojang.realmsclient.gui.ChatFormatting;
+
+import cpw.mods.fml.common.event.FMLInterModComms;
+import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -11,13 +17,6 @@ import ninja.genuine.caption.ClosedCaption;
 import ninja.genuine.caption.caption.Caption;
 import ninja.genuine.caption.caption.CaptionHUD;
 import ninja.genuine.caption.render.RenderHUD;
-
-import com.google.common.collect.ImmutableList;
-import com.mojang.realmsclient.gui.ChatFormatting;
-
-import cpw.mods.fml.common.event.FMLInterModComms;
-import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class ContainerHUD {
 
@@ -92,8 +91,21 @@ public class ContainerHUD {
 					directMessage(new CaptionHUD(message.toString(), amount, tag.getInteger("ticks")));
 				else
 					directMessage(new CaptionHUD(message.toString(), amount));
-			} else if (imc.isStringMessage())
+			} else {
+				final List<String> translations = new ArrayList<String>();
+				if (imc.isStringMessage())
+					translations.add(imc.getStringValue());
+				else {
+					final NBTTagCompound tag = imc.getNBTValue();
+					int count = 0;
+					String transMessage = "";
+					while (!(transMessage = tag.getString("" + count)).isEmpty()) {
+						translations.add(transMessage);
+						count++;
+					}
+				}
 				directMessage(new CaptionHUD(imc.getStringValue(), 0));
+			}
 		}
 	}
 }

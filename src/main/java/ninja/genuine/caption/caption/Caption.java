@@ -7,7 +7,7 @@ import ninja.genuine.util.Titular;
 public abstract class Caption implements Titular<Caption> {
 
 	public static final int DEFAULT_TIMER = 60;
-	public static final String DIRECT_MESSAGE_KEY = "[Direct]";
+	public static final String DIRECT_MESSAGE_KEY = "DirectMessage";
 	public final String key;
 	public final float volume;
 	public final float pitch;

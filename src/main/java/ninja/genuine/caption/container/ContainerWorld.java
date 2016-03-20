@@ -34,7 +34,7 @@ public class ContainerWorld {
 					old.resetTime();
 					continue;
 				}
-				if (caption.isWithin(old, 0.1))
+				if (caption.isWithin(old, 1))
 					removal.add(old);
 			}
 			messages.removeAll(removal);
